@@ -1,5 +1,6 @@
 (function () {
-  const STORAGE_KEY = "ai3011-language";
+  const LANGUAGE_STORAGE_KEY = "ai3011-language";
+  const THEME_STORAGE_KEY = "ai3011-theme";
 
   function formatMessage(template, values) {
     return template.replace(/\{(\w+)\}/g, function (_, key) {
@@ -7,13 +8,13 @@
     });
   }
 
-  function buildToggle(host, onChange) {
+  function buildLanguageToggle(host, onChange, className) {
     if (!host) {
       return null;
     }
 
     const toggle = document.createElement("div");
-    toggle.className = "lang-toggle";
+    toggle.className = className || "lang-toggle";
     toggle.innerHTML =
       '<span class="lang-toggle__label"></span>' +
       '<div class="lang-toggle__buttons" role="group" aria-label="Language switcher">' +
@@ -29,6 +30,43 @@
 
     host.appendChild(toggle);
     return toggle;
+  }
+
+  function buildFloatingDock(onLanguageChange, onThemeChange) {
+    const dock = document.createElement("aside");
+    dock.className = "floating-dock";
+    dock.innerHTML =
+      '<div class="floating-dock__section">' +
+      '<p class="floating-dock__title" data-role="lang-title"></p>' +
+      '<div class="floating-dock__lang-host"></div>' +
+      "</div>" +
+      '<div class="floating-dock__section">' +
+      '<p class="floating-dock__title" data-role="theme-title"></p>' +
+      '<div class="theme-toggle" role="group" aria-label="Theme switcher">' +
+      '<button type="button" class="theme-toggle__button" data-theme="light"></button>' +
+      '<button type="button" class="theme-toggle__button" data-theme="dark"></button>' +
+      "</div>" +
+      "</div>";
+
+    dock.querySelectorAll("[data-theme]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        onThemeChange(button.dataset.theme);
+      });
+    });
+
+    document.body.appendChild(dock);
+
+    const languageHost = dock.querySelector(".floating-dock__lang-host");
+    const languageToggle = buildLanguageToggle(
+      languageHost,
+      onLanguageChange,
+      "lang-toggle lang-toggle--floating"
+    );
+
+    return {
+      dock: dock,
+      languageToggle: languageToggle
+    };
   }
 
   function readOriginalContent() {
@@ -151,6 +189,51 @@
     });
   }
 
+  function updateLanguageToggle(toggle, lang) {
+    if (!toggle) {
+      return;
+    }
+
+    const label = toggle.querySelector(".lang-toggle__label");
+    label.textContent = lang === "ar" ? "اللغة" : "Language";
+
+    toggle.querySelectorAll("[data-lang]").forEach(function (button) {
+      const active = button.dataset.lang === lang;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function updateFloatingDock(dockRef, lang, theme) {
+    if (!dockRef?.dock) {
+      return;
+    }
+
+    const dock = dockRef.dock;
+    const isArabic = lang === "ar";
+
+    dock.querySelector('[data-role="lang-title"]').textContent = isArabic ? "اللغة" : "Language";
+    dock.querySelector('[data-role="theme-title"]').textContent = isArabic ? "المظهر" : "Theme";
+
+    dock.querySelectorAll(".theme-toggle__button").forEach(function (button) {
+      const isActive = button.dataset.theme === theme;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      button.textContent =
+        button.dataset.theme === "dark"
+          ? (isArabic ? "ليلي" : "Dark")
+          : (isArabic ? "نهاري" : "Light");
+    });
+
+    updateLanguageToggle(dockRef.languageToggle, lang);
+  }
+
+  function applyTheme(theme) {
+    const nextTheme = theme === "dark" ? "dark" : "light";
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+  }
+
   window.StudyGuideApp = {
     init: function (config) {
       const original = {
@@ -159,31 +242,37 @@
       };
 
       const host = document.querySelector(config.toggleHostSelector);
-      const toggle = buildToggle(host, setLanguage);
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const initialLang = saved === "ar" ? "ar" : "en";
+      const toggle = buildLanguageToggle(host, setLanguage);
+      const floatingDock = buildFloatingDock(setLanguage, setTheme);
+      const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      const initialTheme = savedTheme === "dark" ? "dark" : "light";
+
+      function setTheme(theme) {
+        const nextTheme = theme === "dark" ? "dark" : "light";
+        localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        applyTheme(nextTheme);
+        updateFloatingDock(floatingDock, document.documentElement.lang || "en", nextTheme);
+      }
 
       function setLanguage(lang) {
         const nextLang = lang === "ar" ? "ar" : "en";
-        localStorage.setItem(STORAGE_KEY, nextLang);
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
         document.documentElement.lang = nextLang;
         document.documentElement.dir = nextLang === "ar" ? "rtl" : "ltr";
         document.title = nextLang === "ar" ? config.title.ar : original.title;
         applyTranslations(original, config.translations, nextLang);
         renderQuizzes(config, nextLang);
-
-        if (toggle) {
-          const label = toggle.querySelector(".lang-toggle__label");
-          label.textContent = nextLang === "ar" ? "اللغة" : "Language";
-
-          toggle.querySelectorAll("[data-lang]").forEach(function (button) {
-            const active = button.dataset.lang === nextLang;
-            button.classList.toggle("is-active", active);
-            button.setAttribute("aria-pressed", active ? "true" : "false");
-          });
-        }
+        updateLanguageToggle(toggle, nextLang);
+        updateFloatingDock(
+          floatingDock,
+          nextLang,
+          document.documentElement.dataset.theme || "light"
+        );
       }
 
+      const initialLang = savedLanguage === "ar" ? "ar" : "en";
+      setTheme(initialTheme);
       setLanguage(initialLang);
     }
   };

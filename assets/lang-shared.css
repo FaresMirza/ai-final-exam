@@ -40,11 +40,79 @@
 
 body {
   text-align: start;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 html[lang="ar"] body {
   font-family: "ThmanyahSans", "Segoe UI", system-ui, -apple-system, sans-serif;
   line-height: 1.75;
+}
+
+html[data-theme="dark"] {
+  --ink: #eef2f8;
+  --ink-soft: #b5bfd0;
+  --paper: #0f1621;
+  --card: #182131;
+  --line: #2c384d;
+  --accent: #67b59f;
+  --accent-soft: #20372f;
+  --highlight: #f5bc59;
+  --highlight-soft: #3c3220;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] body {
+  background: linear-gradient(180deg, #121a27 0%, #0f1621 180px);
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] header,
+html[data-theme="dark"] .site-nav {
+  background: #0b111a;
+}
+
+html[data-theme="dark"] .hero p,
+html[data-theme="dark"] header p,
+html[data-theme="dark"] .lang-toggle__label {
+  color: #c3cad7;
+}
+
+html[data-theme="dark"] .lang-toggle__buttons,
+html[data-theme="dark"] .floating-dock {
+  background: rgba(11, 17, 26, 0.92);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .lang-toggle__button,
+html[data-theme="dark"] .theme-toggle__button {
+  color: #e7edf8;
+}
+
+html[data-theme="dark"] .lang-toggle__button:hover,
+html[data-theme="dark"] .theme-toggle__button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] nav {
+  background: rgba(15, 22, 33, 0.92);
+}
+
+html[data-theme="dark"] .opt {
+  background: #101722;
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .opt.wrong {
+  background: #472329;
+}
+
+html[data-theme="dark"] .score small {
+  color: #d8ede4;
 }
 
 .lang-toggle-host {
@@ -106,6 +174,83 @@ html[lang="ar"] body {
 .lang-toggle__button.is-active {
   background: #f0a830;
   color: #1c2230;
+}
+
+.lang-toggle--floating {
+  width: 100%;
+  justify-content: stretch;
+}
+
+.lang-toggle--floating .lang-toggle__label {
+  display: none;
+}
+
+.lang-toggle--floating .lang-toggle__buttons {
+  width: 100%;
+  justify-content: stretch;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.lang-toggle--floating .lang-toggle__button {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.floating-dock {
+  position: fixed;
+  top: 50%;
+  right: 18px;
+  z-index: 120;
+  width: min(220px, calc(100vw - 24px));
+  transform: translateY(-50%);
+  border: 1px solid rgba(28, 34, 48, 0.1);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  padding: 14px;
+}
+
+.floating-dock__section + .floating-dock__section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.floating-dock__title {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+.theme-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-toggle__button {
+  flex: 1 1 0;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.theme-toggle__button.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 section.topic ul {
@@ -176,13 +321,27 @@ html[lang="ar"] .site-nav .label,
 html[lang="ar"] .chapter-head .num,
 html[lang="ar"] .ex .lbl,
 html[lang="ar"] .remember .lbl,
-html[lang="ar"] .quiz .qhead .badge {
+html[lang="ar"] .quiz .qhead .badge,
+html[lang="ar"] .floating-dock__title {
   letter-spacing: 0;
   text-transform: none;
+}
+
+html[lang="ar"] .floating-dock {
+  font-family: "ThmanyahSans", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 @media (max-width: 560px) {
   .lang-toggle__button {
     min-width: 84px;
+  }
+
+  .floating-dock {
+    top: auto;
+    bottom: 14px;
+    right: 12px;
+    transform: none;
+    width: min(210px, calc(100vw - 24px));
+    padding: 12px;
   }
 }
