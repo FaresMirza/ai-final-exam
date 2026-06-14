@@ -111,17 +111,19 @@
   }
   .btn.secondary:hover{background:#d8e8df}
 </style>
+<link rel="stylesheet" href="assets/lang-shared.css">
 </head>
 <body>
 <section class="hero">
-  <span class="tag">AI3011 · Final Exam</span>
-  <h1>Study Guide Home</h1>
-  <p>Use this page as the entry point on your server, then jump into any guide and use the top navigation to move between pages.</p>
+  <span class="tag" data-i18n-html="hero-tag">AI3011 · Final Exam</span>
+  <h1 data-i18n-html="hero-title">Study Guide Home</h1>
+  <p data-i18n-html="hero-copy">Use this page as the entry point on your server, then jump into any guide and use the top navigation to move between pages.</p>
+  <div class="lang-toggle-host"></div>
 </section>
 
 <main>
   <div class="grid">
-    <article class="card">
+    <article class="card" data-i18n-html="card-1">
       <span class="eyebrow">Guide 1</span>
       <h2>Chapters 2 &amp; 3</h2>
       <p>Regression, classification, and the matching quizzes.</p>
@@ -131,7 +133,7 @@
       </div>
     </article>
 
-    <article class="card">
+    <article class="card" data-i18n-html="card-2">
       <span class="eyebrow">Guide 2</span>
       <h2>Chapters 4 &amp; 5</h2>
       <p>SVM, evaluation metrics, clustering, and the matching quizzes.</p>
@@ -141,7 +143,7 @@
       </div>
     </article>
 
-    <article class="card">
+    <article class="card" data-i18n-html="card-3">
       <span class="eyebrow">Guide 3</span>
       <h2>Chapters 6 &amp; 7</h2>
       <p>Dimensionality reduction, neural networks, and the matching quizzes.</p>
@@ -152,5 +154,48 @@
     </article>
   </div>
 </main>
+<script src="assets/lang-toggle.js"></script>
+<script>
+StudyGuideApp.init({
+  toggleHostSelector: ".lang-toggle-host",
+  title: {
+    ar: "AI3011 - أدلة المذاكرة"
+  },
+  translations: {
+    html: {
+      "hero-tag": "AI3011 · الاختبار النهائي",
+      "hero-title": "الصفحة الرئيسية لأدلة المذاكرة",
+      "hero-copy": "استخدم هذه الصفحة كنقطة البداية على GitHub Pages أو على الخادم الخاص بك، ثم انتقل إلى أي دليل واستعمل التنقل العلوي للتبديل بين الصفحات.",
+      "card-1": `
+        <span class="eyebrow">الدليل 1</span>
+        <h2>الفصلان 2 و3</h2>
+        <p>الانحدار، والتصنيف، والاختبارات المطابقة لهما.</p>
+        <div class="actions">
+          <a class="btn primary" href="ai-study-guide-ch2-3.html">افتح الدليل</a>
+          <a class="btn secondary" href="ai-study-guide-ch2-3.html#ch2">ابدأ من الفصل 2</a>
+        </div>
+      `,
+      "card-2": `
+        <span class="eyebrow">الدليل 2</span>
+        <h2>الفصلان 4 و5</h2>
+        <p>آلة المتجهات الداعمة، ومقاييس التقييم، والتجميع، والاختبارات المطابقة لها.</p>
+        <div class="actions">
+          <a class="btn primary" href="ai-study-guide-ch4-5.html">افتح الدليل</a>
+          <a class="btn secondary" href="ai-study-guide-ch4-5.html#ch4">ابدأ من الفصل 4</a>
+        </div>
+      `,
+      "card-3": `
+        <span class="eyebrow">الدليل 3</span>
+        <h2>الفصلان 6 و7</h2>
+        <p>تقليل الأبعاد، والشبكات العصبية، والاختبارات المطابقة لها.</p>
+        <div class="actions">
+          <a class="btn primary" href="ai-study-guide-ch6-7.html">افتح الدليل</a>
+          <a class="btn secondary" href="ai-study-guide-ch6-7.html#ch6">ابدأ من الفصل 6</a>
+        </div>
+      `
+    }
+  }
+});
+</script>
 </body>
 </html>

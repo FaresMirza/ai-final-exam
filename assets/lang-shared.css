@@ -1,0 +1,188 @@
+@font-face {
+  font-family: "ThmanyahSans";
+  src:
+    url("../thmanyahsans/woff2/thmanyahsans-Regular.woff2") format("woff2"),
+    url("../thmanyahsans/otf/thmanyahsans-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ThmanyahSans";
+  src:
+    url("../thmanyahsans/woff2/thmanyahsans-Medium.woff2") format("woff2"),
+    url("../thmanyahsans/otf/thmanyahsans-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ThmanyahSans";
+  src:
+    url("../thmanyahsans/woff2/thmanyahsans-Bold.woff2") format("woff2"),
+    url("../thmanyahsans/otf/thmanyahsans-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ThmanyahSans";
+  src:
+    url("../thmanyahsans/woff2/thmanyahsans-Black.woff2") format("woff2"),
+    url("../thmanyahsans/otf/thmanyahsans-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  text-align: start;
+}
+
+html[lang="ar"] body {
+  font-family: "ThmanyahSans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.75;
+}
+
+.lang-toggle-host {
+  display: flex;
+  justify-content: center;
+}
+
+.hero .lang-toggle-host {
+  margin-top: 18px;
+}
+
+.site-nav .lang-toggle-host {
+  padding: 4px 0 12px;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lang-toggle__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #c7ceda;
+}
+
+.lang-toggle__buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.lang-toggle__button {
+  border: 0;
+  border-radius: 999px;
+  min-width: 92px;
+  min-height: 36px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #dfe5ef;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.lang-toggle__button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-toggle__button.is-active {
+  background: #f0a830;
+  color: #1c2230;
+}
+
+section.topic ul {
+  margin-left: 0;
+  margin-inline-start: 4px;
+}
+
+section.topic ul li {
+  padding-left: 0;
+  padding-inline-start: 18px;
+}
+
+section.topic ul li::before {
+  left: auto;
+  inset-inline-start: 2px;
+}
+
+.q .qtext span.qn {
+  margin-right: 0;
+  margin-inline-end: 5px;
+}
+
+.opt {
+  text-align: start;
+}
+
+[dir="rtl"] .site-nav .links,
+[dir="rtl"] nav,
+[dir="rtl"] .actions,
+[dir="rtl"] .pill-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .opt .mark {
+  float: left;
+}
+
+.ex,
+.remember {
+  border-left: none;
+  border-right: none;
+}
+
+[dir="ltr"] .ex {
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+[dir="ltr"] .remember {
+  border-left: 4px solid var(--highlight);
+  border-radius: 0 8px 8px 0;
+}
+
+[dir="rtl"] .ex {
+  border-right: 4px solid var(--accent);
+  border-radius: 8px 0 0 8px;
+}
+
+[dir="rtl"] .remember {
+  border-right: 4px solid var(--highlight);
+  border-radius: 8px 0 0 8px;
+}
+
+html[lang="ar"] .hero .tag,
+html[lang="ar"] header .tag,
+html[lang="ar"] .card .eyebrow,
+html[lang="ar"] .site-nav .label,
+html[lang="ar"] .chapter-head .num,
+html[lang="ar"] .ex .lbl,
+html[lang="ar"] .remember .lbl,
+html[lang="ar"] .quiz .qhead .badge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (max-width: 560px) {
+  .lang-toggle__button {
+    min-width: 84px;
+  }
+}
