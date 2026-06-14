@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI3011 — Exam Quick Study (Ch 6 &amp; 7)</title>
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e6e3da;
+    --accent:#2f6f5e;       /* deep teal-green */
+    --accent-soft:#e3efe9;
+    --highlight:#f0a830;    /* warm amber for "remember this" */
+    --highlight-soft:#fdf2dc;
+    --correct:#2f6f5e;
+    --wrong:#c0473b;
+    --shadow:0 1px 2px rgba(28,34,48,.06),0 6px 18px rgba(28,34,48,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+
+  /* ---------- top bar ---------- */
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:26px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  header .tag{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--highlight);
+    margin-bottom:8px;
+  }
+  header h1{font-size:26px;font-weight:700;line-height:1.2}
+  header p{color:#b9c0cf;font-size:14px;margin-top:6px}
+
+  .site-nav{
+    background:var(--ink);
+    color:#fff;
+    padding:12px 16px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .site-nav .label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#b9c0cf;
+    margin-bottom:8px;
+    text-align:center;
+  }
+  .site-nav .links{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding-bottom:12px;
+  }
+  .site-nav a{
+    color:#dfe5ef;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    transition:.15s;
+  }
+  .site-nav a:hover,
+  .site-nav a.current{
+    background:var(--highlight);
+    border-color:var(--highlight);
+    color:var(--ink);
+  }
+
+  /* ---------- sticky nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,250,247,.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+    padding:10px 12px;
+  }
+  nav a{
+    font-size:13px;font-weight:600;text-decoration:none;
+    color:var(--ink-soft);
+    padding:7px 12px;border-radius:20px;
+    transition:.15s;
+  }
+  nav a:hover{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---------- layout ---------- */
+  main{max-width:780px;margin:0 auto;padding:0 18px}
+
+  .chapter-head{
+    margin:38px 0 10px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--ink);
+  }
+  .chapter-head .num{
+    font-size:13px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+  }
+  .chapter-head h2{font-size:23px;margin-top:2px}
+
+  section.topic{margin:22px 0}
+  section.topic h3{
+    font-size:18px;color:var(--ink);
+    display:flex;align-items:center;gap:9px;margin-bottom:6px;
+  }
+  section.topic h3 .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);flex:none;
+  }
+  section.topic p{color:var(--ink-soft);font-size:15px;margin:5px 0}
+  section.topic ul{margin:6px 0 6px 4px;list-style:none}
+  section.topic ul li{
+    padding-left:18px;position:relative;font-size:15px;
+    color:var(--ink-soft);margin:4px 0;
+  }
+  section.topic ul li::before{
+    content:"";position:absolute;left:2px;top:9px;
+    width:6px;height:6px;border-radius:1px;background:var(--accent);
+  }
+  b,strong{color:var(--ink);font-weight:600}
+
+  /* example box (for hard concepts) */
+  .ex{
+    background:var(--accent-soft);
+    border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .ex .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;display:block;margin-bottom:3px;
+  }
+  .ex p{color:var(--ink);margin:0}
+
+  /* remember box */
+  .remember{
+    background:var(--highlight-soft);
+    border-left:4px solid var(--highlight);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .remember .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#b9791a;font-weight:700;display:block;margin-bottom:3px;
+  }
+  .remember p{color:var(--ink);margin:0}
+
+  /* two-col compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:12px;box-shadow:var(--shadow);
+  }
+  .compare .col h4{font-size:14px;margin-bottom:6px;color:var(--accent)}
+  .compare .col ul{margin:0}
+  .compare .col ul li{font-size:13.5px}
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+
+  /* ---------- quiz ---------- */
+  .quiz{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px;
+    margin:26px 0 10px;
+    box-shadow:var(--shadow);
+  }
+  .quiz .qhead{
+    display:flex;align-items:center;gap:10px;margin-bottom:4px;
+  }
+  .quiz .qhead .badge{
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:20px;letter-spacing:.05em;
+  }
+  .quiz .qhead h3{font-size:17px}
+  .quiz>.sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:8px}
+
+  .q{margin:18px 0;padding-top:14px;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:none}
+  .q .qtext{font-weight:600;font-size:15px;margin-bottom:10px}
+  .q .qtext span.qn{color:var(--accent);margin-right:5px}
+  .opt{
+    display:block;width:100%;text-align:left;
+    background:var(--paper);border:1.5px solid var(--line);
+    border-radius:9px;padding:10px 13px;margin:7px 0;
+    font-size:14.5px;color:var(--ink);cursor:pointer;
+    transition:.12s;font-family:inherit;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:var(--correct);background:var(--accent-soft);font-weight:600}
+  .opt.wrong{border-color:var(--wrong);background:#fbe9e7}
+  .opt .mark{float:right;font-weight:700}
+  .opt.correct .mark{color:var(--correct)}
+  .opt.wrong .mark{color:var(--wrong)}
+  .explain{
+    font-size:13.5px;color:var(--ink-soft);
+    background:var(--highlight-soft);border-radius:8px;
+    padding:9px 12px;margin-top:8px;display:none;
+  }
+  .explain.show{display:block}
+  .explain b{color:#b9791a}
+
+  .score{
+    margin-top:16px;padding:14px;border-radius:10px;
+    background:var(--accent);color:#fff;text-align:center;
+    font-weight:600;font-size:16px;display:none;
+  }
+  .score.show{display:block}
+  .score small{display:block;font-weight:400;font-size:13px;color:#cfe3db;margin-top:3px}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:13px;
+    margin-top:46px;padding:0 18px;
+  }
+  .pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .pill{
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;
+  }
+
+  .top-link{
+    display:inline-block;margin-top:12px;font-size:13px;
+    color:var(--accent);text-decoration:none;font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<div class="site-nav">
+  <span class="label">Study Guides</span>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="ai-study-guide-ch2-3.html">Ch 2-3</a>
+    <a href="ai-study-guide-ch4-5.html">Ch 4-5</a>
+    <a class="current" href="ai-study-guide-ch6-7.html">Ch 6-7</a>
+  </div>
+</div>
+
+<header>
+  <span class="tag">AI3011 · Final Exam</span>
+  <h1>Quick Study Guide</h1>
+  <p>Chapters 6 &amp; 7 — concepts only, no heavy math</p>
+</header>
+
+<nav>
+  <a href="#ch6">Ch 6: Dimensionality Reduction</a>
+  <a href="#quiz6">Quiz 6</a>
+  <a href="#ch7">Ch 7: Neural Networks</a>
+  <a href="#quiz7">Quiz 7</a>
+</nav>
+
+<main>
+
+<!-- ============ CHAPTER 6 ============ -->
+<div class="chapter-head" id="ch6">
+  <span class="num">Chapter 6</span>
+  <h2>Unsupervised Learning — Dimensionality Reduction</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>What "Dimensions" Mean Here</h3>
+  <p>A <b>dimension</b> is just a <b>feature/column</b> in your data. A dataset with 100 columns lives in "100 dimensions." Dimensionality reduction means <b>squeezing many columns down into a few</b> while keeping the important information.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Describing a person with 50 facts (height, weight, age, hobbies…). Most of who they are can be captured in just a few key facts. You keep the few that matter and drop the rest.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Supervised vs Unsupervised (quick reminder)</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Supervised</h4>
+      <ul>
+        <li>Has <b>labels</b> (answers)</li>
+        <li>Learns input → known output</li>
+        <li>Ch 2 &amp; 3 were this</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Unsupervised</h4>
+      <ul>
+        <li><b>No labels</b></li>
+        <li>Finds hidden structure on its own</li>
+        <li>This chapter is this</li>
+      </ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Dimensionality reduction is <b>unsupervised</b> — there's no answer key. It just reorganizes the data into a smaller, cleaner form.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Curse of Dimensionality</h3>
+  <p>The big problem this chapter solves: when data has <b>too many features</b>, models get worse, slower, and harder to trust.</p>
+  <ul>
+    <li><b>Data sparsity</b> — points spread so far apart that "neighbors" become empty. Patterns disappear.</li>
+    <li><b>Distance concentration</b> — everything ends up roughly the same distance apart, so "nearest" stops meaning anything.</li>
+    <li><b>Computational explosion</b> — more features = way more memory and time.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Finding a friend in a small room is easy. In a giant empty stadium, everyone is "far away" and equally hard to reach. Extra space (dimensions) makes everything feel spread out and similar.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>More features ≠ better. Past a point, extra features add <b>noise</b>, cause <b>overfitting</b>, and make data impossible to visualize (we can only see 2D/3D).</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Two Goals</h3>
+  <ul>
+    <li><b>Fewer features</b> — cut the number of columns down.</li>
+    <li><b>Preserved structure</b> — but keep the meaningful relationships (what's similar to what).</li>
+  </ul>
+  <p>There are <b>three families</b> of methods: <b>Linear</b> (PCA), <b>Nonlinear</b> (t-SNE, UMAP), and <b>Neural</b> (Autoencoders).</p>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>PCA (Principal Component Analysis)</h3>
+  <p>The most popular method. It finds the directions where the data <b>varies the most</b> and keeps those, dropping the boring low-variance directions. It's <b>linear</b> (works with straight-line relationships) and <b>deterministic</b> (same input → same output every time).</p>
+  <ul>
+    <li><b>Maximize variance</b> — keep the directions that carry the most information.</li>
+    <li><b>Remove redundancy</b> — merge features that secretly say the same thing.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Photographing a chair. You instinctively pick the angle that shows the most detail, not a flat side that hides its shape. PCA picks the "angles" (directions) that reveal the most about your data.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember — the "elbow" rule</span>
+    <p>Plot how much information each component adds. Pick the number at the <b>elbow</b>, where adding more barely helps. Often a few components capture <b>90%+</b> of the info.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>PCA — Strengths &amp; Limits</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Strengths</h4>
+      <ul><li>Fast &amp; scalable</li><li>Deterministic (repeatable)</li><li>Interpretable</li></ul>
+    </div>
+    <div class="col">
+      <h4>Limits</h4>
+      <ul><li><b>Linear only</b></li><li>Misses curved/twisted shapes</li><li>Can distort local clusters</li></ul>
+    </div>
+  </div>
+  <div class="ex">
+    <span class="lbl">Hard words made easy</span>
+    <p><b>Variance</b> = how spread out the data is. High variance = lots of useful difference to learn from. <b>Linear</b> = only straight-line patterns; it can't follow a curve.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>t-SNE (nonlinear visualization)</h3>
+  <p>Built for one job: making a <b>2D picture</b> that reveals <b>clusters</b>. It keeps points that were close together in high dimensions close together in the picture. Great for <b>seeing</b> groups, not for feeding into another model.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like seating guests at a wedding: friends who get along sit together at the same table. t-SNE groups similar data points into visible "tables" (clusters).</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>t-SNE is <b>slow</b> on big data and only preserves <b>local</b> structure — the <b>distance between clusters is not meaningful</b>. Use it for exploring/visualizing, not for measuring.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>UMAP (the modern upgrade)</h3>
+  <p>Similar goal to t-SNE (a 2D/3D map of the data) but <b>faster</b> and it keeps <b>both local and global</b> structure — so distances between clusters mean more.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>t-SNE</h4>
+      <ul><li>Slow on big data</li><li>Local structure only</li><li>Pretty clusters</li></ul>
+    </div>
+    <div class="col">
+      <h4>UMAP</h4>
+      <ul><li><b>Fast</b>, scales to millions</li><li>Local <b>+ global</b> structure</li><li>Better cluster spacing</li></ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Both are <b>random</b> (stochastic) — set a seed to get repeatable results. UMAP generally wins on <b>speed</b> and <b>structure</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Autoencoders (neural method)</h3>
+  <p>A neural network that <b>squeezes data through a narrow middle</b> (the bottleneck), then tries to rebuild the original from that squeezed version. The narrow middle is forced to learn the most essential summary.</p>
+  <ul>
+    <li><b>Encoder</b> — compresses the input down.</li>
+    <li><b>Latent space (bottleneck)</b> — the tiny compressed summary.</li>
+    <li><b>Decoder</b> — rebuilds the original from the summary.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Summarizing a movie in one sentence, then a friend tries to rebuild the plot from your sentence. If they can, your summary kept the important parts. The "one sentence" is the latent space.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>It learns by minimizing <b>reconstruction error</b> (how different the rebuilt output is from the original). A linear autoencoder with no activation = basically PCA. With nonlinear layers, it's <b>more powerful</b> than PCA.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Autoencoder Variants (just know the names)</h3>
+  <ul>
+    <li><b>Sparse</b> — forces most of the summary to be zero → cleaner, simpler features.</li>
+    <li><b>Denoising</b> — give it a messy input, ask for a clean output → learns robust features.</li>
+    <li><b>Variational (VAE)</b> — learns a <b>distribution</b>, so it can <b>generate new</b> data → a bridge to generative AI.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Choosing the Right Method</h3>
+  <ul>
+    <li><b>Need to explain it / interpretability?</b> → PCA</li>
+    <li><b>Just want a 2D picture of clusters?</b> → t-SNE or UMAP</li>
+    <li><b>Big dataset?</b> → UMAP or Autoencoder (t-SNE struggles past ~50K points)</li>
+    <li><b>Feature extraction for another model?</b> → PCA or Autoencoder</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember — quick cheat</span>
+    <p>PCA = fast &amp; explainable. t-SNE/UMAP = visualization. Autoencoder = flexible &amp; powerful. PCA is usually the right <b>first try</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Ethics Bit (likely exam point)</h3>
+  <ul>
+    <li><b>Hidden bias</b> — the info you throw away might include protected groups; fairness problems can vanish from view without leaving the model.</li>
+    <li><b>Structural distortion</b> — 2D plots always distort. Clusters that look separate may overlap in reality.</li>
+    <li><b>Misleading visuals</b> — a pretty plot can create false confidence. Always ask what was kept and what was lost.</li>
+  </ul>
+</section>
+
+<!-- ============ QUIZ 6 ============ -->
+<div class="quiz" id="quiz6" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 6 Check</h3>
+  </div>
+  <p class="sub">Tap an answer. You'll see instantly if it's right, plus a quick why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+
+<!-- ============ CHAPTER 7 ============ -->
+<div class="chapter-head" id="ch7">
+  <span class="num">Chapter 7</span>
+  <h2>Neural Networks &amp; Deep Learning Basics</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>Structured vs Unstructured Data</h3>
+  <p>Deep learning's superpower is handling <b>messy raw data</b> directly.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>Structured</h4>
+      <ul><li>Neat tables/columns</li><li>Each feature has clear meaning</li><li>Classic ML handles it</li></ul>
+    </div>
+    <div class="col">
+      <h4>Unstructured</h4>
+      <ul><li>Images, audio, free text</li><li>Raw pixels mean nothing alone</li><li>Deep learning shines here</li></ul>
+    </div>
+  </div>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>A spreadsheet of bird facts = structured. A folder of bird <em>photos</em> = unstructured. Deep learning can learn straight from the photos without you hand-labeling every feature.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Biological vs Artificial Neuron</h3>
+  <p>Artificial neurons are <b>loosely inspired</b> by brain cells, but they're just <b>math</b> — not real simulations.</p>
+  <ul>
+    <li><b>Brain neuron:</b> gets signals, and "fires" if they pass a threshold.</li>
+    <li><b>Artificial neuron:</b> takes numbers, multiplies each by a <b>weight</b>, adds them up, adds a <b>bias</b>, then passes the result through an <b>activation function</b>.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Deciding whether to go outside. Inputs: weather, mood, free time. You weigh each one (weather matters most), add them up, and if the total crosses your "worth it" line, you go. That's a neuron.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Weights &amp; Bias (the learnable parts)</h3>
+  <ul>
+    <li><b>Weight</b> — how <b>important</b> an input is. Big weight = big influence.</li>
+    <li><b>Bias</b> — a nudge that lets the neuron fire even when inputs are zero; shifts the decision line.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Weights and bias are exactly what <b>training adjusts</b>. "Learning" = finding the best weights and biases.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>One Neuron = Logistic Regression</h3>
+  <p>A single neuron with a sigmoid is literally a <b>logistic regression</b> classifier (from Ch 3). Stacking many neurons into layers is what makes a real neural network.</p>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Multi-Layer Perceptron (MLP)</h3>
+  <p>The basic neural network. Neurons are organized into <b>layers</b>, and every neuron connects to every neuron in the next layer (<b>fully connected</b>). Data flows one way: <b>forward</b>.</p>
+  <ul>
+    <li><b>Input layer</b> — receives the raw features (no math, just passes values in).</li>
+    <li><b>Hidden layers</b> — the "thinking" layers that learn patterns. More layers = <b>deep</b> network.</li>
+    <li><b>Output layer</b> — gives the final answer (1 neuron for yes/no, K neurons for K classes).</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Hard words made easy</span>
+    <p><b>Shallow</b> network = 1–2 hidden layers. <b>Deep</b> network = many hidden layers, each learning a more abstract idea (edges → shapes → faces). That depth is the "deep" in deep learning.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Counting Parameters (common exam trick)</h3>
+  <p>Each connection is one <b>weight</b>; each neuron (except input) has one <b>bias</b>.</p>
+  <ul>
+    <li><b>Weights between two layers</b> = (neurons in layer A) × (neurons in layer B).</li>
+    <li><b>Biases</b> = one per neuron in the receiving layer.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Input 3 → Hidden 4: weights = 3 × 4 = <b>12</b>, plus <b>4</b> biases. Hidden 4 → Output 2: weights = 4 × 2 = <b>8</b>, plus <b>2</b> biases. Total = 12 + 4 + 8 + 2 = <b>26 parameters</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Why Activation Functions Matter</h3>
+  <p>Without them, stacking layers is pointless — many linear layers collapse into <b>one straight line</b>. Activation functions add <b>non-linearity</b>, letting the network learn complex, curved patterns.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Mixing only straight rulers can never draw a circle. You need a bendy tool. Activation functions are that bendy tool — they let the network curve.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>No activation = no matter how many layers, you only get a <b>linear model</b>. Non-linearity is what makes depth worthwhile.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Three Activation Functions</h3>
+  <ul>
+    <li><b>ReLU</b> — keeps positives, turns negatives into 0. Cheap and fast. <b>Default for hidden layers.</b> Risk: "dying ReLU" (neurons stuck at 0).</li>
+    <li><b>Sigmoid</b> — squeezes to 0–1. Good for a <b>yes/no probability output</b>. Weak in hidden layers (vanishing gradient).</li>
+    <li><b>Softmax</b> — turns scores into probabilities that <b>add up to 1</b>. Used for the <b>multi-class output</b>.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember — the rule of thumb</span>
+    <p><b>ReLU</b> in hidden layers · <b>Sigmoid</b> for binary output · <b>Softmax</b> for multi-class output.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Loss Function (how wrong it is)</h3>
+  <p>A score for how bad the predictions are. Training tries to make it as small as possible.</p>
+  <ul>
+    <li><b>MSE</b> (Mean Squared Error) — for <b>regression</b> (number predictions).</li>
+    <li><b>Cross-Entropy</b> — for <b>classification</b> (category predictions).</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Backpropagation (how it learns)</h3>
+  <p>The key learning algorithm. After a guess, it works <b>backward</b> from the error to figure out how much each weight contributed to the mistake, then nudges every weight to do better next time.</p>
+  <ul>
+    <li><b>1. Forward pass</b> — make a prediction.</li>
+    <li><b>2. Loss</b> — measure how wrong it was.</li>
+    <li><b>3. Backward pass</b> — trace the blame back to each weight.</li>
+    <li><b>4. Weight update</b> — adjust weights a little in the right direction.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>A basketball shot misses left. You trace back what caused it (wrist angle, power) and adjust each slightly. Repeat thousands of times → you get good. That's backprop.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Backprop uses the <b>chain rule</b> to assign blame backward. The <b>learning rate</b> controls how big each adjustment is.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Optimizers: SGD vs Adam</h3>
+  <p>The optimizer decides <b>how</b> to update weights using the gradients.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>SGD</h4>
+      <ul><li>Simple, updates on small batches</li><li>Often best <b>final</b> result</li><li>Needs careful tuning</li></ul>
+    </div>
+    <div class="col">
+      <h4>Adam</h4>
+      <ul><li>Adapts the step size per weight</li><li><b>Fast</b>, works out of the box</li><li>Great default choice</li></ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Common workflow: start with <b>Adam</b> for quick results, then switch to <b>SGD</b> to squeeze out the best final performance.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Landscape Words (quick definitions)</h3>
+  <ul>
+    <li><b>Local minimum</b> — a low point that isn't the lowest overall.</li>
+    <li><b>Saddle point</b> — flat spot that's not a minimum; momentum helps escape it.</li>
+    <li><b>Learning rate</b> — the most important setting. Too big → diverges; too small → painfully slow.</li>
+    <li><b>Overfitting</b> — memorizing training data. Fixes: dropout, L2, data augmentation, early stopping.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Ethics Bit (likely exam point)</h3>
+  <ul>
+    <li><b>Bias</b> enters from skewed training data, biased labels, proxy features (like zip code), and feedback loops.</li>
+    <li><b>Black box problem</b> — deep networks are hard to explain; you can't easily ask "why?".</li>
+    <li><b>Solutions</b> — explainability tools (SHAP, LIME), interpretable designs, and clear model documentation. Laws like the EU AI Act demand explanations for high-risk AI.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Bias and opacity are <b>engineering responsibilities</b>, not afterthoughts.</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 7 ============ -->
+<div class="quiz" id="quiz7" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 7 Check</h3>
+  </div>
+  <p class="sub">Tap an answer to see if it's right and why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+<footer>
+  <p>Almost there. Review the amber <b>Remember</b> boxes one last time before the exam.</p>
+  <div class="pill-row">
+    <span class="pill">PCA = fast &amp; linear</span>
+    <span class="pill">UMAP &gt; t-SNE on speed</span>
+    <span class="pill">ReLU hidden, Softmax output</span>
+    <span class="pill">Backprop = blame backward</span>
+  </div>
+  <a href="#" class="top-link">↑ Back to top</a>
+</footer>
+
+</main>
+
+<script>
+const quizzes = {
+  quiz5: [
+    {
+      q: "What does a 'dimension' mean in this chapter?",
+      options: ["A row of data","A feature/column in the data","A type of model","A neural layer"],
+      answer: 1,
+      explain: "A dimension is just a feature (column). 100 columns = 100 dimensions."
+    },
+    {
+      q: "Dimensionality reduction is which type of learning?",
+      options: ["Supervised","Unsupervised","Reinforcement","Semi-supervised"],
+      answer: 1,
+      explain: "There are no labels — it just reorganizes data into a smaller form."
+    },
+    {
+      q: "Which is NOT one of the three curse-of-dimensionality problems?",
+      options: ["Data sparsity","Distance concentration","Computational explosion","Faster training"],
+      answer: 3,
+      explain: "More dimensions make things slower, not faster. The three problems are sparsity, distance concentration, and compute explosion."
+    },
+    {
+      q: "'Distance concentration' means…",
+      options: ["All points end up roughly equally far apart","Points get closer together","Distances become negative","Data shrinks to one point"],
+      answer: 0,
+      explain: "In high dimensions everything is about the same distance, so 'nearest neighbor' loses meaning."
+    },
+    {
+      q: "PCA keeps the directions with the most…",
+      options: ["Labels","Variance","Noise","Neurons"],
+      answer: 1,
+      explain: "PCA maximizes variance — it keeps the most informative directions and drops the rest."
+    },
+    {
+      q: "A key strength of PCA is that it is…",
+      options: ["Nonlinear","Random each run","Deterministic and interpretable","Only for images"],
+      answer: 2,
+      explain: "Same input → same output, and components are explicit combinations of features."
+    },
+    {
+      q: "The biggest limitation of PCA is…",
+      options: ["It's too slow","It only captures linear (straight-line) patterns","It needs labels","It can't reduce features"],
+      answer: 1,
+      explain: "PCA is linear, so it misses curved/twisted manifold structure."
+    },
+    {
+      q: "t-SNE is mainly used for…",
+      options: ["Feature extraction for models","Visualizing clusters in 2D","Speeding up training","Generating new data"],
+      answer: 1,
+      explain: "t-SNE makes a 2D picture that reveals clusters. It's for exploring, not measuring."
+    },
+    {
+      q: "A warning about t-SNE plots is that…",
+      options: ["Distances between clusters are NOT meaningful","They always overfit","They need labels","They delete features"],
+      answer: 0,
+      explain: "t-SNE only preserves local structure; gaps between clusters shouldn't be read as real distances."
+    },
+    {
+      q: "Compared to t-SNE, UMAP is generally…",
+      options: ["Slower and less accurate","Faster and keeps local + global structure","Only for small data","The same thing"],
+      answer: 1,
+      explain: "UMAP scales to millions of points and preserves both local and global structure."
+    },
+    {
+      q: "In an autoencoder, the narrow middle is called the…",
+      options: ["Encoder","Latent space (bottleneck)","Decoder","Output layer"],
+      answer: 1,
+      explain: "The bottleneck/latent space is the compressed summary the network is forced to learn."
+    },
+    {
+      q: "A linear autoencoder with no activation behaves like…",
+      options: ["t-SNE","PCA","A random forest","Softmax"],
+      answer: 1,
+      explain: "Without non-linearity it converges to the same solution as PCA."
+    },
+    {
+      q: "Which autoencoder variant can GENERATE new data?",
+      options: ["Sparse","Denoising","Variational (VAE)","Standard"],
+      answer: 2,
+      explain: "A VAE learns a distribution, so you can sample new points — a bridge to generative AI."
+    },
+    {
+      q: "Need an interpretable method you can explain? Pick…",
+      options: ["t-SNE","PCA","UMAP","Denoising autoencoder"],
+      answer: 1,
+      explain: "PCA components are explicit and explainable; the others are more black-box."
+    }
+  ],
+  quiz6: [
+    {
+      q: "Deep learning's big advantage is handling…",
+      options: ["Only neat tables","Unstructured raw data like images and text","Only small datasets","Only numbers"],
+      answer: 1,
+      explain: "It learns features directly from raw, unstructured data — no manual feature engineering."
+    },
+    {
+      q: "An artificial neuron multiplies each input by a… then adds them up.",
+      options: ["Label","Weight","Cluster","Pixel"],
+      answer: 1,
+      explain: "Weights = importance of each input. It sums them, adds bias, then applies activation."
+    },
+    {
+      q: "What does the bias term do?",
+      options: ["Deletes features","Lets the neuron fire even when all inputs are 0","Speeds up the GPU","Counts the layers"],
+      answer: 1,
+      explain: "Bias shifts the decision line, allowing activation even with zero input."
+    },
+    {
+      q: "A single neuron with a sigmoid is equivalent to…",
+      options: ["A random forest","Logistic regression","PCA","An autoencoder"],
+      answer: 1,
+      explain: "One sigmoid neuron is literally a logistic regression classifier."
+    },
+    {
+      q: "What makes a network 'deep'?",
+      options: ["Many input features","Many hidden layers","A large learning rate","Using SGD"],
+      answer: 1,
+      explain: "Depth = number of hidden layers. Each learns a more abstract representation."
+    },
+    {
+      q: "Weights between a 3-neuron and a 4-neuron layer =",
+      options: ["7","12","34","4"],
+      answer: 1,
+      explain: "3 × 4 = 12 weights (each connection is one weight)."
+    },
+    {
+      q: "Without activation functions, a deep network is just…",
+      options: ["A single linear model","More accurate","A decision tree","Impossible to build"],
+      answer: 0,
+      explain: "Stacked linear layers collapse into one linear function — depth is wasted."
+    },
+    {
+      q: "The default activation for hidden layers is…",
+      options: ["Sigmoid","Softmax","ReLU","None"],
+      answer: 2,
+      explain: "ReLU is cheap, fast, and avoids vanishing gradients — the hidden-layer default."
+    },
+    {
+      q: "Which activation makes outputs that sum to 1 for multi-class?",
+      options: ["ReLU","Sigmoid","Softmax","MSE"],
+      answer: 2,
+      explain: "Softmax turns scores into a probability distribution that adds up to 1."
+    },
+    {
+      q: "Which loss is used for classification?",
+      options: ["MSE","Cross-Entropy","R²","MAE"],
+      answer: 1,
+      explain: "Cross-Entropy is for categories; MSE is for regression (numbers)."
+    },
+    {
+      q: "Backpropagation works by…",
+      options: ["Guessing weights randomly","Tracing the error backward to adjust each weight","Adding more layers","Removing features"],
+      answer: 1,
+      explain: "It assigns blame backward (chain rule) and nudges each weight to reduce error."
+    },
+    {
+      q: "Which optimizer is the fast, works-out-of-the-box default?",
+      options: ["SGD","Adam","Batch GD","None"],
+      answer: 1,
+      explain: "Adam adapts step sizes per weight and is the common starting choice."
+    },
+    {
+      q: "A 'saddle point' is…",
+      options: ["The lowest point overall","A flat spot that isn't a minimum","A type of neuron","The output layer"],
+      answer: 1,
+      explain: "Flat region where the gradient is ~0 but it's not a minimum; momentum helps escape it."
+    },
+    {
+      q: "The 'black box problem' in neural networks refers to…",
+      options: ["They run on dark servers","They're hard to explain / interpret","They only work at night","They need no data"],
+      answer: 1,
+      explain: "Millions of weights make it hard to explain decisions. SHAP/LIME help, and laws may require explanations."
+    }
+  ]
+};
+
+function buildQuiz(id){
+  const wrap = document.getElementById(id);
+  const data = quizzes[id];
+  let answered = 0, correct = 0;
+
+  data.forEach((item, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q';
+
+    const qText = document.createElement('div');
+    qText.className = 'qtext';
+    qText.innerHTML = `<span class="qn">Q${qi+1}.</span>${item.q}`;
+    qDiv.appendChild(qText);
+
+    const exp = document.createElement('div');
+    exp.className = 'explain';
+    exp.innerHTML = `<b>Why:</b> ${item.explain}`;
+
+    item.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = opt;
+      btn.addEventListener('click', () => {
+        if(qDiv.dataset.done) return;
+        qDiv.dataset.done = "1";
+        answered++;
+        const allBtns = qDiv.querySelectorAll('.opt');
+        allBtns.forEach(b => b.disabled = true);
+
+        if(oi === item.answer){
+          btn.classList.add('correct');
+          btn.innerHTML += '<span class="mark">✓</span>';
+          correct++;
+        } else {
+          btn.classList.add('wrong');
+          btn.innerHTML += '<span class="mark">✗</span>';
+          allBtns[item.answer].classList.add('correct');
+          allBtns[item.answer].innerHTML += '<span class="mark">✓</span>';
+        }
+        exp.classList.add('show');
+
+        if(answered === data.length){
+          scoreBox.classList.add('show');
+          scoreBox.innerHTML = `You scored ${correct} / ${data.length}` +
+            `<small>${correct === data.length ? 'Perfect — you\'re ready! 🎉' : 'Re-read the ones you missed and try again.'}</small>`;
+          scoreBox.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      qDiv.appendChild(btn);
+    });
+
+    qDiv.appendChild(exp);
+    wrap.appendChild(qDiv);
+  });
+
+  const scoreBox = document.createElement('div');
+  scoreBox.className = 'score';
+  wrap.appendChild(scoreBox);
+}
+
+Object.keys(quizzes).forEach(buildQuiz);
+</script>
+
+</body>
+</html>

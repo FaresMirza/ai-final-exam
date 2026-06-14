@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI3011 — Exam Quick Study (Ch 4 & 5)</title>
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e6e3da;
+    --accent:#2f6f5e;       /* deep teal-green */
+    --accent-soft:#e3efe9;
+    --highlight:#f0a830;    /* warm amber for "remember this" */
+    --highlight-soft:#fdf2dc;
+    --correct:#2f6f5e;
+    --wrong:#c0473b;
+    --shadow:0 1px 2px rgba(28,34,48,.06),0 6px 18px rgba(28,34,48,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+
+  /* ---------- top bar ---------- */
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:26px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  header .tag{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--highlight);
+    margin-bottom:8px;
+  }
+  header h1{font-size:26px;font-weight:700;line-height:1.2}
+  header p{color:#b9c0cf;font-size:14px;margin-top:6px}
+
+  .site-nav{
+    background:var(--ink);
+    color:#fff;
+    padding:12px 16px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .site-nav .label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#b9c0cf;
+    margin-bottom:8px;
+    text-align:center;
+  }
+  .site-nav .links{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding-bottom:12px;
+  }
+  .site-nav a{
+    color:#dfe5ef;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    transition:.15s;
+  }
+  .site-nav a:hover,
+  .site-nav a.current{
+    background:var(--highlight);
+    border-color:var(--highlight);
+    color:var(--ink);
+  }
+
+  /* ---------- sticky nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,250,247,.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+    padding:10px 12px;
+  }
+  nav a{
+    font-size:13px;font-weight:600;text-decoration:none;
+    color:var(--ink-soft);
+    padding:7px 12px;border-radius:20px;
+    transition:.15s;
+  }
+  nav a:hover{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---------- layout ---------- */
+  main{max-width:780px;margin:0 auto;padding:0 18px}
+
+  .chapter-head{
+    margin:38px 0 10px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--ink);
+  }
+  .chapter-head .num{
+    font-size:13px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+  }
+  .chapter-head h2{font-size:23px;margin-top:2px}
+
+  section.topic{margin:22px 0}
+  section.topic h3{
+    font-size:18px;color:var(--ink);
+    display:flex;align-items:center;gap:9px;margin-bottom:6px;
+  }
+  section.topic h3 .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);flex:none;
+  }
+  section.topic p{color:var(--ink-soft);font-size:15px;margin:5px 0}
+  section.topic ul{margin:6px 0 6px 4px;list-style:none}
+  section.topic ul li{
+    padding-left:18px;position:relative;font-size:15px;
+    color:var(--ink-soft);margin:4px 0;
+  }
+  section.topic ul li::before{
+    content:"";position:absolute;left:2px;top:9px;
+    width:6px;height:6px;border-radius:1px;background:var(--accent);
+  }
+  b,strong{color:var(--ink);font-weight:600}
+
+  /* example box (for hard concepts) */
+  .ex{
+    background:var(--accent-soft);
+    border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .ex .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;display:block;margin-bottom:3px;
+  }
+  .ex p{color:var(--ink);margin:0}
+
+  /* remember box */
+  .remember{
+    background:var(--highlight-soft);
+    border-left:4px solid var(--highlight);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .remember .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#b9791a;font-weight:700;display:block;margin-bottom:3px;
+  }
+  .remember p{color:var(--ink);margin:0}
+
+  /* two-col compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:12px;box-shadow:var(--shadow);
+  }
+  .compare .col h4{font-size:14px;margin-bottom:6px;color:var(--accent)}
+  .compare .col ul{margin:0}
+  .compare .col ul li{font-size:13.5px}
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+
+  /* ---------- quiz ---------- */
+  .quiz{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px;
+    margin:26px 0 10px;
+    box-shadow:var(--shadow);
+  }
+  .quiz .qhead{
+    display:flex;align-items:center;gap:10px;margin-bottom:4px;
+  }
+  .quiz .qhead .badge{
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:20px;letter-spacing:.05em;
+  }
+  .quiz .qhead h3{font-size:17px}
+  .quiz>.sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:8px}
+
+  .q{margin:18px 0;padding-top:14px;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:none}
+  .q .qtext{font-weight:600;font-size:15px;margin-bottom:10px}
+  .q .qtext span.qn{color:var(--accent);margin-right:5px}
+  .opt{
+    display:block;width:100%;text-align:left;
+    background:var(--paper);border:1.5px solid var(--line);
+    border-radius:9px;padding:10px 13px;margin:7px 0;
+    font-size:14.5px;color:var(--ink);cursor:pointer;
+    transition:.12s;font-family:inherit;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:var(--correct);background:var(--accent-soft);font-weight:600}
+  .opt.wrong{border-color:var(--wrong);background:#fbe9e7}
+  .opt .mark{float:right;font-weight:700}
+  .opt.correct .mark{color:var(--correct)}
+  .opt.wrong .mark{color:var(--wrong)}
+  .explain{
+    font-size:13.5px;color:var(--ink-soft);
+    background:var(--highlight-soft);border-radius:8px;
+    padding:9px 12px;margin-top:8px;display:none;
+  }
+  .explain.show{display:block}
+  .explain b{color:#b9791a}
+
+  .score{
+    margin-top:16px;padding:14px;border-radius:10px;
+    background:var(--accent);color:#fff;text-align:center;
+    font-weight:600;font-size:16px;display:none;
+  }
+  .score.show{display:block}
+  .score small{display:block;font-weight:400;font-size:13px;color:#cfe3db;margin-top:3px}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:13px;
+    margin-top:46px;padding:0 18px;
+  }
+  .pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .pill{
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;
+  }
+
+  .top-link{
+    display:inline-block;margin-top:12px;font-size:13px;
+    color:var(--accent);text-decoration:none;font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<div class="site-nav">
+  <span class="label">Study Guides</span>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="ai-study-guide-ch2-3.html">Ch 2-3</a>
+    <a class="current" href="ai-study-guide-ch4-5.html">Ch 4-5</a>
+    <a href="ai-study-guide-ch6-7.html">Ch 6-7</a>
+  </div>
+</div>
+
+<header>
+  <span class="tag">AI3011 · Final Exam</span>
+  <h1>Quick Study Guide</h1>
+  <p>Chapters 4 &amp; 5 — concepts only, no heavy math</p>
+</header>
+
+<nav>
+  <a href="#ch4">Ch 4: SVM &amp; Metrics</a>
+  <a href="#quiz4">Quiz 4</a>
+  <a href="#ch5">Ch 5: Clustering</a>
+  <a href="#quiz5">Quiz 5</a>
+</nav>
+
+<main>
+
+<!-- ============ CHAPTER 4 ============ -->
+<div class="chapter-head" id="ch4">
+  <span class="num">Chapter 4</span>
+  <h2>Support Vector Machines &amp; Evaluation Metrics</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>What is an SVM?</h3>
+  <p>A classifier that draws the <b>best dividing line</b> between two groups. Instead of just <em>any</em> line that separates them, it picks the line with the <b>widest gap</b> on both sides.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Imagine two groups of kids in a playground. You want to draw a chalk line between them so neither group is crowded against it. SVM finds the line that leaves the most empty space on both sides — the safest divider.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Margin &amp; Support Vectors</h3>
+  <ul>
+    <li><b>Margin:</b> the empty gap between the dividing line and the nearest points. SVM makes this gap as <b>wide</b> as possible.</li>
+    <li><b>Support vectors:</b> the few closest points that "hold up" the line. Only these matter — you could delete every other point and get the same line.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like a road between two neighborhoods. The houses right at the edge of the road decide how wide it can be. Houses far away don't affect it at all — those edge houses are the "support vectors."</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Wider margin = more confident, more reliable on new data. Only the <b>support vectors</b> (closest points) define the boundary.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Hard Margin vs Soft Margin</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Hard Margin</h4>
+      <ul>
+        <li>Allows <b>zero</b> mistakes</li>
+        <li>Needs perfectly separable data</li>
+        <li>Breaks with noise/overlap</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Soft Margin</h4>
+      <ul>
+        <li>Allows <b>a few</b> mistakes</li>
+        <li>Handles messy real data</li>
+        <li>Much more practical</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Hard margin is a strict teacher who accepts no errors — only works if the class is perfect. Soft margin is a fair teacher who allows a couple of slip-ups so the overall result is better in the real, messy world.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The C Parameter (the strictness dial)</h3>
+  <p>C controls how many mistakes SVM tolerates while drawing the line.</p>
+  <ul>
+    <li><b>Small C</b> → relaxed. Wider gap, allows more mistakes. Can be too simple (underfit).</li>
+    <li><b>Large C</b> → strict. Narrow gap, allows few mistakes. Can memorize noise (overfit).</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>C is a strictness dial. Low C = forgiving &amp; general. High C = strict &amp; risky. The best C is usually found by testing (cross-validation).</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Kernel Trick</h3>
+  <p>Sometimes groups can't be split by a straight line. The <b>kernel trick</b> lets SVM bend the boundary by secretly viewing the data from a higher angle — without doing the heavy math directly.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Picture coins scattered on a table — red in the center, blue around the edges. No straight line can separate them. But if you <em>lift</em> the red coins up off the table, you can now slide a flat sheet of paper between red and blue. The kernel does this "lifting" for you.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Common Kernels</h3>
+  <ul>
+    <li><b>Linear</b> — a straight line. Best when data is already easy to separate (e.g. text).</li>
+    <li><b>Polynomial</b> — curved boundaries; captures feature combinations.</li>
+    <li><b>RBF (Radial Basis Function)</b> — the most flexible, makes smooth blob-like boundaries. The popular default.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Straight-line data → <b>Linear</b>. Curvy/complex data → <b>RBF</b> is the go-to all-rounder.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>SVM Strengths &amp; Weaknesses</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Good at</h4>
+      <ul>
+        <li>High dimensions</li>
+        <li>Clear margins</li>
+        <li>Kernels for curves</li>
+        <li>Memory-light (few support vectors)</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Struggles with</h4>
+      <ul>
+        <li>Very large datasets (slow)</li>
+        <li>Picking C &amp; kernel</li>
+        <li>Hard to interpret</li>
+        <li>No direct probability</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Confusion Matrix</h3>
+  <p>A simple 2×2 table that shows where a classifier was right and wrong. Four boxes:</p>
+  <ul>
+    <li><b>True Positive (TP):</b> said yes, and it was yes ✅</li>
+    <li><b>True Negative (TN):</b> said no, and it was no ✅</li>
+    <li><b>False Positive (FP):</b> said yes, but it was no ❌ (false alarm)</li>
+    <li><b>False Negative (FN):</b> said no, but it was yes ❌ (missed it)</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>A fire alarm. <b>False Positive</b> = it beeps with no fire (annoying). <b>False Negative</b> = real fire but no beep (dangerous). The matrix tracks how often each happens.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Why Accuracy Can Lie</h3>
+  <p>Accuracy = how many you got right overall. It sounds great, but it <b>fails on imbalanced data</b> (when one group is rare).</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>If only 1 in 100 people has a disease, a lazy model that says "healthy" to <em>everyone</em> is 99% accurate — yet it catches <b>zero</b> sick people. High accuracy, totally useless.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>On rare-event problems (disease, fraud, spam), <b>don't trust accuracy alone</b>. Use precision, recall, and F1.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Precision vs Recall</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Precision</h4>
+      <ul>
+        <li>Of the "yes" guesses, how many were right?</li>
+        <li>Punishes <b>false alarms</b></li>
+        <li>"Don't cry wolf"</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Recall</h4>
+      <ul>
+        <li>Of the real "yes" cases, how many did we catch?</li>
+        <li>Punishes <b>misses</b></li>
+        <li>"Don't miss any"</li>
+      </ul>
+    </div>
+  </div>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p><b>Precision matters</b> for spam filters — you don't want a real email wrongly trashed. <b>Recall matters</b> for cancer screening — missing a real tumor is far worse than a false alarm you can double-check.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Precision = "when I say yes, am I right?" Recall = "did I find all the real ones?" Raising one often lowers the other (the trade-off).</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>F1-Score</h3>
+  <p>One number that <b>balances precision and recall</b>. It stays low if <em>either</em> one is bad, so you can't cheat by maxing only one.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like judging a student on <em>both</em> speed and accuracy. Being super fast but wrong (or perfect but painfully slow) gives a poor combined score. You need both to be decent.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Use <b>F1</b> when you care about precision AND recall together — especially on imbalanced data.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>ROC Curve &amp; AUC</h3>
+  <p>The <b>ROC curve</b> shows how well a model separates the two classes across all possible cut-off points. <b>AUC</b> (Area Under the Curve) squeezes that into a single score.</p>
+  <ul>
+    <li><b>AUC = 1.0</b> → perfect separation</li>
+    <li><b>AUC = 0.5</b> → useless, just guessing (coin flip)</li>
+    <li>Higher AUC = better. 0.9+ is excellent.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>AUC is the chance that, if you pick one real "yes" and one real "no" at random, the model ranks the "yes" higher. A perfect model always does (1.0); a clueless one is right half the time (0.5).</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>AUC ignores class imbalance, so it's great for rare-event problems. 0.5 = coin flip, 1.0 = perfect.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Cross-Validation (K-Fold)</h3>
+  <p>Instead of testing on just one lucky/unlucky split, you split the data into <b>K parts</b>, train on most and test on the rest, and <b>rotate</b> so every part gets a turn as the test set. Then average the scores.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like getting graded by 5 different teachers instead of 1. One teacher might be unusually easy or harsh; averaging all 5 gives a fairer, more trustworthy grade.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>K-Fold gives a more <b>honest, stable</b> score. Use <b>Stratified K-Fold</b> for imbalanced data so each fold keeps the same class mix (e.g. always includes some rare cases).</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 4 ============ -->
+<div class="quiz" id="quiz4" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 4 Check</h3>
+  </div>
+  <p class="sub">Tap an answer. You'll see instantly if it's right, plus a quick why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+
+<!-- ============ CHAPTER 5 ============ -->
+<div class="chapter-head" id="ch5">
+  <span class="num">Chapter 5</span>
+  <h2>Unsupervised Learning — Clustering</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>What is Unsupervised Learning?</h3>
+  <p>Here the data has <b>no labels</b> — no answer key. The computer explores on its own to find hidden groups or patterns.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>Supervised</h4>
+      <ul><li>Has labels (answers)</li><li>"Learn with a teacher"</li><li>Predict / classify</li></ul>
+    </div>
+    <div class="col">
+      <h4>Unsupervised</h4>
+      <ul><li><b>No</b> labels</li><li>"Explore on your own"</li><li>Find groupings</li></ul>
+    </div>
+  </div>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Dump a basket of mixed fruit on a table with no names given. You'd naturally pile them by color or size. That self-made grouping is exactly what <b>clustering</b> does.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Types of Unsupervised Learning</h3>
+  <ul>
+    <li><b>Clustering</b> — group similar items (our main focus).</li>
+    <li><b>Dimensionality reduction</b> — shrink many features into fewer while keeping the meaning.</li>
+    <li><b>Anomaly detection</b> — spot the odd one out.</li>
+    <li><b>Generative modeling</b> — learn the data's pattern to create new similar data.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p><b>Anomaly detection</b> in your bank: it learns your normal spending, then flags a sudden $5,000 charge abroad as suspicious.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Distance = Similarity</h3>
+  <p>Clustering measures how "alike" two points are by the <b>distance</b> between them. Close together = similar = likely same group.</p>
+  <ul>
+    <li><b>Euclidean</b> — straight-line distance (the usual one).</li>
+    <li><b>Manhattan</b> — distance along a grid, like city blocks.</li>
+    <li><b>Cosine</b> — compares direction/angle, great for text.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p><b>Euclidean</b> = a bird flying straight to a point. <b>Manhattan</b> = a taxi that can only drive along streets, turning at corners.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Always Scale Your Features</h3>
+  <p>Before clustering, put all features on the <b>same scale</b>. Otherwise a big-numbered feature bullies the small ones and ruins the grouping.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Comparing people by age (0–100) and salary (0–100,000). Without scaling, salary's huge numbers dominate and age is ignored. Scaling makes them count equally.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Distance-based methods are <b>very sensitive to scale</b>. Always scale first (StandardScaler) — this is a classic exam point.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The 3 Clustering Methods</h3>
+  <p>Three different "philosophies" for grouping data:</p>
+  <ul>
+    <li><b>K-Means</b> — splits data into K round blobs around centers.</li>
+    <li><b>Hierarchical</b> — builds a tree of groups; no need to pick K upfront.</li>
+    <li><b>DBSCAN</b> — groups by density; handles odd shapes and noise.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>K-Means Clustering</h3>
+  <p>You tell it how many groups (<b>K</b>) you want. It places K centers, assigns each point to its nearest center, then moves the centers to the middle of their points — and repeats until settled.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Setting up 3 food stalls in a park. You want each stall in the middle of its crowd. You guess 3 spots, see who goes where, move each stall to the center of its group, and repeat until nobody switches stalls.</p>
+  </div>
+  <div class="compare">
+    <div class="col">
+      <h4>Pros</h4>
+      <ul><li>Simple &amp; fast</li><li>Scales to big data</li></ul>
+    </div>
+    <div class="col">
+      <h4>Cons</h4>
+      <ul><li>Must pick K</li><li>Assumes round blobs</li><li>Sensitive to outliers</li></ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>K-Means needs you to choose <b>K in advance</b> and assumes <b>round, similar-sized</b> clusters.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Choosing K: Elbow &amp; Silhouette</h3>
+  <ul>
+    <li><b>Elbow method:</b> plot the error as K grows. The "elbow" bend — where adding more groups stops helping much — is a good K.</li>
+    <li><b>Silhouette score:</b> rates how tight and well-separated the clusters are. Ranges −1 to 1; <b>higher is better</b>.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Elbow = like adding study hours: going from 1→3 hours helps a lot, but 8→9 hours barely moves your grade. That flattening point is the sweet spot.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Elbow = find the bend. Silhouette = higher is better. They often agree on the same K.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Hierarchical Clustering</h3>
+  <p>Builds a <b>tree of groups</b> (a "dendrogram"). The common style (<b>agglomerative</b>) starts with every point alone, then keeps merging the two closest groups until all are joined.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>A family tree in reverse: cousins merge into families, families into clans, clans into one big group. You can "cut" the tree at any height to decide how many groups you want — <em>after</em> building it.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Big advantage: <b>no need to pick K first</b> — just cut the tree where you like. Downside: <b>slow</b> on large datasets.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Reading a Dendrogram &amp; Linkage</h3>
+  <p>In the tree: each merge's <b>height</b> = how far apart those groups were. To pick clusters, draw a horizontal cut — look for the <b>tallest gap</b> with no merges, which suggests a natural number of groups.</p>
+  <p style="margin-top:8px"><b>Linkage</b> = the rule for measuring distance between groups:</p>
+  <ul>
+    <li><b>Single</b> — closest pair (can cause stringy "chains").</li>
+    <li><b>Complete</b> — farthest pair (tight, compact groups).</li>
+    <li><b>Average</b> — average of all pairs (a balanced middle).</li>
+    <li><b>Ward's</b> — keeps clusters neat by minimizing messiness. Usually the best default.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>DBSCAN (density-based)</h3>
+  <p>Groups points that are <b>packed closely together</b> and labels lonely points as <b>noise</b>. It doesn't need you to pick K and can find weird, non-round shapes.</p>
+  <p style="margin-top:8px">Three kinds of points:</p>
+  <ul>
+    <li><b>Core point</b> — has lots of close neighbors (in a crowd).</li>
+    <li><b>Border point</b> — near a crowd but not crowded itself (edge).</li>
+    <li><b>Noise point</b> — alone, far from everyone (outlier).</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>People at a festival. Dense clusters = the crowds at each stage. A person wandering alone in an empty field = noise. DBSCAN finds the crowds no matter their shape and ignores the loners.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>DBSCAN shines for <b>odd shapes + noise</b> and needs no K. But it struggles when clusters have very <b>different densities</b> and in high dimensions.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>K-Means vs DBSCAN (common exam question)</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Pick K-Means when</h4>
+      <ul><li>Clusters are round &amp; similar size</li><li>You know roughly how many</li><li>Data is large (speed)</li></ul>
+    </div>
+    <div class="col">
+      <h4>Pick DBSCAN when</h4>
+      <ul><li>Clusters are odd shapes</li><li>There's noise/outliers</li><li>You don't know K</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Evaluating Clusters (no labels!)</h3>
+  <p>Without an answer key, we judge clusters two ways:</p>
+  <div class="compare">
+    <div class="col">
+      <h4>Intrinsic</h4>
+      <ul><li>Uses data only, <b>no labels</b></li><li>Silhouette, Davies-Bouldin</li><li>Works in real life</li></ul>
+    </div>
+    <div class="col">
+      <h4>Extrinsic</h4>
+      <ul><li>Compares to <b>true labels</b></li><li>ARI, NMI</li><li>Only for testing/benchmarks</li></ul>
+    </div>
+  </div>
+  <ul style="margin-top:10px">
+    <li><b>Silhouette</b> — higher is better (tight + separated).</li>
+    <li><b>Davies-Bouldin</b> — <b>lower</b> is better (0 = perfect).</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>In real unsupervised work you usually have no labels → rely on <b>intrinsic</b> metrics. Silhouette <b>high</b> = good; Davies-Bouldin <b>low</b> = good. Use several metrics + common sense, not just one.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Ethics: Audit Your Clusters</h3>
+  <p>Clustering can accidentally pick up <b>bias</b> hidden in the data. If past data was unfair, the groups can quietly repeat that unfairness.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>A hiring tool that clusters applicants might group them in ways that line up with gender or background — leading to unfair shortlists. Always check the groups before trusting them.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Hidden structure can encode bias. <b>Audit cluster fairness</b> before deploying — a likely ethics exam point (CLO 3.1).</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 5 ============ -->
+<div class="quiz" id="quiz5" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 5 Check</h3>
+  </div>
+  <p class="sub">Tap an answer to see if it's right and why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+<footer>
+  <p>You've got this. Review the amber <b>Remember</b> boxes one last time before the exam.</p>
+  <div class="pill-row">
+    <span class="pill">SVM = widest gap</span>
+    <span class="pill">Recall = catch them all</span>
+    <span class="pill">AUC 0.5 = coin flip</span>
+    <span class="pill">Scale before clustering</span>
+    <span class="pill">DBSCAN = shapes + noise</span>
+  </div>
+  <a href="#" class="top-link">↑ Back to top</a>
+</footer>
+
+</main>
+
+<script>
+const quizzes = {
+  quiz4: [
+    {
+      q: "What does an SVM try to find between two groups?",
+      options: ["The shortest line","The line with the widest gap (margin) on both sides","Any line that touches the points","A curved line only"],
+      answer: 1,
+      explain: "SVM maximizes the margin — the widest empty gap between the boundary and the nearest points."
+    },
+    {
+      q: "Support vectors are…",
+      options: ["All the training points","The points farthest from the line","The closest points that define the boundary","The cluster centers"],
+      answer: 2,
+      explain: "Only the nearest points (support vectors) shape the line. Removing far-away points changes nothing."
+    },
+    {
+      q: "Why use a soft margin instead of a hard margin?",
+      options: ["It's faster to draw","It allows a few mistakes so it handles messy, overlapping real data","It needs less memory","It removes the need for kernels"],
+      answer: 1,
+      explain: "Real data is rarely perfectly separable. Soft margin tolerates a few errors for better overall results."
+    },
+    {
+      q: "A LARGE value of C tends to cause…",
+      options: ["A wider margin and underfitting","A narrow margin and risk of overfitting","Faster training only","No effect on the model"],
+      answer: 1,
+      explain: "Large C = strict, few mistakes allowed → narrow margin → can overfit by chasing noise."
+    },
+    {
+      q: "What problem does the kernel trick solve?",
+      options: ["Slow training","Data that can't be split by a straight line","Too many features","Missing labels"],
+      answer: 1,
+      explain: "Kernels let SVM create non-linear (curved) boundaries for data a straight line can't separate."
+    },
+    {
+      q: "Which kernel is the flexible all-rounder default?",
+      options: ["Linear","Polynomial","RBF","None"],
+      answer: 2,
+      explain: "RBF creates smooth, flexible boundaries and is the popular go-to for complex data."
+    },
+    {
+      q: "A 'False Negative' means the model…",
+      options: ["Said yes and was right","Said no but the real answer was yes (a miss)","Said yes but it was no","Said no and was right"],
+      answer: 1,
+      explain: "False Negative = it missed a real positive. Like a fire alarm staying silent during a real fire."
+    },
+    {
+      q: "Why can accuracy be misleading?",
+      options: ["It's hard to compute","On imbalanced data, predicting only the common class scores high but catches no rare cases","It needs labels","It ignores training data"],
+      answer: 1,
+      explain: "If a disease is 1% rare, always saying 'healthy' is 99% accurate but finds zero patients."
+    },
+    {
+      q: "Recall answers which question?",
+      options: ["When I say yes, am I right?","Of the real positives, how many did I catch?","How fast is the model?","How many features are used?"],
+      answer: 1,
+      explain: "Recall = coverage of actual positives. Critical for cancer screening (don't miss real cases)."
+    },
+    {
+      q: "Precision is most important when…",
+      options: ["Missing a tumor is the worst outcome","False alarms are costly, e.g. trashing a real email as spam","You have no labels","The data is tiny"],
+      answer: 1,
+      explain: "Precision punishes false positives — vital when a false alarm causes real harm (e.g. spam filters)."
+    },
+    {
+      q: "The F1-score is useful because it…",
+      options: ["Only measures speed","Balances precision and recall in one number","Ignores false negatives","Always equals accuracy"],
+      answer: 1,
+      explain: "F1 stays low if either precision or recall is poor — you can't cheat by maxing just one."
+    },
+    {
+      q: "An AUC of 0.5 means the model is…",
+      options: ["Perfect","Excellent","No better than random guessing","Slightly above average"],
+      answer: 2,
+      explain: "AUC 0.5 = a coin flip (no discriminating power). 1.0 = perfect separation."
+    },
+    {
+      q: "Why is AUC good for imbalanced data?",
+      options: ["It's faster","It's insensitive to class imbalance, unlike accuracy","It needs no model","It always gives 1.0"],
+      answer: 1,
+      explain: "AUC measures ranking ability across thresholds and isn't fooled by a dominant majority class."
+    },
+    {
+      q: "Why use K-Fold cross-validation?",
+      options: ["To train faster","To get an honest, stable score by testing on every part in turn","To delete the test set","To reduce the number of features"],
+      answer: 1,
+      explain: "Rotating the test fold and averaging avoids being fooled by one lucky or unlucky split."
+    },
+    {
+      q: "Stratified K-Fold is preferred for imbalanced data because it…",
+      options: ["Runs more folds","Keeps the same class mix in every fold","Removes outliers","Skips the rare class"],
+      answer: 1,
+      explain: "Stratification preserves class proportions so each fold still contains the rare cases."
+    }
+  ],
+  quiz5: [
+    {
+      q: "What makes a problem 'unsupervised'?",
+      options: ["It has too much data","There are no labels — no answer key","It uses only one feature","It always uses K-Means"],
+      answer: 1,
+      explain: "Unsupervised learning works with features only and discovers structure without labels."
+    },
+    {
+      q: "Clustering means…",
+      options: ["Predicting a number","Grouping similar data points together","Removing features","Labeling data by hand"],
+      answer: 1,
+      explain: "Clustering finds natural groups of similar points — like sorting mixed fruit by type."
+    },
+    {
+      q: "In clustering, two points are considered similar if they are…",
+      options: ["Far apart","Close together in distance","Different colors","In different files"],
+      answer: 1,
+      explain: "Smaller distance = more similar = likely the same cluster."
+    },
+    {
+      q: "Why must you scale features before clustering?",
+      options: ["To save memory","So a large-numbered feature doesn't dominate the distance and bias the groups","To add more clusters","To remove the labels"],
+      answer: 1,
+      explain: "Without scaling, big-range features (like salary) overpower small ones (like age)."
+    },
+    {
+      q: "K-Means requires you to…",
+      options: ["Build a tree first","Choose the number of clusters K in advance","Label the data","Use cosine distance"],
+      answer: 1,
+      explain: "You must pick K upfront, and K-Means assumes round, similar-sized clusters."
+    },
+    {
+      q: "The 'elbow method' helps you…",
+      options: ["Scale the data","Choose a good number of clusters K","Remove noise","Measure precision"],
+      answer: 1,
+      explain: "The elbow is where adding more clusters stops reducing error much — a good K."
+    },
+    {
+      q: "For the silhouette score, which is true?",
+      options: ["Lower is better","Higher is better (tight, well-separated clusters)","It must equal zero","It only works with labels"],
+      answer: 1,
+      explain: "Silhouette ranges −1 to 1; higher means tighter and better-separated clusters."
+    },
+    {
+      q: "The big advantage of hierarchical clustering is…",
+      options: ["It's the fastest method","You don't have to pick K first — just cut the tree","It needs labels","It ignores distance"],
+      answer: 1,
+      explain: "It builds a dendrogram you can cut at any height to choose K after the fact."
+    },
+    {
+      q: "In a dendrogram, the height of a merge represents…",
+      options: ["The number of features","How far apart the two merged groups were","The learning rate","The accuracy"],
+      answer: 1,
+      explain: "Taller merge = groups were more distant. A tall uncrossed gap suggests a natural K."
+    },
+    {
+      q: "A DBSCAN 'noise point' is one that…",
+      options: ["Is in a dense crowd","Is alone, far from any cluster (an outlier)","Defines the boundary","Is a cluster center"],
+      answer: 1,
+      explain: "Noise points aren't reachable from any dense core — DBSCAN labels them as outliers."
+    },
+    {
+      q: "You'd choose DBSCAN over K-Means when…",
+      options: ["Clusters are perfectly round","Clusters have odd shapes and there's noise","You already know K","The data is labeled"],
+      answer: 1,
+      explain: "DBSCAN handles arbitrary shapes and noise without needing K — unlike K-Means."
+    },
+    {
+      q: "Intrinsic metrics (like Silhouette) are special because they…",
+      options: ["Need true labels","Judge clusters using the data alone, no labels needed","Only work on K-Means","Measure training speed"],
+      answer: 1,
+      explain: "Intrinsic metrics work in real unsupervised settings where no labels exist."
+    },
+    {
+      q: "For the Davies-Bouldin index, which is true?",
+      options: ["Higher is better","Lower is better (0 = perfect separation)","It needs labels","It equals accuracy"],
+      answer: 1,
+      explain: "Davies-Bouldin measures cluster overlap — lower means better-separated clusters."
+    },
+    {
+      q: "Why audit clusters for ethics before deploying?",
+      options: ["To speed up the model","Because clusters can encode hidden bias from unfair past data","To add more features","To pick a bigger K"],
+      answer: 1,
+      explain: "Hidden structure may repeat historical bias (e.g. in hiring) — always check fairness first."
+    },
+    {
+      q: "Which is the safest overall evaluation approach?",
+      options: ["Trust one metric only","Use several metrics plus domain knowledge","Ignore metrics","Use accuracy alone"],
+      answer: 1,
+      explain: "No single score is perfect — combine multiple metrics with common sense."
+    }
+  ]
+};
+
+function buildQuiz(id){
+  const wrap = document.getElementById(id);
+  const data = quizzes[id];
+  let answered = 0, correct = 0;
+
+  data.forEach((item, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q';
+
+    const qText = document.createElement('div');
+    qText.className = 'qtext';
+    qText.innerHTML = `<span class="qn">Q${qi+1}.</span>${item.q}`;
+    qDiv.appendChild(qText);
+
+    const exp = document.createElement('div');
+    exp.className = 'explain';
+    exp.innerHTML = `<b>Why:</b> ${item.explain}`;
+
+    item.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = opt;
+      btn.addEventListener('click', () => {
+        if(qDiv.dataset.done) return;
+        qDiv.dataset.done = "1";
+        answered++;
+        const allBtns = qDiv.querySelectorAll('.opt');
+        allBtns.forEach(b => b.disabled = true);
+
+        if(oi === item.answer){
+          btn.classList.add('correct');
+          btn.innerHTML += '<span class="mark">✓</span>';
+          correct++;
+        } else {
+          btn.classList.add('wrong');
+          btn.innerHTML += '<span class="mark">✗</span>';
+          allBtns[item.answer].classList.add('correct');
+          allBtns[item.answer].innerHTML += '<span class="mark">✓</span>';
+        }
+        exp.classList.add('show');
+
+        if(answered === data.length){
+          scoreBox.classList.add('show');
+          scoreBox.innerHTML = `You scored ${correct} / ${data.length}` +
+            `<small>${correct === data.length ? 'Perfect — you\'re ready! 🎉' : 'Re-read the ones you missed and try again.'}</small>`;
+          scoreBox.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      qDiv.appendChild(btn);
+    });
+
+    qDiv.appendChild(exp);
+    wrap.appendChild(qDiv);
+  });
+
+  const scoreBox = document.createElement('div');
+  scoreBox.className = 'score';
+  wrap.appendChild(scoreBox);
+}
+
+Object.keys(quizzes).forEach(buildQuiz);
+</script>
+
+</body>
+</html>

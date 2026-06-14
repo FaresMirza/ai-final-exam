@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI3011 Study Guides</title>
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e6e3da;
+    --accent:#2f6f5e;
+    --accent-soft:#e3efe9;
+    --highlight:#f0a830;
+    --shadow:0 1px 2px rgba(28,34,48,.06),0 10px 30px rgba(28,34,48,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:linear-gradient(180deg,#f4f1ea 0%,#fbfaf7 180px);
+    color:var(--ink);
+    line-height:1.55;
+    min-height:100vh;
+  }
+  .hero{
+    background:var(--ink);
+    color:#fff;
+    padding:56px 20px 42px;
+    text-align:center;
+  }
+  .hero .tag{
+    display:inline-block;
+    color:var(--highlight);
+    font-size:12px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:34px;
+    line-height:1.15;
+    margin-bottom:10px;
+  }
+  .hero p{
+    max-width:680px;
+    margin:0 auto;
+    color:#c7ceda;
+    font-size:15px;
+  }
+  main{
+    max-width:1020px;
+    margin:-18px auto 0;
+    padding:0 18px 48px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px;
+    box-shadow:var(--shadow);
+  }
+  .card .eyebrow{
+    display:inline-block;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+  }
+  .card h2{
+    font-size:24px;
+    margin-bottom:8px;
+  }
+  .card p{
+    color:var(--ink-soft);
+    font-size:15px;
+    margin-bottom:18px;
+  }
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:42px;
+    padding:0 14px;
+    border-radius:999px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+    transition:.15s;
+  }
+  .btn.primary{
+    background:var(--accent);
+    color:#fff;
+  }
+  .btn.primary:hover{background:#255748}
+  .btn.secondary{
+    background:var(--accent-soft);
+    color:var(--accent);
+  }
+  .btn.secondary:hover{background:#d8e8df}
+</style>
+</head>
+<body>
+<section class="hero">
+  <span class="tag">AI3011 · Final Exam</span>
+  <h1>Study Guide Home</h1>
+  <p>Use this page as the entry point on your server, then jump into any guide and use the top navigation to move between pages.</p>
+</section>
+
+<main>
+  <div class="grid">
+    <article class="card">
+      <span class="eyebrow">Guide 1</span>
+      <h2>Chapters 2 &amp; 3</h2>
+      <p>Regression, classification, and the matching quizzes.</p>
+      <div class="actions">
+        <a class="btn primary" href="ai-study-guide-ch2-3.html">Open Guide</a>
+        <a class="btn secondary" href="ai-study-guide-ch2-3.html#ch2">Start at Ch 2</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="eyebrow">Guide 2</span>
+      <h2>Chapters 4 &amp; 5</h2>
+      <p>SVM, evaluation metrics, clustering, and the matching quizzes.</p>
+      <div class="actions">
+        <a class="btn primary" href="ai-study-guide-ch4-5.html">Open Guide</a>
+        <a class="btn secondary" href="ai-study-guide-ch4-5.html#ch4">Start at Ch 4</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <span class="eyebrow">Guide 3</span>
+      <h2>Chapters 6 &amp; 7</h2>
+      <p>Dimensionality reduction, neural networks, and the matching quizzes.</p>
+      <div class="actions">
+        <a class="btn primary" href="ai-study-guide-ch6-7.html">Open Guide</a>
+        <a class="btn secondary" href="ai-study-guide-ch6-7.html#ch6">Start at Ch 6</a>
+      </div>
+    </article>
+  </div>
+</main>
+</body>
+</html>

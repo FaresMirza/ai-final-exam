@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI3011 — Exam Quick Study</title>
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e6e3da;
+    --accent:#2f6f5e;       /* deep teal-green */
+    --accent-soft:#e3efe9;
+    --highlight:#f0a830;    /* warm amber for "remember this" */
+    --highlight-soft:#fdf2dc;
+    --correct:#2f6f5e;
+    --wrong:#c0473b;
+    --shadow:0 1px 2px rgba(28,34,48,.06),0 6px 18px rgba(28,34,48,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+
+  /* ---------- top bar ---------- */
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:26px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  header .tag{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--highlight);
+    margin-bottom:8px;
+  }
+  header h1{font-size:26px;font-weight:700;line-height:1.2}
+  header p{color:#b9c0cf;font-size:14px;margin-top:6px}
+
+  .site-nav{
+    background:var(--ink);
+    color:#fff;
+    padding:12px 16px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .site-nav .label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#b9c0cf;
+    margin-bottom:8px;
+    text-align:center;
+  }
+  .site-nav .links{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding-bottom:12px;
+  }
+  .site-nav a{
+    color:#dfe5ef;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    transition:.15s;
+  }
+  .site-nav a:hover,
+  .site-nav a.current{
+    background:var(--highlight);
+    border-color:var(--highlight);
+    color:var(--ink);
+  }
+
+  /* ---------- sticky nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,250,247,.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+    padding:10px 12px;
+  }
+  nav a{
+    font-size:13px;font-weight:600;text-decoration:none;
+    color:var(--ink-soft);
+    padding:7px 12px;border-radius:20px;
+    transition:.15s;
+  }
+  nav a:hover{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---------- layout ---------- */
+  main{max-width:780px;margin:0 auto;padding:0 18px}
+
+  .chapter-head{
+    margin:38px 0 10px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--ink);
+  }
+  .chapter-head .num{
+    font-size:13px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+  }
+  .chapter-head h2{font-size:23px;margin-top:2px}
+
+  section.topic{margin:22px 0}
+  section.topic h3{
+    font-size:18px;color:var(--ink);
+    display:flex;align-items:center;gap:9px;margin-bottom:6px;
+  }
+  section.topic h3 .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);flex:none;
+  }
+  section.topic p{color:var(--ink-soft);font-size:15px;margin:5px 0}
+  section.topic ul{margin:6px 0 6px 4px;list-style:none}
+  section.topic ul li{
+    padding-left:18px;position:relative;font-size:15px;
+    color:var(--ink-soft);margin:4px 0;
+  }
+  section.topic ul li::before{
+    content:"";position:absolute;left:2px;top:9px;
+    width:6px;height:6px;border-radius:1px;background:var(--accent);
+  }
+  b,strong{color:var(--ink);font-weight:600}
+
+  /* example box (for hard concepts) */
+  .ex{
+    background:var(--accent-soft);
+    border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .ex .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;display:block;margin-bottom:3px;
+  }
+  .ex p{color:var(--ink);margin:0}
+
+  /* remember box */
+  .remember{
+    background:var(--highlight-soft);
+    border-left:4px solid var(--highlight);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .remember .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#b9791a;font-weight:700;display:block;margin-bottom:3px;
+  }
+  .remember p{color:var(--ink);margin:0}
+
+  /* two-col compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:12px;box-shadow:var(--shadow);
+  }
+  .compare .col h4{font-size:14px;margin-bottom:6px;color:var(--accent)}
+  .compare .col ul{margin:0}
+  .compare .col ul li{font-size:13.5px}
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+
+  /* ---------- quiz ---------- */
+  .quiz{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px;
+    margin:26px 0 10px;
+    box-shadow:var(--shadow);
+  }
+  .quiz .qhead{
+    display:flex;align-items:center;gap:10px;margin-bottom:4px;
+  }
+  .quiz .qhead .badge{
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:20px;letter-spacing:.05em;
+  }
+  .quiz .qhead h3{font-size:17px}
+  .quiz>.sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:8px}
+
+  .q{margin:18px 0;padding-top:14px;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:none}
+  .q .qtext{font-weight:600;font-size:15px;margin-bottom:10px}
+  .q .qtext span.qn{color:var(--accent);margin-right:5px}
+  .opt{
+    display:block;width:100%;text-align:left;
+    background:var(--paper);border:1.5px solid var(--line);
+    border-radius:9px;padding:10px 13px;margin:7px 0;
+    font-size:14.5px;color:var(--ink);cursor:pointer;
+    transition:.12s;font-family:inherit;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:var(--correct);background:var(--accent-soft);font-weight:600}
+  .opt.wrong{border-color:var(--wrong);background:#fbe9e7}
+  .opt .mark{float:right;font-weight:700}
+  .opt.correct .mark{color:var(--correct)}
+  .opt.wrong .mark{color:var(--wrong)}
+  .explain{
+    font-size:13.5px;color:var(--ink-soft);
+    background:var(--highlight-soft);border-radius:8px;
+    padding:9px 12px;margin-top:8px;display:none;
+  }
+  .explain.show{display:block}
+  .explain b{color:#b9791a}
+
+  .score{
+    margin-top:16px;padding:14px;border-radius:10px;
+    background:var(--accent);color:#fff;text-align:center;
+    font-weight:600;font-size:16px;display:none;
+  }
+  .score.show{display:block}
+  .score small{display:block;font-weight:400;font-size:13px;color:#cfe3db;margin-top:3px}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:13px;
+    margin-top:46px;padding:0 18px;
+  }
+  .pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .pill{
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;
+  }
+
+  .top-link{
+    display:inline-block;margin-top:12px;font-size:13px;
+    color:var(--accent);text-decoration:none;font-weight:600;
+  }
+</style>
+</head>
+<body>
+
+<div class="site-nav">
+  <span class="label">Study Guides</span>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a class="current" href="ai-study-guide-ch2-3.html">Ch 2-3</a>
+    <a href="ai-study-guide-ch4-5.html">Ch 4-5</a>
+    <a href="ai-study-guide-ch6-7.html">Ch 6-7</a>
+  </div>
+</div>
+
+<header>
+  <span class="tag">AI3011 · Final Exam</span>
+  <h1>Quick Study Guide</h1>
+  <p>Chapters 2 &amp; 3 — concepts only, no heavy math</p>
+</header>
+
+<nav>
+  <a href="#ch2">Ch 2: Regression</a>
+  <a href="#quiz2">Quiz 2</a>
+  <a href="#ch3">Ch 3: Classification</a>
+  <a href="#quiz3">Quiz 3</a>
+</nav>
+
+<main>
+
+<!-- ============ CHAPTER 2 ============ -->
+<div class="chapter-head" id="ch2">
+  <span class="num">Chapter 2</span>
+  <h2>Supervised Learning — Regression</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>Supervised Learning Basics</h3>
+  <p>The computer learns from <b>labeled examples</b> (data where we already know the answer), so it can predict answers for new data.</p>
+  <ul>
+    <li><b>Features (X):</b> the inputs / clues (e.g. size of a house).</li>
+    <li><b>Target (y):</b> the answer we want (e.g. the price).</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like studying past exams <em>with</em> the answer key. After enough practice, you can answer new questions you've never seen.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Regression vs Classification</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Regression</h4>
+      <ul>
+        <li>Predicts a <b>number</b></li>
+        <li>Price, temperature, salary</li>
+        <li>"How much?"</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Classification</h4>
+      <ul>
+        <li>Predicts a <b>category</b></li>
+        <li>Spam / not spam</li>
+        <li>"Which group?"</li>
+      </ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Regression = continuous numbers. Classification = labels/categories. This chapter is all about <b>regression</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Workflow (5 steps)</h3>
+  <ul>
+    <li><b>1. Collect</b> labeled data</li>
+    <li><b>2. Split</b> it (usually 70–80% to train, 20–30% to test)</li>
+    <li><b>3. Choose</b> a model</li>
+    <li><b>4. Train</b> the model on the training data</li>
+    <li><b>5. Evaluate</b> on the test data it has never seen</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Always test on <b>unseen data</b>. Testing on training data is like grading a student with the same questions they practiced — not honest.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Linear Regression</h3>
+  <p>Fits a <b>straight line</b> through the data to capture the trend. One feature = simple linear regression; many features = multiple linear regression (a flat "plane" instead of a line).</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Salary vs experience: more years → higher salary. The line lets you guess the salary for any number of years.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Cost Function (how "wrong" the model is)</h3>
+  <p>The model measures error by looking at the gap between its prediction and the real value. We <b>square</b> those gaps so they're always positive and big mistakes get punished more. Training = making this total error as small as possible.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Think of throwing darts: the cost is how far you missed the bullseye. The model keeps adjusting to miss by less.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The 5 Assumptions (linear regression only works well if these hold)</h3>
+  <ul>
+    <li><b>1. Linearity</b> — the real relationship is roughly a straight line.</li>
+    <li><b>2. Independence</b> — one data point doesn't depend on another.</li>
+    <li><b>3. Homoscedasticity</b> — the error size stays about the <b>same</b> everywhere (don't get bigger for large values).</li>
+    <li><b>4. Normality of errors</b> — errors follow a normal "bell curve".</li>
+    <li><b>5. No multicollinearity</b> — features shouldn't be copies of each other.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Hard words made easy</span>
+    <p><b>Homoscedasticity</b> = "equal scatter." Errors are evenly spread, not a fan/cone shape.<br>
+    <b>Multicollinearity</b> = two features saying the same thing, e.g. size in <em>feet</em> AND size in <em>meters</em>. The model gets confused about which one matters.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>If assumptions break → unreliable predictions and misleading results.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Polynomial Regression</h3>
+  <p>When data is <b>curved</b>, a straight line fails. Polynomial regression adds powers (x², x³…) so the line can <b>bend</b> and follow curves.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Car fuel efficiency vs speed: bad at very low speed, best in the middle, bad at high speed — a U-shape. A curve fits this; a straight line can't.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p><b>Underfit</b> = too simple, misses the pattern. <b>Overfit</b> = too complex, memorizes noise. The sweet spot in the middle is best. This is the <b>bias-variance tradeoff</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Gradient Descent (how the model learns)</h3>
+  <p>A step-by-step method to find the lowest error. It keeps taking small steps "downhill" until it reaches the bottom (minimum error).</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like walking down a foggy mountain — you can't see the bottom, so you just keep stepping in the steepest downhill direction until you can't go lower.</p>
+  </div>
+  <p style="margin-top:10px"><b>Three types:</b></p>
+  <ul>
+    <li><b>Batch</b> — uses ALL data each step. Stable but slow on big data.</li>
+    <li><b>Stochastic (SGD)</b> — uses ONE example each step. Fast but noisy/jumpy.</li>
+    <li><b>Mini-batch</b> — uses a small group (e.g. 32–256). Best of both → the <b>industry standard</b>.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember — Learning Rate</span>
+    <p>The <b>step size</b>. Too big → overshoots and never settles. Too small → super slow. Just right → reaches the bottom quickly.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Measuring Performance (metrics)</h3>
+  <ul>
+    <li><b>MSE / RMSE</b> — average error; punishes big mistakes hard. RMSE is in the same units (e.g. dollars), so it's easy to read.</li>
+    <li><b>MAE</b> — average error treating all mistakes equally; <b>more robust to outliers</b>.</li>
+    <li><b>R² score</b> — how much of the pattern the model explains. 1 = perfect, 0 = useless. (R² = 0.85 means it explains 85%.)</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Big errors matter most → use <b>RMSE</b>. Outliers shouldn't dominate → use <b>MAE</b>. Comparing across datasets → use <b>R²</b>.</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 2 ============ -->
+<div class="quiz" id="quiz2" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 2 Check</h3>
+  </div>
+  <p class="sub">Tap an answer. You'll see instantly if it's right, plus a quick why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+
+<!-- ============ CHAPTER 3 ============ -->
+<div class="chapter-head" id="ch3">
+  <span class="num">Chapter 3</span>
+  <h2>Logistic Regression, Decision Trees &amp; Random Forest</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>From Regression to Classification</h3>
+  <p>Now we predict <b>categories</b>, not numbers: spam or not, sick or healthy, approved or rejected.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>Binary</h4>
+      <ul><li>Only <b>2</b> outcomes</li><li>Spam / Ham</li><li>Fraud / Legit</li></ul>
+    </div>
+    <div class="col">
+      <h4>Multi-class</h4>
+      <ul><li><b>3+</b> outcomes</li><li>Digits 0–9</li><li>Pos / Neutral / Neg</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Why Linear Regression Fails Here</h3>
+  <p>A straight line can give answers like 2.3 or −0.5 — but a probability must stay between <b>0 and 1</b>. We need something that squeezes any number into that range.</p>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Sigmoid Function</h3>
+  <p>An S-shaped curve that turns <b>any number into a probability (0 to 1)</b>. That's the heart of logistic regression.</p>
+  <ul>
+    <li>Output always between 0 and 1</li>
+    <li>At input 0 → output is 0.5 (the middle)</li>
+    <li>Big positive input → near 1; big negative → near 0</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Think of a dimmer switch: no matter how hard you push, the light stays between fully off (0) and fully on (1) — never beyond.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Logistic Regression Model</h3>
+  <p>It outputs the <b>probability</b> that something belongs to class 1. If that probability is above the <b>threshold</b> (usually 0.5), we predict class 1.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Spam filter says "92% spam" → above 0.5 → mark as spam. A "51%" answer means it's unsure.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Odds &amp; Log-Odds (don't panic)</h3>
+  <p>Just another way to express chance.</p>
+  <ul>
+    <li><b>Odds</b> = how much more likely "yes" is than "no". Odds of 3 → 3× more likely to happen.</li>
+    <li><b>Log-odds</b> = the log of the odds. Positive → class 1 more likely; negative → class 0 more likely.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>"This team has 2-to-1 odds of winning" = twice as likely to win as lose. Same idea, just gambling language.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Decision Boundary</h3>
+  <p>The dividing line between classes. On one side it predicts class 1, on the other class 0. For logistic regression this line is <b>straight</b> — which limits it for complex shapes.</p>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>The threshold is usually 0.5 but you can change it depending on which mistake is worse.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Binary Cross-Entropy (the loss)</h3>
+  <p>The error measure for classification. It <b>punishes confident wrong answers</b> heavily. Saying "99% spam" about a real email = huge penalty.</p>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like a confident exam answer: if you're 100% sure and wrong, it hurts more than a hesitant guess.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Regularization (stops overfitting)</h3>
+  <p>Adds a penalty for overly large weights so the model stays simple and general.</p>
+  <div class="compare">
+    <div class="col">
+      <h4>L2 (Ridge)</h4>
+      <ul><li>Shrinks weights toward 0</li><li>Keeps all features</li><li>Smooth reduction</li></ul>
+    </div>
+    <div class="col">
+      <h4>L1 (Lasso)</h4>
+      <ul><li>Pushes some weights to exactly 0</li><li>Deletes useless features</li><li>= feature selection</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Reading the Weights (coefficients)</h3>
+  <ul>
+    <li><b>Positive weight</b> → pushes toward class 1 (e.g. higher income → loan approved).</li>
+    <li><b>Negative weight</b> → pushes toward class 0 (e.g. higher debt → rejected).</li>
+    <li><b>Bigger size</b> → stronger influence on the decision.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Logistic Regression — Pros &amp; Cons</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Strengths</h4>
+      <ul><li>Gives probabilities</li><li>Fast &amp; efficient</li><li>Easy to interpret</li></ul>
+    </div>
+    <div class="col">
+      <h4>Weaknesses</h4>
+      <ul><li>Only straight boundaries</li><li>Weak on complex patterns</li><li>Sensitive to feature scaling</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Decision Trees</h3>
+  <p>A flowchart of <b>yes/no questions</b>. You follow the answers down until you reach a final prediction at the bottom (a "leaf").</p>
+  <ul>
+    <li><b>Root</b> = the starting question (all data)</li>
+    <li><b>Internal nodes</b> = more questions</li>
+    <li><b>Leaves</b> = final answers</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Like the game "20 Questions": "Is it bigger than a cat? Does it fly?" Each answer narrows it down to the final guess.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Trees are <b>very easy to read</b> (each path = a clear rule) and handle curved/complex data without a straight line.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>How a Tree Picks Questions: Entropy &amp; Information Gain</h3>
+  <ul>
+    <li><b>Entropy</b> = how <b>mixed/messy</b> a group is. All one class = pure = 0. Half-and-half = most messy.</li>
+    <li><b>Information Gain</b> = how much a question <b>cleans up</b> the mess. The tree picks the question with the highest gain.</li>
+    <li><b>Gini impurity</b> = another way to measure messiness; <b>faster to compute</b> so it's often preferred. Both give similar trees.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Sorting a mixed bag of red and blue balls. A good question splits them into a "mostly red" pile and a "mostly blue" pile. That big cleanup = high information gain.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Tree Decision Boundaries</h3>
+  <p>Trees split space into <b>boxes</b> (rectangles). Boundaries are always straight and at right angles — a step/staircase shape, not a smooth curve.</p>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Controlling Overfitting in Trees</h3>
+  <p>Trees love to memorize. Two fixes (note: regularization doesn't apply to trees):</p>
+  <ul>
+    <li><b>Pre-pruning / limit growth</b> — set rules early, e.g. max depth or minimum samples to split.</li>
+    <li><b>Pruning</b> — let it grow fully, then cut branches that don't help on validation data.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Limits of Single Trees</h3>
+  <ul>
+    <li><b>Overfitting</b> — deep trees memorize</li>
+    <li><b>High variance</b> — small data change → very different tree</li>
+    <li><b>Greedy</b> — picks best split now, may miss the best overall</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Random Forest (the fix)</h3>
+  <p>Instead of one tree, build <b>many</b> trees and let them <b>vote</b>. The majority answer wins. This cancels out individual mistakes.</p>
+  <ul>
+    <li><b>Bagging</b> — each tree trains on a random sample of the data</li>
+    <li><b>Feature randomness</b> — each split looks at only some features</li>
+    <li><b>Voting</b> — combine all trees for the final answer</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Easy example</span>
+    <p>Asking ONE friend for advice can be biased. Asking 100 different friends and going with the majority is far more reliable. That's a forest.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Random forest = <b>lower variance + more robust + less overfitting</b> than a single tree. Performance plateaus around 100–500 trees.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>One-vs-Rest (multi-class trick)</h3>
+  <p>Turns a multi-class problem into several yes/no problems — one classifier per class ("Is it class A or not?"). The class with the highest probability wins.</p>
+</section>
+
+<!-- ============ QUIZ 3 ============ -->
+<div class="quiz" id="quiz3" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 3 Check</h3>
+  </div>
+  <p class="sub">Tap an answer to see if it's right and why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+<footer>
+  <p>You've got this. Review the amber <b>Remember</b> boxes one last time before the exam.</p>
+  <div class="pill-row">
+    <span class="pill">Regression = numbers</span>
+    <span class="pill">Sigmoid = 0 to 1</span>
+    <span class="pill">Forest = trees vote</span>
+  </div>
+  <a href="#" class="top-link">↑ Back to top</a>
+</footer>
+
+</main>
+
+<script>
+const quizzes = {
+  quiz2: [
+    {
+      q: "What does regression predict?",
+      options: ["A category like spam/not spam","A continuous number like price","A yes or no answer","A ranking order"],
+      answer: 1,
+      explain: "Regression predicts continuous numbers. Categories are classification."
+    },
+    {
+      q: "Why do we test the model on data it has NOT seen?",
+      options: ["To make training faster","To get an honest measure of how it generalizes","Because training data is deleted","To reduce the number of features"],
+      answer: 1,
+      explain: "Testing on unseen data shows real-world performance. Testing on training data is misleadingly easy."
+    },
+    {
+      q: "'Homoscedasticity' means…",
+      options: ["Features are unrelated","Errors stay roughly equal in size everywhere","Data is always linear","The model has no bias"],
+      answer: 1,
+      explain: "It means 'equal scatter' — error size is consistent, not a fan/cone shape."
+    },
+    {
+      q: "Multicollinearity is a problem because…",
+      options: ["Two features carry the same info and confuse the model","There is too little data","The line is too steep","Errors are negative"],
+      answer: 0,
+      explain: "E.g. size in feet AND meters. The model can't tell which one matters."
+    },
+    {
+      q: "When data is curved, the best fix is…",
+      options: ["Add more straight lines","Use polynomial regression so the line can bend","Remove the target","Use a higher learning rate"],
+      answer: 1,
+      explain: "Polynomial regression adds powers (x², x³) so it can follow curves."
+    },
+    {
+      q: "What does a learning rate that is TOO HIGH cause?",
+      options: ["Very slow learning","Overshooting — it bounces and may never settle","Perfect accuracy","Fewer features"],
+      answer: 1,
+      explain: "Big steps overshoot the minimum. Too small = painfully slow."
+    },
+    {
+      q: "Which gradient descent type is the industry standard?",
+      options: ["Batch (all data)","Stochastic (one example)","Mini-batch (small groups)","None of them"],
+      answer: 2,
+      explain: "Mini-batch balances speed and stability — best of both worlds."
+    },
+    {
+      q: "Which metric is MOST robust to outliers?",
+      options: ["MSE","RMSE","MAE","R²"],
+      answer: 2,
+      explain: "MAE treats all errors equally (no squaring), so outliers don't dominate."
+    },
+    {
+      q: "An R² score of 0.85 means…",
+      options: ["The model is 85% wrong","The model explains 85% of the pattern","Error is 0.85 dollars","85 features were used"],
+      answer: 1,
+      explain: "R² = proportion of the pattern explained. 1 = perfect, 0 = useless."
+    }
+  ],
+  quiz3: [
+    {
+      q: "Why does plain linear regression fail for classification?",
+      options: ["It's too slow","It can output values outside 0–1, but probabilities must stay in 0–1","It needs too much data","It can't use features"],
+      answer: 1,
+      explain: "Probabilities must be between 0 and 1; a straight line isn't bounded."
+    },
+    {
+      q: "The sigmoid function does what?",
+      options: ["Turns any number into a probability between 0 and 1","Removes outliers","Counts features","Splits data into trees"],
+      answer: 0,
+      explain: "It's the S-curve that squeezes any value into the 0–1 range."
+    },
+    {
+      q: "At input 0, the sigmoid outputs…",
+      options: ["0","1","0.5","Infinity"],
+      answer: 2,
+      explain: "Sigmoid(0) = 0.5 — right in the middle."
+    },
+    {
+      q: "A logistic model outputs 0.92 for spam (threshold 0.5). The result?",
+      options: ["Not spam","Spam","Unsure, no decision","Error"],
+      answer: 1,
+      explain: "0.92 is above 0.5, so it's classified as spam."
+    },
+    {
+      q: "Binary cross-entropy especially punishes…",
+      options: ["Hesitant guesses","Confident wrong answers","Correct answers","Missing features"],
+      answer: 1,
+      explain: "Being very confident AND wrong gives the biggest penalty."
+    },
+    {
+      q: "L1 (Lasso) regularization is special because it…",
+      options: ["Keeps every feature","Pushes some weights to exactly 0 (feature selection)","Makes the model bigger","Increases the learning rate"],
+      answer: 1,
+      explain: "L1 zeroes out useless features. L2 only shrinks them."
+    },
+    {
+      q: "Entropy of a group that is ALL one class is…",
+      options: ["Highest (most messy)","0 (pure)","Always 0.5","Negative"],
+      answer: 1,
+      explain: "Pure group = no mess = entropy 0. Half-and-half = most messy."
+    },
+    {
+      q: "A decision tree chooses the split with the highest…",
+      options: ["Entropy","Information gain","Number of features","Learning rate"],
+      answer: 1,
+      explain: "Information gain = how much a question cleans up the mess."
+    },
+    {
+      q: "Gini impurity is often preferred over entropy because it's…",
+      options: ["More accurate always","Faster to compute","Bounded at 1","Based on logarithms"],
+      answer: 1,
+      explain: "Gini is faster (no logs). Both produce similar trees."
+    },
+    {
+      q: "A random forest makes its final prediction by…",
+      options: ["Using the deepest tree only","Letting many trees vote and taking the majority","Picking one random tree","Averaging the features"],
+      answer: 1,
+      explain: "Many diverse trees vote; the majority wins → lower variance, more robust."
+    },
+    {
+      q: "The main benefit of a random forest over a single tree is…",
+      options: ["Faster training","Lower variance and less overfitting","Fewer features needed","Smaller file size"],
+      answer: 1,
+      explain: "Combining trees cancels individual errors, reducing variance."
+    },
+    {
+      q: "Decision tree boundaries look like…",
+      options: ["Smooth curves","Boxes / staircases at right angles","Diagonal lines","Circles"],
+      answer: 1,
+      explain: "Trees split into axis-aligned rectangles — a step-like shape."
+    }
+  ]
+};
+
+function buildQuiz(id){
+  const wrap = document.getElementById(id);
+  const data = quizzes[id];
+  let answered = 0, correct = 0;
+
+  data.forEach((item, qi) => {
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q';
+
+    const qText = document.createElement('div');
+    qText.className = 'qtext';
+    qText.innerHTML = `<span class="qn">Q${qi+1}.</span>${item.q}`;
+    qDiv.appendChild(qText);
+
+    const exp = document.createElement('div');
+    exp.className = 'explain';
+    exp.innerHTML = `<b>Why:</b> ${item.explain}`;
+
+    item.options.forEach((opt, oi) => {
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = opt;
+      btn.addEventListener('click', () => {
+        if(qDiv.dataset.done) return;
+        qDiv.dataset.done = "1";
+        answered++;
+        const allBtns = qDiv.querySelectorAll('.opt');
+        allBtns.forEach(b => b.disabled = true);
+
+        if(oi === item.answer){
+          btn.classList.add('correct');
+          btn.innerHTML += '<span class="mark">✓</span>';
+          correct++;
+        } else {
+          btn.classList.add('wrong');
+          btn.innerHTML += '<span class="mark">✗</span>';
+          allBtns[item.answer].classList.add('correct');
+          allBtns[item.answer].innerHTML += '<span class="mark">✓</span>';
+        }
+        exp.classList.add('show');
+
+        if(answered === data.length){
+          scoreBox.classList.add('show');
+          scoreBox.innerHTML = `You scored ${correct} / ${data.length}` +
+            `<small>${correct === data.length ? 'Perfect — you\'re ready! 🎉' : 'Re-read the ones you missed and try again.'}</small>`;
+          scoreBox.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      });
+      qDiv.appendChild(btn);
+    });
+
+    qDiv.appendChild(exp);
+    wrap.appendChild(qDiv);
+  });
+
+  const scoreBox = document.createElement('div');
+  scoreBox.className = 'score';
+  wrap.appendChild(scoreBox);
+}
+
+Object.keys(quizzes).forEach(buildQuiz);
+</script>
+
+</body>
+</html>
