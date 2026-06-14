@@ -273,9 +273,7 @@
         localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
         applyTheme(nextTheme);
         updateFloatingDock(floatingDock, document.documentElement.lang || "en", nextTheme);
-        if (window.matchMedia("(max-width: 768px)").matches) {
-          closeFloatingDock(floatingDock);
-        }
+        closeFloatingDock(floatingDock);
       }
 
       function setLanguage(lang) {
@@ -292,9 +290,7 @@
           nextLang,
           document.documentElement.dataset.theme || "light"
         );
-        if (window.matchMedia("(max-width: 768px)").matches) {
-          closeFloatingDock(floatingDock);
-        }
+        closeFloatingDock(floatingDock);
       }
 
       const initialLang = savedLanguage === "ar" ? "ar" : "en";

@@ -200,25 +200,71 @@ html[data-theme="dark"] .score small {
 
 .floating-dock {
   position: fixed;
-  top: 50%;
+  top: auto;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   right: 18px;
   z-index: 120;
-  width: min(220px, calc(100vw - 24px));
-  transform: translateY(-50%);
-  border: 1px solid rgba(28, 34, 48, 0.1);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
-  padding: 14px;
+  width: auto;
+  transform: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
 }
 
 .floating-dock__launcher {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(28, 34, 48, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 .floating-dock__panel {
-  display: block;
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: min(220px, calc(100vw - 24px));
+  padding: 12px;
+  border: 1px solid rgba(28, 34, 48, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+html[data-theme="dark"] .floating-dock__launcher {
+  background: rgba(11, 17, 26, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #eef2f8;
+}
+
+html[data-theme="dark"] .floating-dock__panel {
+  background: rgba(11, 17, 26, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.floating-dock.is-open .floating-dock__panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .floating-dock__section + .floating-dock__section {
@@ -345,70 +391,12 @@ html[lang="ar"] .floating-dock {
   }
 
   .floating-dock {
-    top: auto;
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     right: 12px;
-    width: auto;
-    transform: none;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    backdrop-filter: none;
-    padding: 0;
-  }
-
-  .floating-dock__launcher {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0 16px;
-    border: 1px solid rgba(28, 34, 48, 0.12);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: var(--shadow);
-    color: var(--ink);
-    font: inherit;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  html[data-theme="dark"] .floating-dock__launcher {
-    background: rgba(11, 17, 26, 0.95);
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #eef2f8;
   }
 
   .floating-dock__panel {
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + 10px);
     width: min(220px, calc(100vw - 24px));
-    padding: 12px;
-    border: 1px solid rgba(28, 34, 48, 0.1);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(12px);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(8px);
-    transition:
-      opacity 0.18s ease,
-      transform 0.18s ease;
-  }
-
-  html[data-theme="dark"] .floating-dock__panel {
-    background: rgba(11, 17, 26, 0.95);
-    border-color: rgba(255, 255, 255, 0.12);
-  }
-
-  .floating-dock.is-open .floating-dock__panel {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
   }
 
   .floating-dock__title {
