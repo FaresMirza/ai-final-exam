@@ -36,6 +36,8 @@
     const dock = document.createElement("aside");
     dock.className = "floating-dock";
     dock.innerHTML =
+      '<button type="button" class="floating-dock__launcher" data-role="launcher" aria-expanded="false"></button>' +
+      '<div class="floating-dock__panel">' +
       '<div class="floating-dock__section">' +
       '<p class="floating-dock__title" data-role="lang-title"></p>' +
       '<div class="floating-dock__lang-host"></div>' +
@@ -46,7 +48,14 @@
       '<button type="button" class="theme-toggle__button" data-theme="light"></button>' +
       '<button type="button" class="theme-toggle__button" data-theme="dark"></button>' +
       "</div>" +
+      "</div>" +
       "</div>";
+
+    const launcher = dock.querySelector('[data-role="launcher"]');
+    launcher.addEventListener("click", function () {
+      const isOpen = dock.classList.toggle("is-open");
+      launcher.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
 
     dock.querySelectorAll("[data-theme]").forEach(function (button) {
       button.addEventListener("click", function () {
@@ -65,8 +74,18 @@
 
     return {
       dock: dock,
+      launcher: launcher,
       languageToggle: languageToggle
     };
+  }
+
+  function closeFloatingDock(dockRef) {
+    if (!dockRef?.dock || !dockRef.launcher) {
+      return;
+    }
+
+    dockRef.dock.classList.remove("is-open");
+    dockRef.launcher.setAttribute("aria-expanded", "false");
   }
 
   function readOriginalContent() {
@@ -214,6 +233,7 @@
 
     dock.querySelector('[data-role="lang-title"]').textContent = isArabic ? "اللغة" : "Language";
     dock.querySelector('[data-role="theme-title"]').textContent = isArabic ? "المظهر" : "Theme";
+    dock.querySelector('[data-role="launcher"]').textContent = isArabic ? "التحكم" : "Controls";
 
     dock.querySelectorAll(".theme-toggle__button").forEach(function (button) {
       const isActive = button.dataset.theme === theme;
@@ -253,6 +273,9 @@
         localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
         applyTheme(nextTheme);
         updateFloatingDock(floatingDock, document.documentElement.lang || "en", nextTheme);
+        if (window.matchMedia("(max-width: 768px)").matches) {
+          closeFloatingDock(floatingDock);
+        }
       }
 
       function setLanguage(lang) {
@@ -269,6 +292,9 @@
           nextLang,
           document.documentElement.dataset.theme || "light"
         );
+        if (window.matchMedia("(max-width: 768px)").matches) {
+          closeFloatingDock(floatingDock);
+        }
       }
 
       const initialLang = savedLanguage === "ar" ? "ar" : "en";
