@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SE4705 — Selected Topics in SE (Ch 5 &amp; 6)</title>
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#4a5266;
+    --paper:#fbfaf7;
+    --card:#ffffff;
+    --line:#e6e3da;
+    --accent:#2f6f5e;       /* deep teal-green */
+    --accent-soft:#e3efe9;
+    --highlight:#f0a830;    /* warm amber for "remember this" */
+    --highlight-soft:#fdf2dc;
+    --correct:#2f6f5e;
+    --wrong:#c0473b;
+    --shadow:0 1px 2px rgba(28,34,48,.06),0 6px 18px rgba(28,34,48,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    padding-bottom:60px;
+  }
+
+  /* ---------- top bar ---------- */
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:26px 20px 22px;
+    text-align:center;
+    position:relative;
+  }
+  header .tag{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--highlight);
+    margin-bottom:8px;
+  }
+  header h1{font-size:26px;font-weight:700;line-height:1.2}
+  header p{color:#b9c0cf;font-size:14px;margin-top:6px}
+
+  .site-nav{
+    background:var(--ink);
+    color:#fff;
+    padding:12px 16px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .site-nav .label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#b9c0cf;
+    margin-bottom:8px;
+    text-align:center;
+  }
+  .site-nav .links{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding-bottom:12px;
+  }
+  .site-nav a{
+    color:#dfe5ef;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    transition:.15s;
+  }
+  .site-nav a:hover,
+  .site-nav a.current{
+    background:var(--highlight);
+    border-color:var(--highlight);
+    color:var(--ink);
+  }
+
+  /* ---------- sticky nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,250,247,.95);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+    padding:10px 12px;
+  }
+  nav a{
+    font-size:13px;font-weight:600;text-decoration:none;
+    color:var(--ink-soft);
+    padding:7px 12px;border-radius:20px;
+    transition:.15s;
+  }
+  nav a:hover{background:var(--accent-soft);color:var(--accent)}
+
+  /* ---------- layout ---------- */
+  main{max-width:780px;margin:0 auto;padding:0 18px}
+
+  .chapter-head{
+    margin:38px 0 10px;
+    padding-bottom:10px;
+    border-bottom:2px solid var(--ink);
+  }
+  .chapter-head .num{
+    font-size:13px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+  }
+  .chapter-head h2{font-size:23px;margin-top:2px}
+
+  section.topic{margin:22px 0}
+  section.topic h3{
+    font-size:18px;color:var(--ink);
+    display:flex;align-items:center;gap:9px;margin-bottom:6px;
+  }
+  section.topic h3 .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);flex:none;
+  }
+  section.topic p{color:var(--ink-soft);font-size:15px;margin:5px 0}
+  section.topic ul{margin:6px 0 6px 4px;list-style:none}
+  section.topic ul li{
+    padding-left:18px;position:relative;font-size:15px;
+    color:var(--ink-soft);margin:4px 0;
+  }
+  section.topic ul li::before{
+    content:"";position:absolute;left:2px;top:9px;
+    width:6px;height:6px;border-radius:1px;background:var(--accent);
+  }
+  b,strong{color:var(--ink);font-weight:600}
+
+  /* example box (for hard concepts) */
+  .ex{
+    background:var(--accent-soft);
+    border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .ex .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;display:block;margin-bottom:3px;
+  }
+  .ex p{color:var(--ink);margin:0}
+
+  /* remember box */
+  .remember{
+    background:var(--highlight-soft);
+    border-left:4px solid var(--highlight);
+    border-radius:0 8px 8px 0;
+    padding:11px 14px;margin:10px 0;font-size:14.5px;
+  }
+  .remember .lbl{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#b9791a;font-weight:700;display:block;margin-bottom:3px;
+  }
+  .remember p{color:var(--ink);margin:0}
+
+  /* two-col compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+  .compare .col{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:12px;box-shadow:var(--shadow);
+  }
+  .compare .col h4{font-size:14px;margin-bottom:6px;color:var(--accent)}
+  .compare .col ul{margin:0}
+  .compare .col ul li{font-size:13.5px}
+  @media(max-width:560px){.compare{grid-template-columns:1fr}}
+
+  /* ---------- quiz ---------- */
+  .quiz{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px;
+    margin:26px 0 10px;
+    box-shadow:var(--shadow);
+  }
+  .quiz .qhead{
+    display:flex;align-items:center;gap:10px;margin-bottom:4px;
+  }
+  .quiz .qhead .badge{
+    background:var(--accent);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:20px;letter-spacing:.05em;
+  }
+  .quiz .qhead h3{font-size:17px}
+  .quiz>.sub{color:var(--ink-soft);font-size:13.5px;margin-bottom:8px}
+
+  .q{margin:18px 0;padding-top:14px;border-top:1px solid var(--line)}
+  .q:first-of-type{border-top:none}
+  .q .qtext{font-weight:600;font-size:15px;margin-bottom:10px}
+  .q .qtext span.qn{color:var(--accent);margin-right:5px}
+  .opt{
+    display:block;width:100%;text-align:left;
+    background:var(--paper);border:1.5px solid var(--line);
+    border-radius:9px;padding:10px 13px;margin:7px 0;
+    font-size:14.5px;color:var(--ink);cursor:pointer;
+    transition:.12s;font-family:inherit;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+  .opt:disabled{cursor:default}
+  .opt.correct{border-color:var(--correct);background:var(--accent-soft);font-weight:600}
+  .opt.wrong{border-color:var(--wrong);background:#fbe9e7}
+  .opt .mark{float:right;font-weight:700}
+  .opt.correct .mark{color:var(--correct)}
+  .opt.wrong .mark{color:var(--wrong)}
+  .explain{
+    font-size:13.5px;color:var(--ink-soft);
+    background:var(--highlight-soft);border-radius:8px;
+    padding:9px 12px;margin-top:8px;display:none;
+  }
+  .explain.show{display:block}
+  .explain b{color:#b9791a}
+
+  .score{
+    margin-top:16px;padding:14px;border-radius:10px;
+    background:var(--accent);color:#fff;text-align:center;
+    font-weight:600;font-size:16px;display:none;
+  }
+  .score.show{display:block}
+  .score small{display:block;font-weight:400;font-size:13px;color:#cfe3db;margin-top:3px}
+
+  footer{
+    text-align:center;color:var(--ink-soft);font-size:13px;
+    margin-top:46px;padding:0 18px;
+  }
+  .pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .pill{
+    background:var(--accent-soft);color:var(--accent);
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;
+  }
+
+  .top-link{
+    display:inline-block;margin-top:12px;font-size:13px;
+    color:var(--accent);text-decoration:none;font-weight:600;
+  }
+</style>
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+
+<div class="site-nav">
+  <span class="label">Study Guides</span>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="new-course-ch1-2.html">Ch 1-2</a>
+    <a href="new-course-ch3-4.html">Ch 3-4</a>
+    <a class="current" href="new-course-ch5-6.html">Ch 5-6</a>
+    <a href="new-course-ch7-8.html">Ch 7-8</a>
+  </div>
+</div>
+
+<header>
+  <span class="tag">SE4705 · Selected Topics</span>
+  <h1>Quick Study Guide</h1>
+  <p>Chapters 5 &amp; 6 — concept-first, exam-ready</p>
+</header>
+
+<nav>
+  <a href="#ch5">Ch 5: Sustainability</a>
+  <a href="#quiz5">Quiz 5</a>
+  <a href="#ch6">Ch 6: AI-Driven SE</a>
+  <a href="#quiz6">Quiz 6</a>
+</nav>
+
+<main>
+
+<!-- ============ CHAPTER 5 ============ -->
+<div class="chapter-head" id="ch5">
+  <span class="num">Chapter 5</span>
+  <h2>Sustainability in Software Engineering</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>Defining Sustainability</h3>
+  <p><b>General (Brundtland, 1987):</b> "Development that meets the needs of the present without compromising the ability of future generations to meet their own needs."</p>
+  <ul>
+    <li><b>In Software Engineering</b> — "the capacity to endure" (Becker et al., 2016).</li>
+    <li>A <b>quality concern</b> alongside usability, safety, and security.</li>
+    <li>Covers long-term <b>environmental, social, economic, individual, and technical</b> effects.</li>
+    <li>Must be a <b>first-class concern</b> across requirements, design, implementation, testing, and deployment.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Why Sustainability Matters</h3>
+  <ul>
+    <li>Digital tech accounts for <b>2–4% of global energy use</b> and greenhouse gas emissions.</li>
+    <li>Sustainable software lessens hardware energy demand and boosts overall efficiency.</li>
+    <li>Regulations and standards increasingly <b>mandate measurable sustainability practices</b>.</li>
+    <li>Long-lasting, maintainable software reduces waste — and societal expectations now require it.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Sustainability fosters <b>innovation, competitiveness, and resilience</b> — it's not just an environmental ask.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Karlskrona Manifesto — Vision, Mission, Values</h3>
+  <p>An international group of researchers' commitment to embedding sustainability in IT design.</p>
+  <ul>
+    <li><b>Vision</b> — revolutionise how IT products/services are designed to <b>sustain and regenerate</b> human and natural systems.</li>
+    <li><b>Mission</b> — develop research and training that empowers IT pros to embed sustainability in design.</li>
+    <li><b>Values</b> — awareness through collaboration, diverse perspectives, positive impact on the world.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Nine Karlskrona Principles</h3>
+  <ul>
+    <li><b>P1 Systemic</b> — never an isolated property; systemic thinking is the starting point.</li>
+    <li><b>P2 Multidimensional</b> — economic, social, environmental, technical, individual.</li>
+    <li><b>P3 Interdisciplinary</b> — collaboration across disciplines.</li>
+    <li><b>P4 Transcends the system's objective</b> — even when sustainability isn't the system's primary goal.</li>
+    <li><b>P5 Applies to system + broader context</b> — design covers <em>both</em> the system itself and its impact on environment.</li>
+    <li><b>P6 Action at several levels</b> — different interventions, different impact.</li>
+    <li><b>P7 Multiple time scales</b> — assess across timeframes; long-term indicators matter.</li>
+    <li><b>P8 Long-term ≠ sacrifice</b> — innovation can serve both present and future.</li>
+    <li><b>P9 Visibility</b> — system's social position and context must be visible.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>The Five Sustainability Dimensions</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Environmental</h4>
+      <ul><li>Protect natural resources from human needs/wastes</li></ul>
+    </div>
+    <div class="col">
+      <h4>Economic</h4>
+      <ul><li>Positive economic value and capital growth</li></ul>
+    </div>
+  </div>
+  <div class="compare">
+    <div class="col">
+      <h4>Social</h4>
+      <ul><li>Equitable, diverse, connected, democratic relationships</li></ul>
+    </div>
+    <div class="col">
+      <h4>Technical</h4>
+      <ul><li>Tech that handles change/evolution efficiently</li></ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Individual (the 5th)</span>
+    <p>Individual needs protected and supported with dignity — developments should <b>improve human life, not threaten it</b>.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Environmental Dimension</h3>
+  <ul>
+    <li><b>Minimise energy, emissions, waste</b> across the lifecycle.</li>
+    <li>Optimise software to lower data-centre energy &amp; hardware load.</li>
+    <li>Use low-resource algorithms and efficient runtimes.</li>
+    <li>Measure software-related <b>carbon footprints</b>; extend hardware lifespan; tackle e-waste via circular economy.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Economic Dimension</h3>
+  <ul>
+    <li>Deliver value <b>without unsustainable financial burdens</b>.</li>
+    <li>Maintainable codebases prevent costly technical debt.</li>
+    <li>Reuse open-source components to cut dev cost.</li>
+    <li>Evaluate <b>full lifecycle costs</b> — maintenance, support, disposal — not just development.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Social Dimension</h3>
+  <ul>
+    <li><b>Equitable access</b> for diverse global user communities.</li>
+    <li>Inclusive design — cultural, linguistic, accessibility considerations.</li>
+    <li>Trust via privacy/security; fair labour in supply chains.</li>
+    <li>Prevent reinforcing inequalities through responsible deployment.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Individual Dimension</h3>
+  <ul>
+    <li>Addresses <b>physical &amp; mental wellbeing</b> of devs, maintainers, users.</li>
+    <li>Humane workloads, ergonomic interfaces, low cognitive load.</li>
+    <li>Respects privacy, autonomy, sense of agency.</li>
+    <li>Developer satisfaction → sustained high-quality outcomes.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Technical Dimension</h3>
+  <ul>
+    <li>Architectures for <b>longevity, maintainability, scalability</b>.</li>
+    <li>Modularity + interoperability; standardised protocols.</li>
+    <li>Minimise dependencies on short-lived tech (avoid forced migrations).</li>
+    <li>Security &amp; privacy <b>by design</b>; CI/CD to keep systems dependable.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Three Types of Sustainability Impacts</h3>
+  <ul>
+    <li><b>Direct</b> — immediate effects (e.g. compressing images cuts storage and transfer energy).</li>
+    <li><b>Indirect</b> — long-term enabling effects (e.g. teleconferencing reduces travel emissions).</li>
+    <li><b>Rebound</b> — efficiency gains drive more usage (e.g. cheaper cloud storage leads to data hoarding).</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>The <b>rebound effect</b> is the sneaky one — efficiency without behavioural restraint can <em>increase</em> total resource demand.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Case: Volkswagen Emissions Scandal</h3>
+  <div class="ex">
+    <span class="lbl">What happened</span>
+    <p>VW installed <b>"defeat device" software</b> in millions of diesel cars. During lab tests, cars looked compliant; on the road they emitted up to <b>40× more NOx</b>. The software falsified sustainability metrics, misleading regulators and consumers.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Lesson</span>
+    <p>Software ethics ⇄ environmental sustainability. Billions in fines + reputational damage = the hidden cost of dishonest engineering.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Requirements Engineering for Sustainability</h3>
+  <ul>
+    <li>Define <b>functional + non-functional requirements</b> — including explicit sustainability goals.</li>
+    <li>Capture energy efficiency and lifecycle resource metrics during elicitation.</li>
+    <li>Use <b>goal-oriented modelling</b> to link sustainability concerns to software objectives.</li>
+    <li>Involve diverse stakeholders to understand social/environmental impacts <b>early</b>.</li>
+    <li>Document trade-offs between competing requirements transparently.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Sustainable Design &amp; Construction Practices</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Design</h4>
+      <ul>
+        <li>Modular &amp; reusable patterns</li>
+        <li>Low-complexity algorithms</li>
+        <li>Scalable, cloud-native trade-offs</li>
+        <li>Security/privacy/accessibility as design pillars</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Construction</h4>
+      <ul>
+        <li>Coding guidelines for clarity &amp; efficiency</li>
+        <li>Profilers for energy hotspots</li>
+        <li>Peer reviews + static analysis</li>
+        <li>Minimise third-party bloat</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Energy Efficiency of Programming Languages</h3>
+  <p>Pereira et al. measured runtime, memory, and energy across languages. Key metrics:</p>
+  <ul>
+    <li><b>Memory consumption</b> — efficient memory mgmt = lower energy use.</li>
+    <li><b>Processing power</b> — less compute = less energy.</li>
+    <li><b>Idle resource usage</b> — sleep modes help.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">The energy ranking</span>
+    <p>Compiled languages dominate: <b>C (1.00, most efficient)</b>, Rust (1.03), C++ (1.34). Interpreted languages trail: Python (75.88), <b>Perl (79.58, least efficient)</b>. Java (1.98, VM-based) sits in the efficient middle.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Sustainability Metrics &amp; Tools</h3>
+  <ul>
+    <li><b>SCI (Software Carbon Intensity)</b> — the Green Software Foundation's metric for software emissions.</li>
+    <li>Measure energy at component &amp; system level.</li>
+    <li>Track hardware utilisation, maintainability indices, lifecycle costs.</li>
+    <li>Tools: IDE plugins, profilers, cloud dashboards, automated test reports.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Example: SuSoftPro</span>
+    <p>A tool analysing software sustainability requirements early in dev. Provides a <b>five-star sustainability profiling system</b> with stakeholder participation — encourages early integration in requirements engineering.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Case Study: DriveNow Car-Sharing</h3>
+  <p>BMW + Daimler's car-sharing service. Users find/rent cars via an app; vehicles park anywhere in the service area.</p>
+  <ul>
+    <li><b>Step 1:</b> Analyse generic <b>values</b> (e.g. pollution reduction, recruit customers, easy car access).</li>
+    <li><b>Step 2:</b> Identify <b>activities &amp; indicators</b> (green elements = activities surfaced by sustainability analysis).</li>
+    <li><b>Step 3:</b> Map <b>direct vs indirect</b> links between activities and indicators.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Lessons learned</span>
+    <p>Sustainability modelling reveals overlooked goals and risks. Systems depending on single-point activities (e.g. electric cars only) need <b>backup plans</b>. Monitor indicators continuously — gaps in real-world data are common.</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 5 ============ -->
+<div class="quiz" id="quiz5" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 5 Check</h3>
+  </div>
+  <p class="sub">Tap an answer. You'll see instantly if it's right, plus a quick why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+
+<!-- ============ CHAPTER 6 ============ -->
+<div class="chapter-head" id="ch6">
+  <span class="num">Chapter 6</span>
+  <h2>AI-Driven Software Development</h2>
+</div>
+
+<section class="topic">
+  <h3><span class="dot"></span>What Is AI in Software Engineering?</h3>
+  <p>Applying machine learning, NLP, and intelligent algorithms to <b>help software development tasks</b>. AI enables tools to learn code patterns, predict bugs, and automate complex work (e.g. code generation).</p>
+  <ul>
+    <li><b>GitHub Copilot</b> — AI pair programmer powered by OpenAI Codex.</li>
+    <li><b>OpenAI Codex</b> — LLM trained on code; generates code, fixes bugs, proposes PRs.</li>
+    <li><b>Diffblue Cover</b> — RL-based agent that auto-generates Java unit tests.</li>
+    <li><b>Appvance IQ</b> — AI-driven test platform that auto-generates &amp; runs UI/API tests.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Case Study: GitHub Copilot</h3>
+  <p>Launched 2021, powered by OpenAI Codex (a GPT-based model trained on public code). Provides context-aware code completion in IDEs (VS Code, etc.).</p>
+  <div class="ex">
+    <span class="lbl">Measured impact</span>
+    <p><b>~55% faster</b> coding with Copilot vs without. <b>85%</b> of developers felt more confident in their code. In an enterprise trial: <b>90%</b> felt more fulfilled, <b>95%</b> enjoyed coding more.</p>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>Codex can act as an <b>AI agent</b> — writing features, fixing bugs, and creating pull requests in an isolated test environment under human supervision.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Why Use AI in SE? (Benefits)</h3>
+  <ul>
+    <li><b>Productivity</b> — speeds up coding and testing, shortens dev cycles.</li>
+    <li><b>Code quality</b> — catches errors early (defect prediction, standards enforcement).</li>
+    <li><b>Intelligent automation</b> — automates repetitive tasks (boilerplate, tests).</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Acronyms</span>
+    <p><b>AI</b> = Artificial Intelligence · <b>SE</b> = Software Engineering · <b>NLP</b> = Natural Language Processing · <b>LLM</b> = Large Language Model.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI4SE vs SE4AI</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>AI4SE</h4>
+      <ul>
+        <li>AI <b>helps developers</b></li>
+        <li>Automates &amp; optimises dev tasks</li>
+        <li>Code completion, defect prediction</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>SE4AI</h4>
+      <ul>
+        <li>SE <b>builds reliable AI</b></li>
+        <li>Defines requirements, architecture, testing for ML</li>
+        <li>Engineering reliable ML pipelines</li>
+      </ul>
+    </div>
+  </div>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>They are <b>closely related and complementary</b>: AI tools need good SE processes, and SE processes benefit from AI automation.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Requirements Engineering</h3>
+  <ul>
+    <li><b>IBM Requirements Quality Assistant (RQA)</b> — Watson-based, NLP in IBM DOORS catches ambiguous requirements in real-time. Up to <b>60% defect-cost reduction</b>.</li>
+    <li><b>NLP models (BERT, GPT)</b> extract key requirements from unstructured docs.</li>
+    <li><b>NLP-assisted validation</b> spots contradictions, vague terms, unmet conditions.</li>
+    <li><b>NER (Named Entity Recognition)</b> identifies actors, functionalities, and disambiguates context (e.g. "Apple" the company vs the fruit).</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Software Design</h3>
+  <ul>
+    <li><b>Pattern recognition</b> — BERT classifiers detect Singleton and other design patterns in source code, aiding documentation and refactoring.</li>
+    <li><b>Architecture optimisation</b> — LLMs generate candidate architectures from requirements; multi-objective optimisation balances performance, security, cost.</li>
+    <li><b>Future</b> — autonomous architecture agents that propose &amp; evaluate entire system designs.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Using ChatGPT to Generate UML</h3>
+  <p>Three prompt-engineering strategies for generating a UML class model:</p>
+  <ul>
+    <li><b>Brute force</b> — paste the whole problem, generate a model, then iteratively refine.</li>
+    <li><b>Start small and grow</b> — provide a snippet, get a small model, then add detail.</li>
+    <li><b>Focus on the goal</b> — supply the overarching goal, then guide ChatGPT step-by-step.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Prompt pattern</span>
+    <p>"You are an expert software architect. I need your help in designing a new application..." — the role + task framing gets better domain-specific output.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Implementation</h3>
+  <ul>
+    <li><b>Code completion &amp; synthesis</b> — Copilot/Codex reduce boilerplate; generate functions/classes from comments.</li>
+    <li><b>Defect prediction</b> — ML on code metrics (complexity, churn, prior bugs) predicts bug-prone modules.</li>
+  </ul>
+  <div class="ex">
+    <span class="lbl">Example accuracy</span>
+    <p>Apple's transformer-based <b>ADE-QVAET</b> achieved <b>~98% F1</b> in predicting bugs on a benchmark dataset by analysing code attributes (size, complexity, structure).</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>Vibe Coding</h3>
+  <p>AI-driven software development workflow with four cyclical steps:</p>
+  <ul>
+    <li><b>1. High-Level Prompting</b> — define the project's general direction.</li>
+    <li><b>2. AI Code Generation</b> — generate initial code for testing.</li>
+    <li><b>3. Iterative Refinement</b> — provide feedback for debugging.</li>
+    <li><b>4. Final Product Alignment</b> — ensure the product meets expectations.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Benefits</span>
+    <p><b>AI-driven productivity</b>, <b>lower barrier to entry</b> (non-programmers can build), and <b>enhanced code quality</b> through AI-assisted bug-catching and best practices.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Testing</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Diffblue Cover</h4>
+      <ul>
+        <li>RL agent auto-generates Java unit tests</li>
+        <li>Up to <b>250× faster</b> than manual</li>
+        <li>Uncovers edge cases devs miss</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Appvance IQ</h4>
+      <ul>
+        <li>Creates &amp; executes thousands of UI/API tests</li>
+        <li>Up to <b>1000×</b> speedup over manual</li>
+        <li>Prioritises critical paths via AI</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Debugging &amp; Maintenance</h3>
+  <ul>
+    <li><b>Log mining</b> — AIOps platforms apply ML (e.g. Isolation Forest) to detect anomalies in logs before failures.</li>
+    <li><b>Root cause</b> — NLP on stack traces and error messages pinpoints likely fault locations.</li>
+    <li><b>Predictive maintenance</b> — telemetry + ML forecasts component failures (memory leaks, response-time trends).</li>
+    <li><b>Code smell detection</b> — fine-tuned LLMs flag "God Class," duplication, long methods → guides refactoring.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in Project Management</h3>
+  <ul>
+    <li><b>Effort estimation</b> — ML on historical project data predicts time and cost more accurately than human intuition.</li>
+    <li><b>Risk modelling</b> — AI flags factors that historically cause overruns (high bug counts, scope changes); alerts managers early so they can mitigate.</li>
+    <li><b>Continuous learning</b> — risk models refine as more project data accumulates.</li>
+  </ul>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>AI in QA &amp; Documentation</h3>
+  <ul>
+    <li><b>Defect prediction</b> directs QA effort to high-risk modules.</li>
+    <li><b>Quality metrics dashboards</b> — AI tracks coverage, complexity, sudden trend changes.</li>
+    <li><b>Auto-documentation</b> — NLP models summarise functions in plain English; generate code comments, README files from existing code.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember</span>
+    <p>AI-generated docs <b>stay up-to-date with code changes</b> — solving the perennial problem of stale documentation.</p>
+  </div>
+</section>
+
+<section class="topic">
+  <h3><span class="dot"></span>End-to-End AI-Driven SDLC &amp; CI/CD</h3>
+  <p>Imagine one AI agent per phase, coordinated by a central orchestrator:</p>
+  <ul>
+    <li><b>Requirements</b> — AI PM Assistant turns meeting transcripts into structured requirements docs.</li>
+    <li><b>Design</b> — Engineering Assistant creates specs and diagrams.</li>
+    <li><b>Coding &amp; testing</b> — AI writes code, test agents generate cases.</li>
+    <li><b>CI/CD</b> — SonarQube/DeepCode at commit time; smart test prioritisation; <b>Harness.ai</b> predicts canary failures and auto-rolls-back.</li>
+  </ul>
+  <div class="remember">
+    <span class="lbl">Remember — the human's role</span>
+    <p>"AI won't replace programmers, but will become an essential tool." Engineers become <b>AI pilots</b> — they guide and review AI outputs. The role evolves; it stays central.</p>
+  </div>
+</section>
+
+<!-- ============ QUIZ 6 ============ -->
+<div class="quiz" id="quiz6" data-quiz>
+  <div class="qhead">
+    <span class="badge">QUIZ</span>
+    <h3>Chapter 6 Check</h3>
+  </div>
+  <p class="sub">Tap an answer to see if it's right and why.</p>
+  <!-- questions injected by JS -->
+</div>
+
+<footer>
+  <p>You've got this. Review the amber <b>Remember</b> boxes one last time before the exam.</p>
+  <div class="pill-row">
+    <span class="pill">5 dimensions of sustainability</span>
+    <span class="pill">Rebound effect is sneaky</span>
+    <span class="pill">AI4SE + SE4AI = synergy</span>
+  </div>
+  <a href="#" class="top-link">↑ Back to top</a>
+</footer>
+
+</main>
+
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/page-new-course-ch5-6.js"></script>
+
+</body>
+</html>
