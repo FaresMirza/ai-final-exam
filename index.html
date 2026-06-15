@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI3011 Study Guides</title>
+<title>SE4705 Study Guides</title>
 <style>
   :root{
     --ink:#1c2230;
@@ -115,9 +115,9 @@
 </head>
 <body>
 <section class="hero">
-  <span class="tag" data-i18n-html="hero-tag">AI3011 · Final Exam</span>
+  <span class="tag" data-i18n-html="hero-tag">SE4705 · Final Exam</span>
   <h1 data-i18n-html="hero-title">Study Guide Home</h1>
-  <p data-i18n-html="hero-copy">Use this page as the entry point on your server, then jump into any guide and use the top navigation to move between pages.</p>
+  <p data-i18n-html="hero-copy">Use this page as the entry point for the SE4705 guides, then jump into any chapter set and use each page's top navigation to move around.</p>
   <div class="lang-toggle-host"></div>
 </section>
 
@@ -125,31 +125,51 @@
   <div class="grid">
     <article class="card" data-i18n-html="card-1">
       <span class="eyebrow">Guide 1</span>
-      <h2>Chapters 2 &amp; 3</h2>
-      <p>Regression, classification, and the matching quizzes.</p>
+      <h2>Chapters 1 &amp; 2</h2>
+      <p>Emerging trends, software products, and the matching bilingual quizzes.</p>
       <div class="actions">
-        <a class="btn primary" href="ai-study-guide-ch2-3.html">Open Guide</a>
-        <a class="btn secondary" href="ai-study-guide-ch2-3.html#ch2">Start at Ch 2</a>
+        <a class="btn primary" href="new-course-ch1-2.html">Open Guide</a>
+        <a class="btn secondary" href="new-course-ch1-2.html#ch1">Start at Ch 1</a>
       </div>
     </article>
 
     <article class="card" data-i18n-html="card-2">
       <span class="eyebrow">Guide 2</span>
-      <h2>Chapters 4 &amp; 5</h2>
-      <p>SVM, evaluation metrics, clustering, and the matching quizzes.</p>
+      <h2>Chapters 3 &amp; 4</h2>
+      <p>DevOps, code management, microservices architecture, and quizzes.</p>
       <div class="actions">
-        <a class="btn primary" href="ai-study-guide-ch4-5.html">Open Guide</a>
-        <a class="btn secondary" href="ai-study-guide-ch4-5.html#ch4">Start at Ch 4</a>
+        <a class="btn primary" href="new-course-ch3-4.html">Open Guide</a>
+        <a class="btn secondary" href="new-course-ch3-4.html#ch3">Start at Ch 3</a>
       </div>
     </article>
 
     <article class="card" data-i18n-html="card-3">
       <span class="eyebrow">Guide 3</span>
-      <h2>Chapters 6 &amp; 7</h2>
-      <p>Dimensionality reduction, neural networks, and the matching quizzes.</p>
+      <h2>Chapters 5 &amp; 6</h2>
+      <p>Sustainability, AI-driven software engineering, and the matching quizzes.</p>
       <div class="actions">
-        <a class="btn primary" href="ai-study-guide-ch6-7.html">Open Guide</a>
-        <a class="btn secondary" href="ai-study-guide-ch6-7.html#ch6">Start at Ch 6</a>
+        <a class="btn primary" href="new-course-ch5-6.html">Open Guide</a>
+        <a class="btn secondary" href="new-course-ch5-6.html#ch5">Start at Ch 5</a>
+      </div>
+    </article>
+
+    <article class="card" data-i18n-html="card-4">
+      <span class="eyebrow">Guide 4</span>
+      <h2>Chapters 7 &amp; 8</h2>
+      <p>Ethics, culture, emerging paradigms, and the matching quizzes.</p>
+      <div class="actions">
+        <a class="btn primary" href="new-course-ch7-8.html">Open Guide</a>
+        <a class="btn secondary" href="new-course-ch7-8.html#ch7">Start at Ch 7</a>
+      </div>
+    </article>
+
+    <article class="card" data-i18n-html="card-5">
+      <span class="eyebrow">Guide 5</span>
+      <h2>Chapter 9</h2>
+      <p>Modern software engineering case studies with a final bilingual quiz.</p>
+      <div class="actions">
+        <a class="btn primary" href="new-course-ch9.html">Open Guide</a>
+        <a class="btn secondary" href="new-course-ch9.html#ch9">Start at Ch 9</a>
       </div>
     </article>
   </div>
@@ -159,38 +179,56 @@
 StudyGuideApp.init({
   toggleHostSelector: ".lang-toggle-host",
   title: {
-    ar: "AI3011 - أدلة المذاكرة"
+    ar: "SE4705 - أدلة المذاكرة"
   },
   translations: {
     html: {
-      "hero-tag": "AI3011 · الاختبار النهائي",
+      "hero-tag": "SE4705 · الاختبار النهائي",
       "hero-title": "الصفحة الرئيسية لأدلة المذاكرة",
-      "hero-copy": "استخدم هذه الصفحة كنقطة البداية على GitHub Pages أو على الخادم الخاص بك، ثم انتقل إلى أي دليل واستعمل التنقل العلوي للتبديل بين الصفحات.",
+      "hero-copy": "استخدم هذه الصفحة كنقطة البداية لأدلة SE4705، ثم انتقل إلى أي مجموعة فصول واستعمل التنقل العلوي داخل كل صفحة.",
       "card-1": `
         <span class="eyebrow">الدليل 1</span>
-        <h2>الفصلان 2 و3</h2>
-        <p>الانحدار، والتصنيف، والاختبارات المطابقة لهما.</p>
+        <h2>الفصلان 1 و2</h2>
+        <p>الاتجاهات الناشئة، ومنتجات البرمجيات، والاختبارات الثنائية المطابقة.</p>
         <div class="actions">
-          <a class="btn primary" href="ai-study-guide-ch2-3.html">افتح الدليل</a>
-          <a class="btn secondary" href="ai-study-guide-ch2-3.html#ch2">ابدأ من الفصل 2</a>
+          <a class="btn primary" href="new-course-ch1-2.html">افتح الدليل</a>
+          <a class="btn secondary" href="new-course-ch1-2.html#ch1">ابدأ من الفصل 1</a>
         </div>
       `,
       "card-2": `
         <span class="eyebrow">الدليل 2</span>
-        <h2>الفصلان 4 و5</h2>
-        <p>آلة المتجهات الداعمة، ومقاييس التقييم، والتجميع، والاختبارات المطابقة لها.</p>
+        <h2>الفصلان 3 و4</h2>
+        <p>DevOps، وإدارة الكود، ومعمارية الخدمات المصغرة، والاختبارات المطابقة.</p>
         <div class="actions">
-          <a class="btn primary" href="ai-study-guide-ch4-5.html">افتح الدليل</a>
-          <a class="btn secondary" href="ai-study-guide-ch4-5.html#ch4">ابدأ من الفصل 4</a>
+          <a class="btn primary" href="new-course-ch3-4.html">افتح الدليل</a>
+          <a class="btn secondary" href="new-course-ch3-4.html#ch3">ابدأ من الفصل 3</a>
         </div>
       `,
       "card-3": `
         <span class="eyebrow">الدليل 3</span>
-        <h2>الفصلان 6 و7</h2>
-        <p>تقليل الأبعاد، والشبكات العصبية، والاختبارات المطابقة لها.</p>
+        <h2>الفصلان 5 و6</h2>
+        <p>الاستدامة، وهندسة البرمجيات المدفوعة بالذكاء الاصطناعي، والاختبارات المطابقة.</p>
         <div class="actions">
-          <a class="btn primary" href="ai-study-guide-ch6-7.html">افتح الدليل</a>
-          <a class="btn secondary" href="ai-study-guide-ch6-7.html#ch6">ابدأ من الفصل 6</a>
+          <a class="btn primary" href="new-course-ch5-6.html">افتح الدليل</a>
+          <a class="btn secondary" href="new-course-ch5-6.html#ch5">ابدأ من الفصل 5</a>
+        </div>
+      `,
+      "card-4": `
+        <span class="eyebrow">الدليل 4</span>
+        <h2>الفصلان 7 و8</h2>
+        <p>الأخلاقيات، والثقافة، والنماذج الناشئة، والاختبارات المطابقة.</p>
+        <div class="actions">
+          <a class="btn primary" href="new-course-ch7-8.html">افتح الدليل</a>
+          <a class="btn secondary" href="new-course-ch7-8.html#ch7">ابدأ من الفصل 7</a>
+        </div>
+      `,
+      "card-5": `
+        <span class="eyebrow">الدليل 5</span>
+        <h2>الفصل 9</h2>
+        <p>دراسات حالة في هندسة البرمجيات الحديثة مع اختبار ثنائي نهائي.</p>
+        <div class="actions">
+          <a class="btn primary" href="new-course-ch9.html">افتح الدليل</a>
+          <a class="btn secondary" href="new-course-ch9.html#ch9">ابدأ من الفصل 9</a>
         </div>
       `
     }
