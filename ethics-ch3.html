@@ -14,41 +14,41 @@
   <section class="topic">
     <h3><span class="dot"></span>Why Software Safety Matters</h3>
     <ul>
-      <li>Software now controls transport, healthcare, industry, defense, and energy systems.</li>
-      <li>Failure in these environments can put <b>human life</b> at risk.</li>
-      <li>That is why safety-critical software must be engineered more carefully than ordinary business software.</li>
+      <li>Software now controls aircraft, medical devices, industrial processes, and other high-risk systems.</li>
+      <li>If software fails in these areas, the result can be injury, death, or environmental damage.</li>
+      <li>That is why safety questions are not “extra quality issues”; they are core engineering obligations.</li>
     </ul>
   </section>
   <section class="topic">
     <h3><span class="dot"></span>What Software Safety Means</h3>
     <ul>
-      <li>Software safety is about preventing harm to people and the environment.</li>
-      <li>It goes beyond correctness into resilience and fault tolerance.</li>
-      <li>The goal is to <b>fail safely, not dangerously</b>.</li>
+      <li>Software safety means preventing harm to people, property, and the environment.</li>
+      <li>It is broader than “the program works” because a correct-looking system can still be unsafe.</li>
+      <li>The goal is to <b>fail safely, not dangerously</b>, so that faults do not turn into disasters.</li>
     </ul>
   </section>
   <section class="topic">
     <h3><span class="dot"></span>Safety-Critical Systems and Liability</h3>
     <ul>
-      <li>Safety-critical systems are systems whose failure can cause injury or death.</li>
-      <li>Examples include air traffic control, medical systems, and nuclear systems.</li>
-      <li>When software fails, a key legal question is: <b>who is responsible?</b></li>
+      <li>Safety-critical systems are systems whose failure can cause injury, death, or major damage.</li>
+      <li>Examples include air traffic control, medical treatment systems, transport control, and nuclear systems.</li>
+      <li>When software fails, an exam question often becomes: <b>who is legally and ethically responsible?</b></li>
     </ul>
   </section>
   <section class="topic">
     <h3><span class="dot"></span>Liability Concepts</h3>
     <div class="compare">
-      <div class="col"><h4>Fault-based ideas</h4><ul><li>Negligence</li><li>Product liability</li><li>Breach of contract or warranty</li></ul></div>
-      <div class="col"><h4>Broader responsibility</h4><ul><li>Strict liability</li><li>Vicarious liability</li><li>Personal liability</li></ul></div>
+      <div class="col"><h4>Fault-based ideas</h4><ul><li><b>Negligence</b>: failure to use reasonable care</li><li><b>Product liability</b>: harm caused by a defective product</li><li><b>Breach of contract/warranty</b>: failure to meet promised standards</li></ul></div>
+      <div class="col"><h4>Broader responsibility</h4><ul><li><b>Strict liability</b>: responsibility even without proving negligence</li><li><b>Vicarious liability</b>: employer responsibility for employees</li><li><b>Personal liability</b>: an individual is directly accountable for their own actions</li></ul></div>
     </div>
-    <p>These concepts decide whether responsibility depends on careless behaviour, defective products, employment relationships, or broken promises.</p>
+    <p>These ideas explain whether responsibility comes from carelessness, defective software, broken contractual promises, or organizational responsibility.</p>
   </section>
   <section class="topic">
     <h3><span class="dot"></span>Risk Mitigation and Professional Duty</h3>
     <ul>
-      <li>Use hazard analysis, formal verification, testing, redundancy, and clear safety documentation.</li>
-      <li>Engineers must protect the public beyond the legal minimum.</li>
-      <li>Case studies like <b>Therac-25</b> and the <b>Boeing 737 MAX</b> show the cost of weak safeguards, weak testing, and poor accountability.</li>
+      <li>Reduce risk through hazard analysis, strong testing, redundancy, fault tolerance, and clear safety documentation.</li>
+      <li>Engineers must report risks and refuse unsafe shortcuts, not merely satisfy the minimum legal standard.</li>
+      <li>Real software failures show that poor design assumptions and weak safeguards can lead to serious harm.</li>
     </ul>
     <div class="remember"><span class="lbl">Takeaway</span><p>In safety-critical software, ethical responsibility and legal liability are tightly connected.</p></div>
   </section>
@@ -66,11 +66,11 @@ window.ETHICS_PAGE_CONFIG = {
     "hero-copy": "الفصل الثالث — سلامة البرمجيات والمسؤولية القانونية والممارسة الهندسية",
     "page-nav": '<a href="#ch3">نظرة عامة</a><a href="#quiz3">اختبار 3</a>',
     "chapter-head": '<span class="num">الفصل 3</span><h2>سلامة البرمجيات: المسؤولية والممارسة</h2>',
-    "topic-1": '<h3><span class="dot"></span>لماذا تهم سلامة البرمجيات</h3><ul><li>تتحكم البرمجيات الآن في النقل والرعاية الصحية والصناعة والدفاع والطاقة.</li><li>الفشل في هذه البيئات قد يعرّض <b>حياة الإنسان</b> للخطر.</li><li>لهذا يجب هندسة البرمجيات الحرجة للسلامة بعناية أكبر من البرمجيات التجارية العادية.</li></ul>',
-    "topic-2": '<h3><span class="dot"></span>ما معنى سلامة البرمجيات</h3><ul><li>سلامة البرمجيات تعني منع الضرر عن الناس والبيئة.</li><li>وهي تتجاوز الصحة الوظيفية إلى المرونة وتحمل الأعطال.</li><li>الهدف هو <b>الفشل الآمن لا الفشل الخطير</b>.</li></ul>',
-    "topic-3": '<h3><span class="dot"></span>الأنظمة الحرجة للسلامة والمسؤولية</h3><ul><li>الأنظمة الحرجة للسلامة هي التي قد يؤدي فشلها إلى إصابة أو وفاة.</li><li>من أمثلتها التحكم الجوي والأنظمة الطبية والنووية.</li><li>عند فشل البرمجية، يصبح السؤال القانوني الأساسي: <b>من المسؤول؟</b></li></ul>',
-    "topic-4": '<h3><span class="dot"></span>مفاهيم المسؤولية القانونية</h3><div class="compare"><div class="col"><h4>أفكار قائمة على الخطأ</h4><ul><li>الإهمال</li><li>مسؤولية المنتج</li><li>الإخلال بالعقد أو الضمان</li></ul></div><div class="col"><h4>مسؤولية أوسع</h4><ul><li>المسؤولية الصارمة</li><li>المسؤولية التبعية</li><li>المسؤولية الشخصية</li></ul></div></div><p>تحدد هذه المفاهيم ما إذا كانت المسؤولية تعتمد على الإهمال أو عيب المنتج أو علاقة التوظيف أو كسر الوعود التعاقدية.</p>',
-    "topic-5": '<h3><span class="dot"></span>خفض المخاطر والواجب المهني</h3><ul><li>استخدم تحليل المخاطر والتحقق الشكلي والاختبار والازدواجية وتوثيق السلامة.</li><li>على المهندس حماية الجمهور بما يتجاوز الحد القانوني الأدنى.</li><li>تُظهر حالات مثل <b>Therac-25</b> و<b>Boeing 737 MAX</b> تكلفة ضعف الضمانات والاختبار والمساءلة.</li></ul><div class="remember"><span class="lbl">الخلاصة</span><p>في البرمجيات الحرجة للسلامة، ترتبط المسؤولية الأخلاقية بالمسؤولية القانونية ارتباطًا وثيقًا.</p></div>',
+    "topic-1": '<h3><span class="dot"></span>لماذا تهم سلامة البرمجيات</h3><ul><li>تتحكم البرمجيات الآن في الطائرات والأجهزة الطبية والعمليات الصناعية وغيرها من الأنظمة عالية الخطورة.</li><li>إذا فشلت البرمجية في هذه المجالات فقد تكون النتيجة إصابة أو وفاة أو ضرر بيئي.</li><li>لهذا فأسئلة السلامة ليست “تفاصيل جودة إضافية”، بل التزام هندسي أساسي.</li></ul>',
+    "topic-2": '<h3><span class="dot"></span>ما معنى سلامة البرمجيات</h3><ul><li>سلامة البرمجيات تعني منع الضرر عن الناس والممتلكات والبيئة.</li><li>وهي أوسع من مجرد “البرنامج يعمل” لأن النظام قد يبدو صحيحًا لكنه غير آمن.</li><li>الهدف هو <b>الفشل الآمن لا الفشل الخطير</b> حتى لا تتحول الأعطال إلى كوارث.</li></ul>',
+    "topic-3": '<h3><span class="dot"></span>الأنظمة الحرجة للسلامة والمسؤولية</h3><ul><li>الأنظمة الحرجة للسلامة هي التي قد يؤدي فشلها إلى إصابة أو وفاة أو ضرر كبير.</li><li>من أمثلتها التحكم في الحركة الجوية والأنظمة الطبية والتحكم في النقل والأنظمة النووية.</li><li>عند فشل البرمجية يصبح سؤال الاختبار المعتاد: <b>من المسؤول قانونيًا وأخلاقيًا؟</b></li></ul>',
+    "topic-4": '<h3><span class="dot"></span>مفاهيم المسؤولية القانونية</h3><div class="compare"><div class="col"><h4>أفكار قائمة على الخطأ</h4><ul><li><b>الإهمال</b>: الفشل في بذل عناية معقولة</li><li><b>مسؤولية المنتج</b>: ضرر سببه منتج معيب</li><li><b>الإخلال بالعقد/الضمان</b>: عدم الوفاء بالمعايير الموعودة</li></ul></div><div class="col"><h4>مسؤولية أوسع</h4><ul><li><b>المسؤولية الصارمة</b>: مسؤولية حتى دون إثبات الإهمال</li><li><b>المسؤولية التبعية</b>: مسؤولية صاحب العمل عن موظفيه</li><li><b>المسؤولية الشخصية</b>: محاسبة الفرد مباشرة على أفعاله</li></ul></div></div><p>توضح هذه الأفكار ما إذا كانت المسؤولية ناتجة عن الإهمال أو عيب البرمجية أو الوعود التعاقدية أو المسؤولية التنظيمية.</p>',
+    "topic-5": '<h3><span class="dot"></span>خفض المخاطر والواجب المهني</h3><ul><li>يُخفض الخطر عبر تحليل المخاطر والاختبار القوي والازدواجية وتحمل الأعطال وتوثيق السلامة.</li><li>على المهندس الإبلاغ عن المخاطر ورفض الاختصارات غير الآمنة لا مجرد تحقيق الحد الأدنى القانوني.</li><li>وتوضح الإخفاقات البرمجية الواقعية أن الافتراضات التصميمية الضعيفة والضمانات الضعيفة قد تؤدي إلى ضرر شديد.</li></ul><div class="remember"><span class="lbl">الخلاصة</span><p>في البرمجيات الحرجة للسلامة، ترتبط المسؤولية الأخلاقية بالمسؤولية القانونية ارتباطًا مباشرًا.</p></div>',
     "footer": '<p>احتفظ بالخيط الأساسي: الأنظمة الحرجة للسلامة تحتاج تصميمًا آمنًا واختبارًا قويًا ومساءلة واضحة.</p><div class="pill-row"><span class="pill">فشل آمن</span><span class="pill">أنظمة حرجة</span><span class="pill">المسؤولية مهمة</span></div><a href="#" class="top-link">↑ العودة إلى الأعلى</a>'
   },
   quizzes: { en: { quiz3: [
@@ -78,13 +78,13 @@ window.ETHICS_PAGE_CONFIG = {
     { q: "What is the main goal of software safety?", options: ["Fail expensively", "Fail safely, not dangerously", "Avoid all documentation", "Remove all hardware"], answer: 1, explain: "The lecture explicitly frames the goal as safe failure rather than dangerous failure." },
     { q: "Which of these is an example of a safety-critical system?", options: ["Air traffic control", "Photo filter app", "Simple note app", "Weather wallpaper"], answer: 0, explain: "Air traffic control is one of the lecture's classic safety-critical examples." },
     { q: "Negligence usually means…", options: ["Reasonable care was exercised", "Failure to exercise reasonable care", "Any bug in any code", "A legal win for the developer"], answer: 1, explain: "Negligence is about not taking reasonable care in design, construction, or operation." },
-    { q: "What do the Therac-25 and Boeing examples mainly illustrate?", options: ["That documentation is optional", "That weak safeguards and poor testing can have severe consequences", "That only pilots are responsible", "That software liability never matters"], answer: 1, explain: "Both cases are used to show how poor safety engineering and accountability can cause serious harm." }
+    { q: "What do real safety-related software failures mainly illustrate?", options: ["That documentation is optional", "That weak safeguards and poor testing can have severe consequences", "That only operators are responsible", "That software liability never matters"], answer: 1, explain: "Safety failures are studied to show how weak engineering controls and poor accountability can cause serious harm." }
   ]}, ar: { quiz3: [
     { q: "لماذا تعد سلامة البرمجيات مهمة جدًا في الأنظمة الحرجة للسلامة؟", options: ["لأنها تستخدم لغات أحدث", "لأن الفشل قد يسبب إصابة أو وفاة", "لأن اختبارها أسهل", "لأنها تتجنب القوانين"], answer: 1, explain: "تكمن أهمية الأنظمة الحرجة في أن فشلها قد يضر الناس مباشرة." },
     { q: "ما الهدف الرئيسي من سلامة البرمجيات؟", options: ["فشل مكلف", "الفشل الآمن لا الخطير", "إلغاء التوثيق", "إزالة كل العتاد"], answer: 1, explain: "المحاضرة تضع الهدف بوضوح: الفشل الآمن بدل الفشل الخطير." },
     { q: "أي مما يلي مثال على نظام حرج للسلامة؟", options: ["التحكم في حركة الطيران", "تطبيق فلاتر صور", "تطبيق ملاحظات بسيط", "خلفية طقس"], answer: 0, explain: "التحكم في حركة الطيران من الأمثلة الكلاسيكية المذكورة في المحاضرة." },
     { q: "الإهمال يعني عادة…", options: ["بذل عناية معقولة", "الفشل في بذل عناية معقولة", "أي خطأ برمجي", "فوزًا قانونيًا للمطور"], answer: 1, explain: "الإهمال يتعلق بعدم اتخاذ العناية المعقولة في التصميم أو البناء أو التشغيل." },
-    { q: "ما الذي توضحه حالتا Therac-25 وBoeing أساسًا؟", options: ["أن التوثيق اختياري", "أن ضعف الضمانات والاختبار قد يؤدي إلى عواقب خطيرة", "أن الطيارين وحدهم مسؤولون", "أن المسؤولية البرمجية لا تهم"], answer: 1, explain: "كلتا الحالتين توضحان كيف يمكن لضعف هندسة السلامة والمساءلة أن يؤدي إلى ضرر شديد." }
+    { q: "ما الذي توضحه الإخفاقات الواقعية في برمجيات السلامة أساسًا؟", options: ["أن التوثيق اختياري", "أن ضعف الضمانات والاختبار قد يؤدي إلى عواقب خطيرة", "أن المشغلين وحدهم مسؤولون", "أن المسؤولية البرمجية لا تهم"], answer: 1, explain: "تُدرس هذه الإخفاقات لتوضيح كيف قد يؤدي ضعف الضوابط الهندسية والمساءلة إلى ضرر شديد." }
   ]}},
   quizMeta: { en: { quiz3: { title: "Chapter 3 Check", sub: "Tap an answer. You'll see instantly if it's right, plus a quick why." } }, ar: { quiz3: { title: "مراجعة الفصل 3", sub: "اضغط على الإجابة، وستعرف فورًا إن كانت صحيحة مع سبب سريع." } } }
 };
