@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SE2202 — Ethics Guide (Ch 3)</title>
+<link rel="stylesheet" href="assets/ethics-guide.css"><link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav"><span class="label">Study Guides</span><div class="links"><a href="ethics-ch1.html">Ch 1</a><a href="ethics-ch2.html">Ch 2</a><a class="current" href="ethics-ch3.html">Ch 3</a><a href="ethics-ch4.html">Ch 4</a><a href="ethics-ch5.html">Ch 5</a><a href="ethics-ch6.html">Ch 6</a><a href="ethics-ch7.html">Ch 7</a><a href="ethics-ch8.html">Ch 8</a></div></div>
+<header><span class="tag">SE2202 · Professional Practice</span><h1>Quick Study Guide</h1><p>Chapter 3 — software safety, liability, and engineering practice</p></header>
+<nav><a href="#ch3">Overview</a><a href="#quiz3">Quiz 3</a></nav>
+<main>
+  <div class="chapter-head" id="ch3"><span class="num">Chapter 3</span><h2>Software Safety: Liability and Practice</h2></div>
+  <section class="topic">
+    <h3><span class="dot"></span>Why Software Safety Matters</h3>
+    <ul>
+      <li>Software now controls transport, healthcare, industry, defense, and energy systems.</li>
+      <li>Failure in these environments can put <b>human life</b> at risk.</li>
+      <li>That is why safety-critical software must be engineered more carefully than ordinary business software.</li>
+    </ul>
+  </section>
+  <section class="topic">
+    <h3><span class="dot"></span>What Software Safety Means</h3>
+    <ul>
+      <li>Software safety is about preventing harm to people and the environment.</li>
+      <li>It goes beyond correctness into resilience and fault tolerance.</li>
+      <li>The goal is to <b>fail safely, not dangerously</b>.</li>
+    </ul>
+  </section>
+  <section class="topic">
+    <h3><span class="dot"></span>Safety-Critical Systems and Liability</h3>
+    <ul>
+      <li>Safety-critical systems are systems whose failure can cause injury or death.</li>
+      <li>Examples include air traffic control, medical systems, and nuclear systems.</li>
+      <li>When software fails, a key legal question is: <b>who is responsible?</b></li>
+    </ul>
+  </section>
+  <section class="topic">
+    <h3><span class="dot"></span>Liability Concepts</h3>
+    <div class="compare">
+      <div class="col"><h4>Fault-based ideas</h4><ul><li>Negligence</li><li>Product liability</li><li>Breach of contract or warranty</li></ul></div>
+      <div class="col"><h4>Broader responsibility</h4><ul><li>Strict liability</li><li>Vicarious liability</li><li>Personal liability</li></ul></div>
+    </div>
+    <p>These concepts decide whether responsibility depends on careless behaviour, defective products, employment relationships, or broken promises.</p>
+  </section>
+  <section class="topic">
+    <h3><span class="dot"></span>Risk Mitigation and Professional Duty</h3>
+    <ul>
+      <li>Use hazard analysis, formal verification, testing, redundancy, and clear safety documentation.</li>
+      <li>Engineers must protect the public beyond the legal minimum.</li>
+      <li>Case studies like <b>Therac-25</b> and the <b>Boeing 737 MAX</b> show the cost of weak safeguards, weak testing, and poor accountability.</li>
+    </ul>
+    <div class="remember"><span class="lbl">Takeaway</span><p>In safety-critical software, ethical responsibility and legal liability are tightly connected.</p></div>
+  </section>
+  <div class="quiz" id="quiz3" data-quiz><div class="qhead"><span class="badge">QUIZ</span><h3>Chapter 3 Check</h3></div><p class="sub">Tap an answer to see if it's right and why.</p></div>
+  <footer><p>Keep the core thread in mind: safety-critical systems need fail-safe design, strong testing, and clear accountability.</p><div class="pill-row"><span class="pill">Fail safely</span><span class="pill">Safety-critical systems</span><span class="pill">Liability matters</span></div><a href="#" class="top-link">↑ Back to top</a></footer>
+</main>
+<script>
+window.ETHICS_PAGE_CONFIG = {
+  titleAr: "SE2202 — دليل الأخلاقيات — الفصل 3",
+  translations: {
+    "site-nav-label": "أدلة المذاكرة",
+    "site-nav-links": '<a href="ethics-ch1.html">الفصل 1</a><a href="ethics-ch2.html">الفصل 2</a><a class="current" href="ethics-ch3.html">الفصل 3</a><a href="ethics-ch4.html">الفصل 4</a><a href="ethics-ch5.html">الفصل 5</a><a href="ethics-ch6.html">الفصل 6</a><a href="ethics-ch7.html">الفصل 7</a><a href="ethics-ch8.html">الفصل 8</a>',
+    "hero-tag": "SE2202 · الممارسة المهنية",
+    "hero-title": "دليل المذاكرة السريع",
+    "hero-copy": "الفصل الثالث — سلامة البرمجيات والمسؤولية القانونية والممارسة الهندسية",
+    "page-nav": '<a href="#ch3">نظرة عامة</a><a href="#quiz3">اختبار 3</a>',
+    "chapter-head": '<span class="num">الفصل 3</span><h2>سلامة البرمجيات: المسؤولية والممارسة</h2>',
+    "topic-1": '<h3><span class="dot"></span>لماذا تهم سلامة البرمجيات</h3><ul><li>تتحكم البرمجيات الآن في النقل والرعاية الصحية والصناعة والدفاع والطاقة.</li><li>الفشل في هذه البيئات قد يعرّض <b>حياة الإنسان</b> للخطر.</li><li>لهذا يجب هندسة البرمجيات الحرجة للسلامة بعناية أكبر من البرمجيات التجارية العادية.</li></ul>',
+    "topic-2": '<h3><span class="dot"></span>ما معنى سلامة البرمجيات</h3><ul><li>سلامة البرمجيات تعني منع الضرر عن الناس والبيئة.</li><li>وهي تتجاوز الصحة الوظيفية إلى المرونة وتحمل الأعطال.</li><li>الهدف هو <b>الفشل الآمن لا الفشل الخطير</b>.</li></ul>',
+    "topic-3": '<h3><span class="dot"></span>الأنظمة الحرجة للسلامة والمسؤولية</h3><ul><li>الأنظمة الحرجة للسلامة هي التي قد يؤدي فشلها إلى إصابة أو وفاة.</li><li>من أمثلتها التحكم الجوي والأنظمة الطبية والنووية.</li><li>عند فشل البرمجية، يصبح السؤال القانوني الأساسي: <b>من المسؤول؟</b></li></ul>',
+    "topic-4": '<h3><span class="dot"></span>مفاهيم المسؤولية القانونية</h3><div class="compare"><div class="col"><h4>أفكار قائمة على الخطأ</h4><ul><li>الإهمال</li><li>مسؤولية المنتج</li><li>الإخلال بالعقد أو الضمان</li></ul></div><div class="col"><h4>مسؤولية أوسع</h4><ul><li>المسؤولية الصارمة</li><li>المسؤولية التبعية</li><li>المسؤولية الشخصية</li></ul></div></div><p>تحدد هذه المفاهيم ما إذا كانت المسؤولية تعتمد على الإهمال أو عيب المنتج أو علاقة التوظيف أو كسر الوعود التعاقدية.</p>',
+    "topic-5": '<h3><span class="dot"></span>خفض المخاطر والواجب المهني</h3><ul><li>استخدم تحليل المخاطر والتحقق الشكلي والاختبار والازدواجية وتوثيق السلامة.</li><li>على المهندس حماية الجمهور بما يتجاوز الحد القانوني الأدنى.</li><li>تُظهر حالات مثل <b>Therac-25</b> و<b>Boeing 737 MAX</b> تكلفة ضعف الضمانات والاختبار والمساءلة.</li></ul><div class="remember"><span class="lbl">الخلاصة</span><p>في البرمجيات الحرجة للسلامة، ترتبط المسؤولية الأخلاقية بالمسؤولية القانونية ارتباطًا وثيقًا.</p></div>',
+    "footer": '<p>احتفظ بالخيط الأساسي: الأنظمة الحرجة للسلامة تحتاج تصميمًا آمنًا واختبارًا قويًا ومساءلة واضحة.</p><div class="pill-row"><span class="pill">فشل آمن</span><span class="pill">أنظمة حرجة</span><span class="pill">المسؤولية مهمة</span></div><a href="#" class="top-link">↑ العودة إلى الأعلى</a>'
+  },
+  quizzes: { en: { quiz3: [
+    { q: "Why is software safety especially important in safety-critical systems?", options: ["Because they use newer languages", "Because failure can cause injury or death", "Because they are easier to test", "Because they avoid regulations"], answer: 1, explain: "Safety-critical systems matter because their failure can directly harm people." },
+    { q: "What is the main goal of software safety?", options: ["Fail expensively", "Fail safely, not dangerously", "Avoid all documentation", "Remove all hardware"], answer: 1, explain: "The lecture explicitly frames the goal as safe failure rather than dangerous failure." },
+    { q: "Which of these is an example of a safety-critical system?", options: ["Air traffic control", "Photo filter app", "Simple note app", "Weather wallpaper"], answer: 0, explain: "Air traffic control is one of the lecture's classic safety-critical examples." },
+    { q: "Negligence usually means…", options: ["Reasonable care was exercised", "Failure to exercise reasonable care", "Any bug in any code", "A legal win for the developer"], answer: 1, explain: "Negligence is about not taking reasonable care in design, construction, or operation." },
+    { q: "What do the Therac-25 and Boeing examples mainly illustrate?", options: ["That documentation is optional", "That weak safeguards and poor testing can have severe consequences", "That only pilots are responsible", "That software liability never matters"], answer: 1, explain: "Both cases are used to show how poor safety engineering and accountability can cause serious harm." }
+  ]}, ar: { quiz3: [
+    { q: "لماذا تعد سلامة البرمجيات مهمة جدًا في الأنظمة الحرجة للسلامة؟", options: ["لأنها تستخدم لغات أحدث", "لأن الفشل قد يسبب إصابة أو وفاة", "لأن اختبارها أسهل", "لأنها تتجنب القوانين"], answer: 1, explain: "تكمن أهمية الأنظمة الحرجة في أن فشلها قد يضر الناس مباشرة." },
+    { q: "ما الهدف الرئيسي من سلامة البرمجيات؟", options: ["فشل مكلف", "الفشل الآمن لا الخطير", "إلغاء التوثيق", "إزالة كل العتاد"], answer: 1, explain: "المحاضرة تضع الهدف بوضوح: الفشل الآمن بدل الفشل الخطير." },
+    { q: "أي مما يلي مثال على نظام حرج للسلامة؟", options: ["التحكم في حركة الطيران", "تطبيق فلاتر صور", "تطبيق ملاحظات بسيط", "خلفية طقس"], answer: 0, explain: "التحكم في حركة الطيران من الأمثلة الكلاسيكية المذكورة في المحاضرة." },
+    { q: "الإهمال يعني عادة…", options: ["بذل عناية معقولة", "الفشل في بذل عناية معقولة", "أي خطأ برمجي", "فوزًا قانونيًا للمطور"], answer: 1, explain: "الإهمال يتعلق بعدم اتخاذ العناية المعقولة في التصميم أو البناء أو التشغيل." },
+    { q: "ما الذي توضحه حالتا Therac-25 وBoeing أساسًا؟", options: ["أن التوثيق اختياري", "أن ضعف الضمانات والاختبار قد يؤدي إلى عواقب خطيرة", "أن الطيارين وحدهم مسؤولون", "أن المسؤولية البرمجية لا تهم"], answer: 1, explain: "كلتا الحالتين توضحان كيف يمكن لضعف هندسة السلامة والمساءلة أن يؤدي إلى ضرر شديد." }
+  ]}},
+  quizMeta: { en: { quiz3: { title: "Chapter 3 Check", sub: "Tap an answer. You'll see instantly if it's right, plus a quick why." } }, ar: { quiz3: { title: "مراجعة الفصل 3", sub: "اضغط على الإجابة، وستعرف فورًا إن كانت صحيحة مع سبب سريع." } } }
+};
+</script>
+<script src="assets/lang-toggle.js"></script><script src="assets/ethics-guide.js"></script>
+</body></html>
