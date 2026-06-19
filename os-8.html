@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 8</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a class="current" href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 8: Deadlocks</h1>
+  <p>Deadlock questions usually test definitions, the four conditions, graph reading, and the difference between prevention, avoidance, and recovery.</p>
+</header>
+
+<main class="page">
+  <section class="topic">
+    <h2>1. What Deadlock Means</h2>
+    <ul>
+      <li>Deadlock is a situation where every process in a set is waiting for an event that can only be caused by another process in the same set.</li>
+      <li>The usual picture is: each process holds one resource and waits for another.</li>
+      <li>Mutex locks and semaphores are very common practical sources of deadlock.</li>
+      <li>If the waiting chain never breaks, the processes remain blocked forever.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>2. System Model</h2>
+    <ul>
+      <li>The system contains resource types such as CPU cycles, memory, I/O devices, files, and synchronization objects.</li>
+      <li>Each process uses resources in this order: <strong>request</strong>, then <strong>use</strong>, then <strong>release</strong>.</li>
+      <li>If a requested resource is unavailable, the process waits.</li>
+      <li>Deadlock becomes possible when waiting processes keep resources that others need.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>3. Four Necessary Conditions</h2>
+    <ol>
+      <li><strong>Mutual exclusion</strong>: only one process can use the resource at a time.</li>
+      <li><strong>Hold and wait</strong>: a process holds at least one resource while requesting more.</li>
+      <li><strong>No preemption</strong>: resources cannot simply be taken away.</li>
+      <li><strong>Circular wait</strong>: there is a cycle of processes waiting for each other.</li>
+    </ol>
+    <div class="note">All four conditions must hold together for deadlock to occur.</div>
+  </section>
+
+  <section class="topic">
+    <h2>4. Resource-Allocation Graph</h2>
+    <ul>
+      <li>Processes/threads and resource types are shown as graph nodes.</li>
+      <li><strong>Request edge</strong>: process → resource.</li>
+      <li><strong>Assignment edge</strong>: resource → process.</li>
+      <li>If there is <strong>no cycle</strong>, there is no deadlock.</li>
+      <li>If each resource type has only one instance, a cycle means deadlock.</li>
+      <li>If resource types have several instances, a cycle means deadlock is possible, but not guaranteed in every case.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Deadlock Prevention and Avoidance</h2>
+    <ul>
+      <li><strong>Prevention</strong> means breaking at least one of the four necessary conditions.</li>
+      <li>Examples: force all resources to be requested in advance, allow preemption in some cases, or impose a fixed ordering on resource requests.</li>
+      <li><strong>Avoidance</strong> means checking every request and allowing it only if the system stays in a safe state.</li>
+      <li><strong>Safe state</strong> means there is some order in which all processes can still finish.</li>
+      <li><strong>Unsafe state</strong> does not mean deadlock already happened, but it means deadlock can happen.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>6. Recovery from Deadlock</h2>
+    <ul>
+      <li>One recovery option is to abort all deadlocked processes.</li>
+      <li>Another is to abort them one by one until the cycle breaks.</li>
+      <li>A third option is to preempt resources from some process and give them elsewhere.</li>
+      <li>Important recovery concerns are victim selection, rollback cost, and starvation.</li>
+    </ul>
+    <div class="note">Quick distinction: <strong>prevention stops the conditions</strong>, <strong>avoidance checks safe state</strong>, and <strong>recovery fixes the problem after deadlock happens</strong>.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 8",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a class="current" href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 8: الاختناقات Deadlocks",
+    "hero-copy": "أسئلة الاختناق تختبر غالبًا التعريف والشروط الأربعة وقراءة الرسم البياني والفرق بين prevention وavoidance وrecovery.",
+    "topic-1": '<h2>1. ما معنى الـ Deadlock</h2><ul><li>الـ deadlock هو حالة تكون فيها كل عملية داخل مجموعة ما منتظرة حدثًا لا يمكن أن تسببه إلا عملية أخرى من نفس المجموعة.</li><li>الصورة المعتادة هي: كل عملية تمسك موردًا وتنتظر موردًا آخر.</li><li>الـ mutex locks والـ semaphores من أشهر المصادر العملية للـ deadlock.</li><li>إذا لم تنكسر سلسلة الانتظار فستبقى العمليات محجوبة إلى الأبد.</li></ul>',
+    "topic-2": '<h2>2. نموذج النظام</h2><ul><li>يحتوي النظام أنواع موارد مثل دورات المعالج والذاكرة وأجهزة الإدخال والإخراج والملفات وأدوات المزامنة.</li><li>تستخدم العملية الموارد بهذا الترتيب: <strong>request</strong> ثم <strong>use</strong> ثم <strong>release</strong>.</li><li>إذا كان المورد المطلوب غير متاح فإن العملية تنتظر.</li><li>يصبح الـ deadlock ممكنًا عندما تحتفظ العمليات المنتظرة بموارد يحتاجها غيرها.</li></ul>',
+    "topic-3": '<h2>3. الشروط الأربعة اللازمة</h2><ol><li><strong>Mutual exclusion</strong>: مورد واحد يستخدمه Process واحد في اللحظة نفسها.</li><li><strong>Hold and wait</strong>: العملية تمسك موردًا واحدًا على الأقل بينما تطلب موارد إضافية.</li><li><strong>No preemption</strong>: لا يمكن أخذ الموارد منها ببساطة.</li><li><strong>Circular wait</strong>: توجد حلقة من العمليات التي تنتظر بعضها.</li></ol><div class="note">يجب أن تتحقق الشروط الأربعة معًا حتى يحدث deadlock.</div>',
+    "topic-4": '<h2>4. Resource-Allocation Graph</h2><ul><li>تُعرض العمليات/الخيوط وأنواع الموارد كعقد في الرسم البياني.</li><li><strong>Request edge</strong>: من العملية إلى المورد.</li><li><strong>Assignment edge</strong>: من المورد إلى العملية.</li><li>إذا <strong>لا توجد دورة</strong> فلا يوجد deadlock.</li><li>إذا كان لكل نوع مورد نسخة واحدة فقط فإن وجود دورة يعني deadlock.</li><li>أما إذا كان للموارد عدة نسخ فإن الدورة تعني أن deadlock ممكن، وليس مضمونًا دائمًا.</li></ul>',
+    "topic-5": '<h2>5. Deadlock Prevention و Avoidance</h2><ul><li><strong>Prevention</strong> تعني كسر واحد على الأقل من الشروط الأربعة اللازمة.</li><li>من الأمثلة: فرض طلب كل الموارد مسبقًا، أو السماح بالـ preemption في بعض الحالات، أو فرض ترتيب ثابت لطلبات الموارد.</li><li><strong>Avoidance</strong> تعني فحص كل طلب والسماح به فقط إذا بقي النظام في safe state.</li><li><strong>Safe state</strong> تعني وجود ترتيب ما يمكن فيه لكل العمليات أن تنتهي.</li><li><strong>Unsafe state</strong> لا تعني أن deadlock حدث فعلًا، لكنها تعني أنه قد يحدث.</li></ul>',
+    "topic-6": '<h2>6. Recovery from Deadlock</h2><ul><li>أحد الحلول هو إنهاء كل العمليات الموجودة في deadlock.</li><li>وحل آخر هو إنهاؤها واحدة واحدة حتى تنكسر الحلقة.</li><li>وحل ثالث هو سحب بعض الموارد من عملية وإعطاؤها لغيرها.</li><li>من القضايا المهمة في recovery: اختيار الضحية، وكلفة rollback، وstarvation.</li></ul><div class="note">التمييز السريع: <strong>prevention</strong> يمنع الشروط، و<strong>avoidance</strong> يفحص safe state، و<strong>recovery</strong> يصلح المشكلة بعد وقوعها.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 5</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a class="current" href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 5: CPU Scheduling</h1>
+  <p>This chapter is one of the most calculation-heavy topics. Focus on what each scheduler chooses, whether it is preemptive, and how to compute waiting, response, and turnaround times.</p>
+</header>
+
+<main class="page">
+  <section class="grid two">
+    <article class="card">
+      <h3>Core Formulas</h3>
+      <ul>
+        <li><strong>TAT</strong> = Completion Time - Arrival Time</li>
+        <li><strong>WT</strong> = Turnaround Time - Burst Time</li>
+        <li><strong>Response time</strong> = First time process gets CPU - Arrival Time</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Scheduler vs Dispatcher</h3>
+      <ul>
+        <li><strong>Scheduler</strong> decides which process runs next.</li>
+        <li><strong>Dispatcher</strong> performs the actual CPU handoff.</li>
+        <li><strong>Dispatch latency</strong> is the overhead needed to stop one process and start another.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>1. Scheduling Criteria</h2>
+    <ul>
+      <li>Maximize CPU utilization and throughput.</li>
+      <li>Minimize turnaround time, waiting time, and response time.</li>
+      <li><strong>Turnaround time</strong> means from arrival to completion.</li>
+      <li><strong>Waiting time</strong> means time spent in the ready queue.</li>
+      <li><strong>Response time</strong> means how quickly the process gets its first response.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Preemptive Scheduling</h3>
+      <ul>
+        <li>The OS can take the CPU away from a running process.</li>
+        <li>It usually gives better responsiveness.</li>
+        <li>It introduces more overhead because switching happens more often.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Non-Preemptive Scheduling</h3>
+      <ul>
+        <li>The process keeps the CPU until it finishes or blocks.</li>
+        <li>It is simpler but may make short jobs wait behind long ones.</li>
+        <li>It is common in textbook comparisons because the execution order is easier to follow.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>2. FCFS, SJF, and SRTF</h2>
+    <table>
+      <tr><th>Algorithm</th><th>Main Rule</th><th>Important Point</th></tr>
+      <tr><td>FCFS</td><td>Arrival order</td><td>Simple but suffers from convoy effect</td></tr>
+      <tr><td>SJF</td><td>Shortest burst time first</td><td>Optimal average waiting time if burst lengths are known</td></tr>
+      <tr><td>SRTF</td><td>Shortest remaining time first</td><td>Preemptive version of SJF</td></tr>
+    </table>
+    <div class="note">Useful memory trick: <strong>SJF looks at total burst</strong>, while <strong>SRTF keeps checking the remaining burst</strong>.</div>
+  </section>
+
+  <section class="topic">
+    <h2>3. Round Robin and Priority Scheduling</h2>
+    <ul>
+      <li><strong>Round Robin</strong> gives each process a time quantum, then moves unfinished work to the back of the queue.</li>
+      <li>If the quantum is too large, RR becomes similar to FCFS.</li>
+      <li>If the quantum is too small, context-switch overhead becomes too high.</li>
+      <li><strong>Priority scheduling</strong> runs the highest-priority process first.</li>
+      <li>Main problem with priority scheduling is <strong>starvation</strong>; the standard fix is <strong>aging</strong>.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>4. Multilevel Queue and Multilevel Feedback Queue</h2>
+    <ul>
+      <li><strong>Multilevel queue</strong> places processes permanently into different queues by type.</li>
+      <li><strong>Multilevel feedback queue</strong> allows processes to move between queues depending on behavior.</li>
+      <li>Feedback queues are more flexible and can react to whether a process behaves like I/O-bound or CPU-bound work.</li>
+      <li>Feedback queues can also help reduce starvation better than fixed multilevel queues.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Solving Scheduling Questions</h2>
+    <ul>
+      <li>Always draw or imagine the Gantt chart first.</li>
+      <li>Check arrival times before deciding which process is eligible to run.</li>
+      <li>For RR, it is often easiest to compute completion time first, then TAT, then WT.</li>
+      <li>If two processes tie, many exercises use FCFS as the tie-break rule.</li>
+      <li>If the algorithm is preemptive, remember that the process may appear in several separated time blocks.</li>
+    </ul>
+    <div class="note">Fast memory summary: <strong>FCFS = arrival order</strong>, <strong>SJF = shortest burst</strong>, <strong>SRTF = shortest remaining</strong>, <strong>RR = time quantum</strong>, <strong>Priority = highest priority first</strong>.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 5",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a class="current" href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 5: جدولة المعالج CPU Scheduling",
+    "hero-copy": "هذا الفصل من أكثر الموضوعات اعتمادًا على الحساب. ركز على ما الذي يختاره كل مجدول، وهل هو preemptive أم لا، وكيف تحسب waiting وresponse وturnaround.",
+    "card-1": '<h3>المعادلات الأساسية</h3><ul><li><strong>TAT</strong> = وقت الإنهاء - وقت الوصول</li><li><strong>WT</strong> = Turnaround Time - Burst Time</li><li><strong>Response time</strong> = أول وقت يحصل فيه البرنامج على CPU - وقت الوصول</li></ul>',
+    "card-2": '<h3>Scheduler مقابل Dispatcher</h3><ul><li><strong>Scheduler</strong> يقرر أي عملية تعمل لاحقًا.</li><li><strong>Dispatcher</strong> ينفذ التسليم الفعلي للمعالج.</li><li><strong>Dispatch latency</strong> هو الحمل الإضافي اللازم لإيقاف عملية وبدء أخرى.</li></ul>',
+    "topic-1": '<h2>1. معايير الجدولة</h2><ul><li>تعظيم CPU utilization وthroughput.</li><li>تقليل turnaround time وwaiting time وresponse time.</li><li><strong>Turnaround time</strong> تعني من الوصول حتى الإنهاء.</li><li><strong>Waiting time</strong> تعني الوقت داخل ready queue.</li><li><strong>Response time</strong> تعني مدى سرعة حصول العملية على أول استجابة.</li></ul>',
+    "card-3": '<h3>الجدولة الاستباقية Preemptive</h3><ul><li>يمكن للنظام سحب المعالج من العملية وهي تعمل.</li><li>غالبًا تعطي استجابة أفضل.</li><li>تضيف حملًا أكبر لأن التبديل يحدث أكثر.</li></ul>',
+    "card-4": '<h3>الجدولة غير الاستباقية Non-Preemptive</h3><ul><li>تحتفظ العملية بالمعالج حتى تنتهي أو تُحجب.</li><li>هي أبسط لكنها قد تجعل الأعمال القصيرة تنتظر خلف الأعمال الطويلة.</li><li>تظهر كثيرًا في المقارنات الدراسية لأن ترتيب التنفيذ أسهل في التتبع.</li></ul>',
+    "topic-2": '<h2>2. FCFS و SJF و SRTF</h2><table><tr><th>الخوارزمية</th><th>القاعدة الرئيسية</th><th>النقطة المهمة</th></tr><tr><td>FCFS</td><td>حسب الوصول</td><td>بسيطة لكن تعاني من convoy effect</td></tr><tr><td>SJF</td><td>أقصر burst أولًا</td><td>أفضل متوسط waiting time إذا كانت burst lengths معروفة</td></tr><tr><td>SRTF</td><td>أقصر burst متبقٍ أولًا</td><td>النسخة الاستباقية من SJF</td></tr></table><div class="note">حيلة حفظ: <strong>SJF</strong> تنظر إلى burst كامل، بينما <strong>SRTF</strong> تراقب burst المتبقي باستمرار.</div>',
+    "topic-3": '<h2>3. Round Robin و Priority Scheduling</h2><ul><li><strong>Round Robin</strong> تعطي كل عملية quantum زمنيًا، ثم تعيد غير المكتمل إلى آخر الصف.</li><li>إذا كان quantum كبيرًا جدًا تصبح RR قريبة من FCFS.</li><li>إذا كان quantum صغيرًا جدًا يصبح حمل context switching مرتفعًا.</li><li><strong>Priority scheduling</strong> تشغّل أعلى أولوية أولًا.</li><li>المشكلة الرئيسية في priority scheduling هي <strong>starvation</strong>، والحل المعتاد هو <strong>aging</strong>.</li></ul>',
+    "topic-4": '<h2>4. Multilevel Queue و Multilevel Feedback Queue</h2><ul><li><strong>Multilevel queue</strong> تضع العمليات بشكل دائم في طوابير مختلفة حسب النوع.</li><li><strong>Multilevel feedback queue</strong> تسمح للعمليات بالانتقال بين الطوابير حسب سلوكها.</li><li>Feedback queues أكثر مرونة ويمكنها التفاعل مع كون العملية I/O-bound أو CPU-bound.</li><li>كما أنها تساعد في تقليل starvation بشكل أفضل من multilevel queues الثابتة.</li></ul>',
+    "topic-5": '<h2>5. حل أسئلة الجدولة</h2><ul><li>ارسم Gantt chart أولًا أو تخيله.</li><li>تحقق من arrival times قبل اتخاذ قرار من المؤهل للتنفيذ.</li><li>في RR يكون الأسهل غالبًا حساب completion time أولًا ثم TAT ثم WT.</li><li>إذا تساوت عمليتان فإن كثيرًا من التمارين تستخدم FCFS كقاعدة كسر التعادل.</li><li>إذا كانت الخوارزمية preemptive فتذكر أن العملية قد تظهر في عدة مقاطع زمنية منفصلة.</li></ul><div class="note">ملخص سريع للحفظ: <strong>FCFS = حسب الوصول</strong>، <strong>SJF = أقصر burst</strong>، <strong>SRTF = أقصر burst متبقٍ</strong>، <strong>RR = time quantum</strong>، <strong>Priority = الأعلى أولوية أولًا</strong>.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

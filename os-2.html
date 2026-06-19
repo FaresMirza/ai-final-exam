@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 2</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a class="current" href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 2: Operating-System Structures</h1>
+  <p>This chapter is about how the OS is built internally, what services it exposes, and how programs safely ask the kernel to do privileged work.</p>
+</header>
+
+<main class="page">
+  <section class="grid two">
+    <article class="card">
+      <h3>OS Components</h3>
+      <ul>
+        <li>Process management</li>
+        <li>Memory management</li>
+        <li>File-system management</li>
+        <li>I/O and device management</li>
+        <li>Networking, security, and user interface</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>OS Services</h3>
+      <ul>
+        <li>User interface</li>
+        <li>Program execution</li>
+        <li>I/O operations and file access</li>
+        <li>Communication and error detection</li>
+        <li>Protection and security</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>1. Components vs Services</h2>
+    <ul>
+      <li><strong>Components</strong> are the internal subsystems of the operating system.</li>
+      <li><strong>Services</strong> are the functions that users and programs can actually use.</li>
+      <li>A good short distinction is: components are <strong>inside the kernel</strong>, while services are <strong>what the kernel provides</strong>.</li>
+      <li>This distinction matters because exam questions often ask whether something is an internal OS responsibility or an exposed service.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>2. User Interfaces</h2>
+    <ul>
+      <li><strong>CLI</strong> means the user types commands into a shell such as Bash or Zsh.</li>
+      <li><strong>GUI</strong> uses windows, icons, buttons, and pointer interaction.</li>
+      <li><strong>Touch interface</strong> is common in phones and tablets where gestures replace a mouse.</li>
+      <li><strong>Batch systems</strong> run jobs without direct interaction while the job is executing.</li>
+      <li>CLI is often preferred for scripting, automation, and remote management.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>3. System Calls</h2>
+    <ul>
+      <li>A system call is the mechanism a user program uses to request a privileged kernel service.</li>
+      <li>Typical flow: program calls an API, the API invokes a system call, the CPU switches to kernel mode, the OS performs the work, then returns.</li>
+      <li>Common examples are <code>open</code>, <code>read</code>, <code>write</code>, <code>fork</code>, <code>exec</code>, <code>wait</code>, and <code>exit</code>.</li>
+      <li>System calls are needed because user programs do not have direct permission to access hardware or protected kernel state.</li>
+    </ul>
+    <div class="note">Easy answer: a system call is <strong>the controlled door from user mode into kernel mode</strong>.</div>
+  </section>
+
+  <section class="topic">
+    <h2>4. Main Categories of System Calls</h2>
+    <div class="grid two">
+      <article class="card">
+        <h3>Core control categories</h3>
+        <ul>
+          <li>Process control</li>
+          <li>File management</li>
+          <li>Device management</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Support categories</h3>
+        <ul>
+          <li>Information maintenance</li>
+          <li>Communication</li>
+          <li>Protection</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="topic">
+    <h2>5. OS Structure Designs</h2>
+    <table>
+      <tr><th>Structure</th><th>Main Idea</th><th>Main Tradeoff</th></tr>
+      <tr><td>Simple</td><td>Very little separation</td><td>Fast but weak protection and poor organization</td></tr>
+      <tr><td>Monolithic</td><td>One large kernel in one address space</td><td>Fast but hard to maintain and isolate faults</td></tr>
+      <tr><td>Layered</td><td>OS is divided into layers</td><td>Cleaner design but extra overhead</td></tr>
+      <tr><td>Microkernel</td><td>Minimal kernel, more services in user space</td><td>Safer and modular but slower due to messaging</td></tr>
+      <tr><td>Modular</td><td>Core kernel plus loadable modules</td><td>Flexible and efficient, but module bugs still matter</td></tr>
+      <tr><td>Hybrid</td><td>Mix of multiple design ideas</td><td>Practical but more complex internally</td></tr>
+    </table>
+  </section>
+
+  <section class="topic">
+    <h2>6. Important Comparisons</h2>
+    <ul>
+      <li><strong>Monolithic kernel</strong>: high performance because services run together in kernel space, but one serious bug can affect the whole system.</li>
+      <li><strong>Microkernel</strong>: better isolation and extensibility because more services live in user space, but communication overhead is higher.</li>
+      <li><strong>Modular systems</strong>: keep good performance while allowing features such as drivers to be loaded dynamically.</li>
+      <li><strong>Hybrid systems</strong> exist because real operating systems usually want both speed and flexibility.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 2",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a class="current" href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 2: هياكل نظام التشغيل",
+    "hero-copy": "هذا الفصل يشرح كيف يُبنى نظام التشغيل داخليًا، وما الخدمات التي يقدمها، وكيف تطلب البرامج من النواة تنفيذ الأعمال ذات الصلاحيات العالية بطريقة آمنة.",
+    "card-1": '<h3>مكونات نظام التشغيل</h3><ul><li>إدارة العمليات</li><li>إدارة الذاكرة</li><li>إدارة نظام الملفات</li><li>إدارة الإدخال والإخراج والأجهزة</li><li>الشبكات والأمن وواجهة المستخدم</li></ul>',
+    "card-2": '<h3>خدمات نظام التشغيل</h3><ul><li>واجهة المستخدم</li><li>تنفيذ البرامج</li><li>عمليات الإدخال والإخراج والوصول للملفات</li><li>الاتصال واكتشاف الأخطاء</li><li>الحماية والأمان</li></ul>',
+    "topic-1": '<h2>1. المكونات مقابل الخدمات</h2><ul><li><strong>المكونات</strong> هي الأنظمة الفرعية الداخلية داخل نظام التشغيل.</li><li><strong>الخدمات</strong> هي الوظائف التي يستطيع المستخدم أو البرنامج الاستفادة منها فعليًا.</li><li>التمييز السريع هو: المكونات توجد <strong>داخل النواة</strong>، بينما الخدمات هي <strong>ما تقدمه النواة</strong>.</li><li>هذا مهم لأن أسئلة الاختبار قد تسأل هل الشيء مسؤولية داخلية للنظام أم خدمة مكشوفة للمستخدم والبرامج.</li></ul>',
+    "topic-2": '<h2>2. واجهات المستخدم</h2><ul><li><strong>CLI</strong> تعني أن المستخدم يكتب الأوامر في Shell مثل Bash أو Zsh.</li><li><strong>GUI</strong> تستخدم النوافذ والأيقونات والأزرار والمؤشر.</li><li><strong>واجهة اللمس</strong> شائعة في الهواتف والأجهزة اللوحية حيث تحل الإيماءات محل الفأرة.</li><li><strong>أنظمة Batch</strong> تشغل الأعمال دون تفاعل مباشر أثناء التنفيذ.</li><li>غالبًا تُفضّل CLI في الأتمتة والسكربتات والإدارة عن بعد.</li></ul>',
+    "topic-3": '<h2>3. استدعاءات النظام System Calls</h2><ul><li>استدعاء النظام هو الآلية التي يستخدمها برنامج المستخدم لطلب خدمة مميزة من النواة.</li><li>المسار المعتاد هو: البرنامج يستدعي API، ثم API يستدعي system call، ثم يتحول المعالج إلى kernel mode، ثم ينفذ النظام العمل، ثم يعود.</li><li>أمثلة شائعة: <code>open</code> و<code>read</code> و<code>write</code> و<code>fork</code> و<code>exec</code> و<code>wait</code> و<code>exit</code>.</li><li>نحتاج إلى system calls لأن برامج المستخدم لا تملك صلاحية مباشرة للوصول إلى العتاد أو حالة النواة المحمية.</li></ul><div class="note">إجابة سهلة: system call هي <strong>الباب المنظم من user mode إلى kernel mode</strong>.</div>',
+    "topic-4": '<h2>4. الفئات الرئيسية لاستدعاءات النظام</h2><div class="grid two"><article class="card"><h3>فئات التحكم الأساسية</h3><ul><li>التحكم في العمليات</li><li>إدارة الملفات</li><li>إدارة الأجهزة</li></ul></article><article class="card"><h3>الفئات المساندة</h3><ul><li>صيانة المعلومات</li><li>الاتصال</li><li>الحماية</li></ul></article></div>',
+    "topic-5": '<h2>5. تصاميم هيكل نظام التشغيل</h2><table><tr><th>الهيكل</th><th>الفكرة الرئيسية</th><th>أهم مفاضلة</th></tr><tr><td>Simple</td><td>فصل قليل جدًا</td><td>سريع لكن الحماية والتنظيم ضعيفان</td></tr><tr><td>Monolithic</td><td>نواة كبيرة واحدة في مساحة عنوان واحدة</td><td>سريع لكن الصيانة وعزل الأعطال أصعب</td></tr><tr><td>Layered</td><td>تقسيم النظام إلى طبقات</td><td>تصميم أنظف لكن مع حمل إضافي</td></tr><tr><td>Microkernel</td><td>نواة صغيرة وخدمات أكثر في user space</td><td>أكثر أمانًا ووحدات لكن أبطأ بسبب الرسائل</td></tr><tr><td>Modular</td><td>نواة أساسية مع وحدات قابلة للتحميل</td><td>مرن وفعّال لكن أخطاء الوحدات لا تزال مهمة</td></tr><tr><td>Hybrid</td><td>مزيج من عدة أفكار تصميمية</td><td>عملي لكن أعقد داخليًا</td></tr></table>',
+    "topic-6": '<h2>6. مقارنات مهمة</h2><ul><li><strong>النواة الأحادية Monolithic</strong>: أداء عالٍ لأن الخدمات تعمل معًا في kernel space، لكن الخطأ الكبير قد يؤثر في النظام كله.</li><li><strong>Microkernel</strong>: عزل أفضل وقابلية توسعة أعلى لأن خدمات أكثر تعمل في user space، لكن كلفة الاتصال أعلى.</li><li><strong>الأنظمة modular</strong>: تحافظ على الأداء الجيد مع السماح بتحميل مكونات مثل المشغلات ديناميكيًا.</li><li><strong>الأنظمة hybrid</strong> موجودة لأن الأنظمة الواقعية تريد السرعة والمرونة معًا.</li></ul>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

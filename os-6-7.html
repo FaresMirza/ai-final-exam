@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapters 6 and 7</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a class="current" href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapters 6 and 7: Synchronization Tools and Examples</h1>
+  <p>These chapters explain why shared data becomes dangerous, what a critical section is, and how mutexes and semaphores are used to protect correctness.</p>
+</header>
+
+<main class="page">
+  <section class="topic">
+    <h2>1. Race Condition</h2>
+    <ul>
+      <li>A race condition happens when concurrent processes or threads access shared data without proper synchronization.</li>
+      <li>The final result depends on the exact execution order.</li>
+      <li>The classic producer-consumer counter example shows how <code>counter++</code> and <code>counter--</code> can produce the wrong value if they overlap.</li>
+      <li>The core problem is not just sharing data, but sharing it without controlling who may update it and when.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>2. Critical Section Problem</h2>
+    <ul>
+      <li>A critical section is the part of a program that accesses shared resources such as variables, files, tables, or buffers.</li>
+      <li>If one process is inside its critical section, another process must not enter a conflicting critical section at the same time.</li>
+      <li>A correct solution must satisfy <strong>mutual exclusion</strong>, <strong>progress</strong>, and <strong>bounded waiting</strong>.</li>
+      <li>These three conditions appear often in exam definitions, so memorize what each one really means.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Peterson's Solution</h3>
+      <ul>
+        <li>Classic software solution for two processes only.</li>
+        <li>Uses a shared <code>turn</code> variable and a <code>flag[]</code> array.</li>
+        <li>It is useful conceptually because it shows how mutual exclusion can be achieved in software.</li>
+        <li>Modern hardware may reorder instructions, so Peterson's solution is not fully reliable there.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Hardware Support</h3>
+      <ul>
+        <li>Modern systems provide atomic hardware instructions.</li>
+        <li>Important examples are <strong>test-and-set</strong> and <strong>compare-and-swap</strong>.</li>
+        <li>These instructions are uninterruptible, so they are used as building blocks for synchronization tools.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>3. Mutex Locks</h2>
+    <ul>
+      <li>A mutex lock is a software tool that provides mutual exclusion.</li>
+      <li>A thread or process must <code>acquire()</code> the lock before entering the critical section and <code>release()</code> it afterward.</li>
+      <li>If a process keeps checking the lock in a loop, that is <strong>busy waiting</strong>.</li>
+      <li>A busy-wait mutex is often called a <strong>spinlock</strong>.</li>
+      <li>Spinlocks waste CPU time, but they can still be useful when the waiting period is expected to be very short.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>4. Semaphores</h2>
+    <ul>
+      <li>A semaphore is an integer synchronization variable accessed only through atomic <code>wait()</code> and <code>signal()</code> operations.</li>
+      <li><strong>Binary semaphore</strong>: value is only 0 or 1, so it behaves similarly to a mutex.</li>
+      <li><strong>Counting semaphore</strong>: value can be greater than 1, so it can represent multiple resource instances.</li>
+      <li>Semaphores can be implemented with busy waiting, or with blocking queues to avoid wasting CPU cycles.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Semaphore Examples</h2>
+    <ul>
+      <li><strong>Bounded buffer</strong> usually uses three semaphores: <code>mutex</code>, <code>full</code>, and <code>empty</code>.</li>
+      <li><strong>Readers-writers</strong> separates readers, who may often share access, from writers, who need exclusive access.</li>
+      <li>In the first readers-writers problem, readers have priority. In the second, writers have priority.</li>
+      <li>Both priority choices can create starvation if the design is not careful.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>6. Common Mistakes and Deadlock Risk</h2>
+    <ul>
+      <li>Calling <code>signal</code> before the matching <code>wait</code> can break synchronization logic.</li>
+      <li>Calling <code>wait</code> twice on the same mutex can block the process itself.</li>
+      <li>Forgetting <code>wait</code> causes race conditions; forgetting <code>signal</code> can make others wait forever.</li>
+      <li>If two processes acquire resources in opposite order, deadlock can happen.</li>
+      <li>This is why synchronization is not only about speed or ordering, but also about correctness and safety.</li>
+    </ul>
+    <div class="note">Clean final-exam story: <strong>race condition → critical section problem → mutex / semaphore → synchronization examples → deadlock risk when tools are misused</strong>.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصلان 6 و7",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a class="current" href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصلان 6 و7: أدوات المزامنة وأمثلتها",
+    "hero-copy": "هذان الفصلان يشرحان لماذا تصبح البيانات المشتركة خطرة، وما المقصود بالـ critical section، وكيف تُستخدم mutexes وsemaphores لحماية صحة التنفيذ.",
+    "topic-1": '<h2>1. Race Condition</h2><ul><li>تحدث race condition عندما تصل عمليات أو threads متزامنة إلى بيانات مشتركة دون مزامنة صحيحة.</li><li>تعتمد النتيجة النهائية على ترتيب التنفيذ الدقيق.</li><li>مثال عداد المنتج-المستهلك يوضح كيف يمكن لـ <code>counter++</code> و<code>counter--</code> أن يعطيا قيمة خاطئة إذا تداخلا.</li><li>المشكلة الأساسية ليست مجرد مشاركة البيانات، بل مشاركتها دون التحكم في من يحدّثها ومتى.</li></ul>',
+    "topic-2": '<h2>2. مشكلة الـ Critical Section</h2><ul><li>الـ critical section هو الجزء من البرنامج الذي يصل إلى موارد مشتركة مثل المتغيرات أو الملفات أو الجداول أو الـ buffers.</li><li>إذا كانت عملية داخل critical section، فلا ينبغي لعملية أخرى أن تدخل critical section متعارضة في الوقت نفسه.</li><li>أي حل صحيح يجب أن يحقق <strong>mutual exclusion</strong> و<strong>progress</strong> و<strong>bounded waiting</strong>.</li><li>هذه الشروط الثلاثة تتكرر كثيرًا في الاختبار، لذلك احفظ معنى كل واحد فعليًا.</li></ul>',
+    "card-1": '<h3>حل Peterson</h3><ul><li>حل برمجي كلاسيكي لعمليتين فقط.</li><li>يستخدم متغير <code>turn</code> ومصفوفة <code>flag[]</code>.</li><li>هو مهم مفهوميًا لأنه يوضح كيف يمكن تحقيق mutual exclusion برمجيًا.</li><li>لكن العتاد الحديث قد يعيد ترتيب التعليمات، لذلك لا يعد موثوقًا تمامًا هناك.</li></ul>',
+    "card-2": '<h3>الدعم العتادي</h3><ul><li>توفر الأنظمة الحديثة تعليمات عتادية ذرية atomic.</li><li>من الأمثلة المهمة <strong>test-and-set</strong> و<strong>compare-and-swap</strong>.</li><li>هذه التعليمات غير قابلة للمقاطعة، لذلك تُستخدم كأساس لبناء أدوات المزامنة.</li></ul>',
+    "topic-3": '<h2>3. Mutex Locks</h2><ul><li>الـ mutex lock أداة برمجية توفر mutual exclusion.</li><li>يجب على العملية أو الـ thread أن تستدعي <code>acquire()</code> قبل الدخول إلى critical section ثم <code>release()</code> بعد الخروج.</li><li>إذا استمرت العملية في فحص القفل داخل حلقة فهذا يسمى <strong>busy waiting</strong>.</li><li>الـ mutex الذي يعتمد على busy waiting يسمى غالبًا <strong>spinlock</strong>.</li><li>تضيع spinlocks وقت المعالج، لكنها قد تكون مفيدة إذا كان زمن الانتظار المتوقع قصيرًا جدًا.</li></ul>',
+    "topic-4": '<h2>4. Semaphores</h2><ul><li>الـ semaphore متغير مزامنة عددي لا يُستخدم إلا عبر العمليتين الذريتين <code>wait()</code> و<code>signal()</code>.</li><li><strong>Binary semaphore</strong>: قيمته 0 أو 1 فقط، لذلك يشبه mutex في السلوك.</li><li><strong>Counting semaphore</strong>: يمكن أن تكون قيمته أكبر من 1، لذلك يمكنه تمثيل عدة نسخ من المورد نفسه.</li><li>يمكن تنفيذ semaphores عبر busy waiting، أو عبر طوابير block/wakeup لتجنب إهدار وقت المعالج.</li></ul>',
+    "topic-5": '<h2>5. أمثلة الـ Semaphores</h2><ul><li><strong>Bounded buffer</strong> يستخدم غالبًا ثلاثة semaphores: <code>mutex</code> و<code>full</code> و<code>empty</code>.</li><li><strong>Readers-writers</strong> يميز بين القراء الذين قد يشاركون الوصول، والكتاب الذين يحتاجون وصولًا حصريًا.</li><li>في مشكلة readers-writers الأولى تكون الأولوية للقراء، وفي الثانية تكون الأولوية للكتاب.</li><li>وكلا الخيارين قد يسبب starvation إذا لم يكن التصميم حذرًا.</li></ul>',
+    "topic-6": '<h2>6. الأخطاء الشائعة وخطر الـ Deadlock</h2><ul><li>استدعاء <code>signal</code> قبل <code>wait</code> المطابق قد يفسد منطق المزامنة.</li><li>استدعاء <code>wait</code> مرتين على نفس الـ mutex قد يحجب العملية نفسها.</li><li>نسيان <code>wait</code> يسبب race conditions، ونسـيان <code>signal</code> قد يجعل الآخرين ينتظرون إلى الأبد.</li><li>إذا أخذت عمليتان الموارد بترتيب عكسي فقد يحدث deadlock.</li><li>ولهذا فالمزامنة ليست عن السرعة أو الترتيب فقط، بل عن الصحة والسلامة أيضًا.</li></ul><div class="note">القصة النظيفة في الاختبار: <strong>race condition → critical section problem → mutex / semaphore → synchronization examples → deadlock risk عند إساءة الاستخدام</strong>.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 1</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a class="current" href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 1: Introduction to Operating Systems</h1>
+  <p>Start here if you need the core ideas: what the operating system does, how it manages hardware, and how the computer stays protected while many programs run.</p>
+</header>
+
+<main class="page">
+  <section class="grid two">
+    <article class="card">
+      <h3>Computer System Components</h3>
+      <ul>
+        <li><strong>Hardware</strong>: CPU, RAM, storage, and input/output devices.</li>
+        <li><strong>Operating system</strong>: coordinates the use of hardware.</li>
+        <li><strong>Application programs</strong>: browsers, editors, compilers, games.</li>
+        <li><strong>Users</strong>: people or other systems using the machine.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Device Controller vs Driver</h3>
+      <ul>
+        <li><strong>Device controller</strong>: hardware that manages a specific device.</li>
+        <li><strong>Driver</strong>: OS software that talks to the controller.</li>
+        <li>The driver lets the OS use very different devices through a more standard interface.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>1. What an Operating System Is</h2>
+    <ul>
+      <li>An operating system is system software that manages hardware and provides services to programs and users.</li>
+      <li>It works as the layer between applications and the physical machine.</li>
+      <li>It is a <strong>resource allocator</strong> because it decides how CPU time, memory, storage, and I/O devices are shared.</li>
+      <li>It is a <strong>control program</strong> because it supervises execution and prevents improper or unsafe use of hardware.</li>
+    </ul>
+    <div class="note">Exam shortcut: the OS mainly does <strong>resource management</strong> and <strong>control of execution</strong>.</div>
+  </section>
+
+  <section class="topic">
+    <h2>2. Interrupts and Traps</h2>
+    <ul>
+      <li>An <strong>interrupt</strong> makes the CPU pause the current work and transfer control to the operating system.</li>
+      <li>Typical steps are: save current state, identify the source, run the interrupt service routine, restore the state, then continue.</li>
+      <li><strong>Hardware interrupts</strong> come from devices such as disks, keyboards, or network cards.</li>
+      <li><strong>Traps / exceptions</strong> come from the CPU or running program, such as divide-by-zero, invalid memory access, or a system call.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>DMA</h3>
+      <ul>
+        <li><strong>Direct Memory Access</strong> moves a block of data between a device and memory with little CPU involvement.</li>
+        <li>The CPU only sets up the transfer, then the DMA controller handles the copy.</li>
+        <li>Main benefit: fewer interrupts and better performance for large transfers.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Timer Interrupt</h3>
+      <ul>
+        <li>The timer guarantees the OS gets control of the CPU back.</li>
+        <li>It prevents one program from running forever and blocking the system.</li>
+        <li>Only the OS can configure the timer because that is a privileged operation.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>3. Boot Process and Storage Hierarchy</h2>
+    <ul>
+      <li>The bootstrap program starts first from ROM or firmware.</li>
+      <li>It initializes the machine and loads the kernel into RAM.</li>
+      <li>After the kernel starts, background services and user-facing system services begin running.</li>
+      <li>Storage hierarchy idea: registers are fastest, then cache, then RAM, while SSD/HDD are slower but keep data after power off.</li>
+      <li>Important exam rule: the CPU can directly work with registers and main memory, not with disk addresses.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>4. Multiprogramming and Multitasking</h2>
+    <ul>
+      <li><strong>Multiprogramming</strong> keeps several jobs in memory so the CPU stays busy when one job waits for I/O.</li>
+      <li><strong>Multitasking / timesharing</strong> switches quickly between jobs to give users fast response.</li>
+      <li>Multiprogramming focuses on CPU utilization, while multitasking focuses more on responsiveness too.</li>
+      <li>The fast switching gives the illusion that many jobs run at the same time.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. User Mode vs Kernel Mode</h2>
+    <ul>
+      <li><strong>User mode</strong> is limited and is where normal applications run.</li>
+      <li><strong>Kernel mode</strong> is privileged and gives full access to hardware and protected instructions.</li>
+      <li>The <strong>mode bit</strong> tells the processor which mode it is in.</li>
+      <li>User mode protects the system by stopping applications from directly changing hardware state or other programs' memory.</li>
+      <li>Switching from user mode to kernel mode usually happens through interrupts, traps, or system calls.</li>
+    </ul>
+    <div class="note">Big picture: chapter 1 explains <strong>how the OS controls the hardware safely</strong> and <strong>why normal programs cannot do everything directly</strong>.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 1",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a class="current" href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 1: مقدمة في نظم التشغيل",
+    "hero-copy": "ابدأ من هنا إذا كنت تريد الأفكار الأساسية: ما الذي يفعله نظام التشغيل، وكيف يدير العتاد، وكيف يبقى الحاسوب محميًا أثناء تشغيل عدة برامج.",
+    "card-1": '<h3>مكونات نظام الحاسوب</h3><ul><li><strong>العتاد</strong>: المعالج والذاكرة والتخزين وأجهزة الإدخال والإخراج.</li><li><strong>نظام التشغيل</strong>: ينسق استخدام العتاد.</li><li><strong>برامج التطبيقات</strong>: المتصفحات والمحررات والمترجمات والألعاب.</li><li><strong>المستخدمون</strong>: الأشخاص أو الأنظمة الأخرى التي تستخدم الجهاز.</li></ul>',
+    "card-2": '<h3>متحكم الجهاز مقابل المشغل</h3><ul><li><strong>متحكم الجهاز</strong>: جزء عتادي يدير جهازًا معينًا.</li><li><strong>المشغل Driver</strong>: برنامج في نظام التشغيل يتحدث مع المتحكم.</li><li>المشغل يجعل نظام التشغيل يتعامل مع أجهزة مختلفة بطريقة أكثر توحيدًا.</li></ul>',
+    "topic-1": '<h2>1. ما هو نظام التشغيل</h2><ul><li>نظام التشغيل هو برنامج نظام يدير العتاد ويوفر خدمات للبرامج والمستخدمين.</li><li>وهو الطبقة التي تقع بين التطبيقات والجهاز الفعلي.</li><li>وهو <strong>مخصص موارد</strong> لأنه يقرر كيف يتم توزيع وقت المعالج والذاكرة والتخزين وأجهزة الإدخال والإخراج.</li><li>وهو <strong>برنامج تحكم</strong> لأنه يراقب التنفيذ ويمنع الاستخدام غير الصحيح أو غير الآمن للعتاد.</li></ul><div class="note">اختصار اختبار: الدوران الأساسيان لنظام التشغيل هما <strong>إدارة الموارد</strong> و<strong>التحكم في التنفيذ</strong>.</div>',
+    "topic-2": '<h2>2. المقاطعات و Traps</h2><ul><li><strong>المقاطعة Interrupt</strong> تجعل المعالج يوقف العمل الحالي وينقل التحكم إلى نظام التشغيل.</li><li>الخطوات المعتادة هي: حفظ الحالة الحالية، تحديد المصدر، تشغيل روتين خدمة المقاطعة، استعادة الحالة، ثم المتابعة.</li><li><strong>المقاطعات العتادية</strong> تأتي من أجهزة مثل القرص ولوحة المفاتيح وبطاقة الشبكة.</li><li><strong>Traps / Exceptions</strong> تأتي من المعالج أو البرنامج الجاري، مثل القسمة على صفر أو الوصول غير الصحيح للذاكرة أو استدعاء نظام.</li></ul>',
+    "topic-3": '<h2>3. الإقلاع وتسلسل التخزين</h2><ul><li>يبدأ برنامج الإقلاع أولًا من ROM أو Firmware.</li><li>ثم يهيئ الجهاز ويحمّل النواة Kernel إلى RAM.</li><li>بعد بدء النواة تبدأ الخدمات الخلفية وخدمات النظام الأخرى.</li><li>فكرة تسلسل التخزين: السجلات هي الأسرع، ثم Cache، ثم RAM، بينما SSD/HDD أبطأ لكنها تحتفظ بالبيانات بعد انقطاع الطاقة.</li><li>قاعدة مهمة في الاختبار: المعالج يعمل مباشرة مع السجلات والذاكرة الرئيسية، وليس مع عناوين القرص مباشرة.</li></ul>',
+    "topic-4": '<h2>4. Multiprogramming و Multitasking</h2><ul><li><strong>Multiprogramming</strong> تبقي عدة أعمال في الذاكرة حتى يبقى المعالج مشغولًا عندما ينتظر أحدها الإدخال/الإخراج.</li><li><strong>Multitasking / Timesharing</strong> تبدل بسرعة بين الأعمال لتعطي المستخدم استجابة سريعة.</li><li>تركز Multiprogramming أكثر على استغلال المعالج، بينما تضيف Multitasking جانب الاستجابة السريعة.</li><li>هذا التبديل السريع يعطي إيحاء أن عدة أعمال تعمل معًا.</li></ul>',
+    "topic-5": '<h2>5. نمط المستخدم مقابل نمط النواة</h2><ul><li><strong>User mode</strong> محدود، وهنا تعمل التطبيقات العادية.</li><li><strong>Kernel mode</strong> مميز ويمنح وصولًا كاملًا للعتاد والتعليمات المحمية.</li><li><strong>الـ mode bit</strong> يحدد في أي نمط يعمل المعالج.</li><li>نمط المستخدم يحمي النظام لأنه يمنع التطبيقات من تغيير حالة العتاد أو ذاكرة البرامج الأخرى مباشرة.</li><li>الانتقال من User mode إلى Kernel mode يحدث غالبًا عبر المقاطعات أو Traps أو system calls.</li></ul><div class="note">الفكرة الكبرى: الفصل الأول يشرح <strong>كيف يتحكم نظام التشغيل في العتاد بأمان</strong> و<strong>لماذا لا تستطيع البرامج العادية فعل كل شيء مباشرة</strong>.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

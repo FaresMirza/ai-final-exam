@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 10</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a class="current" href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 10: Virtual Memory</h1>
+  <p>Virtual memory lets a process behave as if it has more memory than the installed RAM. The big ideas here are demand paging, page faults, replacement algorithms, and thrashing.</p>
+</header>
+
+<main class="page">
+  <section class="topic">
+    <h2>1. What Virtual Memory Means</h2>
+    <ul>
+      <li>Virtual memory separates logical memory from physical memory.</li>
+      <li>Only part of a program must be in RAM for execution.</li>
+      <li>This allows the logical address space to be larger than physical memory.</li>
+      <li>It also allows more efficient process creation and lets more programs run at the same time.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>2. Demand Paging and Page Faults</h2>
+    <ul>
+      <li><strong>Demand paging</strong> means a page is loaded only when it is actually needed.</li>
+      <li>When the CPU generates a virtual address, the MMU checks the page table.</li>
+      <li>If the page is marked invalid because it is not in RAM, a <strong>page fault</strong> occurs.</li>
+      <li>The OS then loads the needed page from disk into RAM and restarts the interrupted instruction.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>3. Dirty Bit and Page Replacement Setup</h2>
+    <ul>
+      <li>The <strong>dirty bit</strong> tells whether a page was modified after being loaded.</li>
+      <li>If the chosen victim page is dirty, it must be written back to disk before removal.</li>
+      <li>If it is clean, it can be discarded without extra write cost.</li>
+      <li>This improves performance because the system avoids unnecessary disk writes.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>4. Basic Page Replacement</h2>
+    <ul>
+      <li>If a free frame exists, the needed page is simply loaded there.</li>
+      <li>If RAM is full, the OS must choose a <strong>victim page</strong> to replace.</li>
+      <li>After replacement, the page table and frame information are updated.</li>
+      <li>The process then continues from the instruction that caused the fault.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Page Replacement Algorithms</h2>
+    <table>
+      <tr><th>Algorithm</th><th>Main Rule</th><th>Important Point</th></tr>
+      <tr><td>FIFO</td><td>Replace the oldest page</td><td>Simple, but can show Belady's anomaly</td></tr>
+      <tr><td>OPT</td><td>Replace the page used farthest in the future</td><td>Best possible, but theoretical</td></tr>
+      <tr><td>LRU</td><td>Replace the least recently used page</td><td>Uses past behavior and is often practical</td></tr>
+      <tr><td>LFU</td><td>Replace the least frequently used page</td><td>Based on access count</td></tr>
+      <tr><td>MFU</td><td>Replace the most frequently used page</td><td>Less common</td></tr>
+    </table>
+  </section>
+
+  <section class="topic">
+    <h2>6. What the Algorithms Really Mean</h2>
+    <ul>
+      <li><strong>FIFO</strong> is easy to implement but not always intelligent.</li>
+      <li><strong>OPT</strong> is the benchmark because no real algorithm can do better on the same reference string.</li>
+      <li><strong>LRU</strong> assumes pages used recently will likely be used again soon, so it often performs well.</li>
+      <li><strong>Belady's anomaly</strong> means FIFO can sometimes produce more page faults when the number of frames increases.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>7. Thrashing</h2>
+    <ul>
+      <li><strong>Thrashing</strong> means the process spends more time paging than actually executing instructions.</li>
+      <li>CPU utilization becomes low because the system is busy moving pages between RAM and disk.</li>
+      <li>The OS may make the problem worse if it incorrectly increases the degree of multiprogramming.</li>
+      <li>A common fix is to ensure each process has enough frames, for example by watching page-fault frequency.</li>
+    </ul>
+    <div class="note">Best quick summary: <strong>virtual memory lets the system run larger or more programs, but too many page faults can collapse performance into thrashing</strong>.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 10",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a class="current" href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 10: الذاكرة الافتراضية Virtual Memory",
+    "hero-copy": "الذاكرة الافتراضية تجعل العملية تتصرف كما لو أنها تملك ذاكرة أكثر من RAM المثبتة. الأفكار الكبيرة هنا هي demand paging وpage faults وخوارزميات الاستبدال وthrashing.",
+    "topic-1": '<h2>1. ما معنى Virtual Memory</h2><ul><li>تفصل virtual memory بين الذاكرة المنطقية والذاكرة الفيزيائية.</li><li>لا يجب أن يكون كل البرنامج في RAM حتى يبدأ التنفيذ.</li><li>يسمح هذا بأن يكون logical address space أكبر من الذاكرة الفيزيائية.</li><li>كما يسمح بإنشاء العمليات بكفاءة أعلى، وبأن تعمل برامج أكثر في الوقت نفسه.</li></ul>',
+    "topic-2": '<h2>2. Demand Paging و Page Faults</h2><ul><li><strong>Demand paging</strong> تعني أن الصفحة تُحمَّل فقط عندما تصبح مطلوبة فعلًا.</li><li>عندما يولّد المعالج virtual address تقوم MMU بفحص page table.</li><li>إذا كانت الصفحة معلمة كـ invalid لأنها ليست في RAM يحدث <strong>page fault</strong>.</li><li>ثم يحمّل نظام التشغيل الصفحة المطلوبة من القرص إلى RAM ويعيد تشغيل التعليمة التي توقفت.</li></ul>',
+    "topic-3": '<h2>3. Dirty Bit وإعداد الاستبدال</h2><ul><li>يوضح <strong>dirty bit</strong> هل عُدّلت الصفحة بعد تحميلها أم لا.</li><li>إذا كانت الصفحة الضحية dirty فيجب كتابتها إلى القرص قبل إزالتها.</li><li>أما إذا كانت clean فيمكن التخلص منها دون كتابة إضافية.</li><li>وهذا يحسن الأداء لأنه يقلل عمليات الكتابة غير الضرورية على القرص.</li></ul>',
+    "topic-4": '<h2>4. Basic Page Replacement</h2><ul><li>إذا وجد free frame فسيتم تحميل الصفحة المطلوبة فيه مباشرة.</li><li>إذا كانت RAM ممتلئة فيجب على النظام اختيار <strong>victim page</strong> لاستبدالها.</li><li>بعد الاستبدال يتم تحديث page table ومعلومات الإطارات.</li><li>ثم تتابع العملية التنفيذ من التعليمة التي سببت الخطأ.</li></ul>',
+    "topic-5": '<h2>5. خوارزميات استبدال الصفحات</h2><table><tr><th>الخوارزمية</th><th>القاعدة الرئيسية</th><th>النقطة المهمة</th></tr><tr><td>FIFO</td><td>استبدال أقدم صفحة</td><td>بسيطة لكن قد تظهر Belady\'s anomaly</td></tr><tr><td>OPT</td><td>استبدال الصفحة التي سيأتي استخدامها أبعد شيء في المستقبل</td><td>الأفضل نظريًا لكنه غير عملي مباشرة</td></tr><tr><td>LRU</td><td>استبدال أقل صفحة استُخدمت مؤخرًا</td><td>يعتمد على السلوك السابق ويؤدي جيدًا غالبًا</td></tr><tr><td>LFU</td><td>استبدال أقل صفحة من حيث عدد مرات الاستخدام</td><td>يعتمد على العد</td></tr><tr><td>MFU</td><td>استبدال أكثر صفحة استخدامًا</td><td>أقل شيوعًا</td></tr></table>',
+    "topic-6": '<h2>6. ماذا تعني هذه الخوارزميات فعليًا</h2><ul><li><strong>FIFO</strong> سهلة في التنفيذ لكنها ليست ذكية دائمًا.</li><li><strong>OPT</strong> هي معيار المقارنة لأن أي خوارزمية واقعية لا يمكنها التفوق عليها على نفس reference string.</li><li><strong>LRU</strong> تفترض أن الصفحة المستخدمة مؤخرًا ستستخدم غالبًا قريبًا مرة أخرى، لذلك أداؤها جيد غالبًا.</li><li><strong>Belady\'s anomaly</strong> تعني أن FIFO قد تنتج page faults أكثر حتى عند زيادة عدد الإطارات.</li></ul>',
+    "topic-7": '<h2>7. Thrashing</h2><ul><li><strong>Thrashing</strong> تعني أن العملية تقضي وقتًا في التبديل بين الصفحات أكثر من تنفيذ التعليمات نفسها.</li><li>تنخفض CPU utilization لأن النظام ينشغل بنقل الصفحات بين RAM والقرص.</li><li>وقد يزيد النظام المشكلة سوءًا إذا ظن خطأً أنه يحتاج إلى زيادة degree of multiprogramming.</li><li>ومن الحلول الشائعة التأكد من أن لكل عملية عددًا كافيًا من الإطارات، مثل مراقبة page-fault frequency.</li></ul><div class="note">الخلاصة السريعة الأفضل: <strong>virtual memory</strong> تسمح للنظام بتشغيل برامج أكبر أو أكثر، لكن كثرة page faults قد تجعل الأداء ينهار إلى <strong>thrashing</strong>.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

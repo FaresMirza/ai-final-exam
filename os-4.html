@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 4</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a href="os-3.html">Ch 3</a>
+    <a class="current" href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 4: Threads and Concurrency</h1>
+  <p>Threads are lighter than processes, but they introduce shared-state risks. This chapter is mostly about that tradeoff and about how multicore execution changes performance.</p>
+</header>
+
+<main class="page">
+  <section class="topic">
+    <h2>1. What a Thread Is</h2>
+    <ul>
+      <li>A thread is the basic unit of CPU execution inside a process.</li>
+      <li>Each thread has its own thread ID, program counter, registers, and stack.</li>
+      <li>Threads in the same process share code, data, heap, and open files.</li>
+      <li>A traditional process with one thread is called a single-threaded process, while a process with several threads is multithreaded.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Why Threads?</h3>
+      <ul>
+        <li>Responsiveness for interactive applications.</li>
+        <li>Resource sharing inside one process.</li>
+        <li>Lower creation and switching cost than processes.</li>
+        <li>Scalability on multicore systems.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Process vs Thread</h3>
+      <ul>
+        <li>Process: heavier and more isolated.</li>
+        <li>Thread: lighter and shares process resources.</li>
+        <li>A thread failure can damage the entire process more easily.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>2. Concurrency vs Parallelism</h2>
+    <ul>
+      <li><strong>Concurrency</strong> means multiple tasks make progress over time, even on one core.</li>
+      <li><strong>Parallelism</strong> means tasks truly run at the same time on multiple cores.</li>
+      <li><strong>Data parallelism</strong> means doing the same operation on different parts of the data.</li>
+      <li><strong>Task parallelism</strong> means different tasks run in parallel, possibly on the same or different data.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>3. User Threads vs Kernel Threads</h2>
+    <table>
+      <tr><th>Type</th><th>Main Point</th></tr>
+      <tr><td>User threads</td><td>Managed in user space, cheaper, but weaker direct multicore control</td></tr>
+      <tr><td>Kernel threads</td><td>Managed by the OS, support real multicore parallelism, but with more overhead</td></tr>
+    </table>
+    <div class="note">Key exam idea: kernel threads are what let the OS schedule work directly on multiple processors.</div>
+  </section>
+
+  <section class="topic">
+    <h2>4. Thread Mapping Models</h2>
+    <ul>
+      <li><strong>Many-to-one</strong>: many user threads map to one kernel thread, so there is no true parallelism.</li>
+      <li><strong>One-to-one</strong>: each user thread maps to one kernel thread, so true parallelism is possible.</li>
+      <li><strong>Many-to-many</strong>: many user threads map to a smaller or flexible set of kernel threads.</li>
+      <li>The main exam question is usually which model allows parallel execution and which one blocks the whole group when one thread blocks.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Thread Libraries and Pthreads</h2>
+    <ul>
+      <li><code>pthread_create()</code> creates a new thread.</li>
+      <li><code>pthread_join()</code> waits for a thread to finish and helps release its resources correctly.</li>
+      <li><code>pthread_exit()</code> terminates the current thread cleanly.</li>
+      <li>If the main thread exits too early, other threads may stop before finishing their work.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>6. Main Risk with Threads</h2>
+    <ul>
+      <li>Threads share memory, so unsynchronized updates can create <strong>race conditions</strong>.</li>
+      <li>If two threads update the same variable at nearly the same time, the result may differ from run to run.</li>
+      <li>This is why synchronization tools such as mutexes and semaphores become necessary.</li>
+      <li>The power of threads is speed and responsiveness, but the cost is harder correctness.</li>
+    </ul>
+    <div class="note">Big takeaway: threads are efficient because they share resources, but that same sharing is exactly what creates concurrency bugs.</div>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 4",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a href="os-3.html">الفصل 3</a><a class="current" href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 4: الخيوط Threads والتزامن",
+    "hero-copy": "الخيوط أخف من العمليات، لكنها تدخل مخاطر مشاركة الحالة. هذا الفصل يدور حول هذا التوازن، وكيف يغير التنفيذ متعدد الأنوية الأداء.",
+    "topic-1": '<h2>1. ما هو الـ Thread</h2><ul><li>الـ thread هو الوحدة الأساسية لتنفيذ المعالج داخل العملية.</li><li>لكل thread معرف خاص به وprogram counter وسجلات وstack خاص به.</li><li>تشترك الـ threads داخل نفس العملية في الكود والبيانات والـ heap والملفات المفتوحة.</li><li>العملية ذات thread واحد تسمى single-threaded، بينما العملية التي تحتوي عدة threads تسمى multithreaded.</li></ul>',
+    "card-1": '<h3>لماذا نستخدم Threads؟</h3><ul><li>استجابة أفضل للتطبيقات التفاعلية.</li><li>مشاركة الموارد داخل عملية واحدة.</li><li>كلفة إنشاء وتبديل أقل من العمليات.</li><li>قابلية توسع على الأنظمة متعددة الأنوية.</li></ul>',
+    "card-2": '<h3>العملية مقابل الـ Thread</h3><ul><li>العملية: أثقل وأكثر عزلة.</li><li>الـ thread: أخف ويشارك موارد العملية.</li><li>فشل الـ thread قد يضر العملية كلها بسهولة أكبر.</li></ul>',
+    "topic-2": '<h2>2. Concurrency مقابل Parallelism</h2><ul><li><strong>Concurrency</strong> تعني أن عدة مهام تحقق تقدمًا عبر الزمن حتى على نواة واحدة.</li><li><strong>Parallelism</strong> تعني أن المهام تعمل فعلًا في نفس الوقت على عدة أنوية.</li><li><strong>Data parallelism</strong> تعني تنفيذ نفس العملية على أجزاء مختلفة من البيانات.</li><li><strong>Task parallelism</strong> تعني تشغيل مهام مختلفة بالتوازي، على نفس البيانات أو على بيانات مختلفة.</li></ul>',
+    "topic-3": '<h2>3. User Threads مقابل Kernel Threads</h2><table><tr><th>النوع</th><th>الفكرة الأساسية</th></tr><tr><td>User threads</td><td>تدار في user space، وهي أرخص، لكن التحكم المباشر في تعدد الأنوية أضعف</td></tr><tr><td>Kernel threads</td><td>يديرها النظام، وتدعم التوازي الحقيقي على عدة أنوية، لكن بكلفة أعلى</td></tr></table><div class="note">الفكرة الاختبارية المهمة: kernel threads هي التي تمكّن النظام من جدولة العمل مباشرة على عدة معالجات.</div>',
+    "topic-4": '<h2>4. نماذج ربط الـ Threads</h2><ul><li><strong>Many-to-one</strong>: عدة user threads ترتبط بـ kernel thread واحد، لذلك لا يوجد توازٍ حقيقي.</li><li><strong>One-to-one</strong>: كل user thread يرتبط بـ kernel thread واحد، لذلك يمكن وجود توازٍ حقيقي.</li><li><strong>Many-to-many</strong>: عدة user threads ترتبط بمجموعة أصغر أو مرنة من kernel threads.</li><li>السؤال الاختباري المعتاد هو: أي نموذج يسمح بالتنفيذ المتوازي، وأي نموذج يجعل المجموعة كلها تتوقف إذا توقف thread واحد.</li></ul>',
+    "topic-5": '<h2>5. مكتبات الـ Threads و Pthreads</h2><ul><li><code>pthread_create()</code> تنشئ thread جديدًا.</li><li><code>pthread_join()</code> تنتظر انتهاء thread وتساعد على تحرير موارده بشكل صحيح.</li><li><code>pthread_exit()</code> تنهي الـ thread الحالي بشكل نظيف.</li><li>إذا خرج الـ main thread مبكرًا فقد تتوقف threads الأخرى قبل إكمال عملها.</li></ul>',
+    "topic-6": '<h2>6. الخطر الرئيسي في Threads</h2><ul><li>تشترك الـ threads في الذاكرة، لذلك قد تخلق التحديثات غير المتزامنة <strong>race conditions</strong>.</li><li>إذا عدّل threadان نفس المتغير تقريبًا في الوقت نفسه فقد تختلف النتيجة من تشغيل لآخر.</li><li>ولهذا تصبح أدوات المزامنة مثل mutexes وsemaphores ضرورية.</li><li>قوة الـ threads هي السرعة والاستجابة، لكن ثمنها هو أن صحة التنفيذ تصبح أصعب.</li></ul><div class="note">الخلاصة الكبيرة: الـ threads فعالة لأنها تشارك الموارد، لكن هذه المشاركة نفسها هي سبب أخطاء التزامن.</div>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CS2016 OS Guide - Chapter 3</title>
+<link rel="stylesheet" href="assets/os-guide.css">
+<link rel="stylesheet" href="assets/lang-shared.css">
+</head>
+<body>
+<div class="site-nav">
+  <span class="label">OS Guides</span>
+  <div class="links">
+    <a href="os-1.html">Ch 1</a>
+    <a href="os-2.html">Ch 2</a>
+    <a class="current" href="os-3.html">Ch 3</a>
+    <a href="os-4.html">Ch 4</a>
+    <a href="os-5.html">Ch 5</a>
+    <a href="os-6-7.html">Ch 6-7</a>
+    <a href="os-8.html">Ch 8</a>
+    <a href="os-9.html">Ch 9</a>
+    <a href="os-10.html">Ch 10</a>
+  </div>
+</div>
+
+<header class="hero">
+  <span class="tag">CS2016 · Operating Systems</span>
+  <h1>Chapter 3: Processes</h1>
+  <p>This chapter covers program vs process, memory layout, process states, PCB, creation and termination, and the first big IPC ideas.</p>
+</header>
+
+<main class="page">
+  <section class="grid two">
+    <article class="card">
+      <h3>Program vs Process</h3>
+      <ul>
+        <li>A <strong>program</strong> is passive and stored on disk.</li>
+        <li>A <strong>process</strong> is a program currently executing in memory.</li>
+        <li>A process has a PID, state, CPU context, and resources.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Process Memory Layout</h3>
+      <ul>
+        <li><strong>Text</strong>: executable code.</li>
+        <li><strong>Data</strong>: global and static variables.</li>
+        <li><strong>Heap</strong>: dynamic memory, usually grows upward.</li>
+        <li><strong>Stack</strong>: function calls and local variables, usually grows downward.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>1. Process Concept</h2>
+    <ul>
+      <li>A process is the basic unit of execution in most operating systems.</li>
+      <li>It includes the program code plus the current activity such as program counter, registers, stack, and allocated resources.</li>
+      <li>Several processes can be different executions of the same program, each with its own state.</li>
+      <li>This is why one browser program can create many separate processes or tabs.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>2. Process States</h2>
+    <ul>
+      <li>Main states are <strong>new</strong>, <strong>ready</strong>, <strong>running</strong>, <strong>waiting</strong>, and <strong>terminated</strong>.</li>
+      <li><strong>Ready</strong> means the process is in memory and waiting for CPU time.</li>
+      <li><strong>Waiting</strong> means the process is blocked for I/O or some event.</li>
+      <li>Interrupts, I/O completion, and scheduler decisions move the process from one state to another.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>3. PCB and Scheduling Queues</h2>
+    <ul>
+      <li>The <strong>Process Control Block (PCB)</strong> stores process state, PID, program counter, CPU registers, scheduling information, memory information, accounting information, and I/O status.</li>
+      <li>The <strong>ready queue</strong> contains processes waiting for the CPU.</li>
+      <li>The <strong>wait queue</strong> contains processes waiting for I/O or another event.</li>
+      <li>Context switching works by saving the old process state in its PCB and restoring the new process state from its PCB.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Context Switch</h3>
+      <ul>
+        <li>The OS saves one process state and restores another.</li>
+        <li>This is pure overhead because useful user work is not being done during the switch.</li>
+        <li>More complex systems usually have higher context-switch cost.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>I/O-Bound vs CPU-Bound</h3>
+      <ul>
+        <li><strong>I/O-bound</strong>: spends more time waiting than computing.</li>
+        <li><strong>CPU-bound</strong>: spends more time computing than waiting.</li>
+        <li>This matters later in CPU scheduling decisions.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>4. Process Creation</h2>
+    <ul>
+      <li>A parent process can create child processes, forming a process tree.</li>
+      <li>In UNIX, <code>fork()</code> creates the child, <code>exec()</code> replaces its program image, and <code>wait()</code> allows the parent to wait.</li>
+      <li>Parent and child may execute concurrently, or the parent may wait for the child to finish first.</li>
+      <li><strong>Copy-on-write</strong> means memory is not physically copied until one side actually writes to it.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>5. Process Termination</h2>
+    <ul>
+      <li><code>exit()</code> ends a process normally and releases its resources.</li>
+      <li>A child becomes a <strong>zombie</strong> when it has finished but its parent has not yet collected the exit status.</li>
+      <li>A child becomes an <strong>orphan</strong> when the parent terminates first, then another system process adopts it.</li>
+      <li>Too many zombies are bad because they occupy entries in the process table.</li>
+    </ul>
+    <div class="note">Memory trick: <strong>Zombie = dead child, alive parent.</strong> <strong>Orphan = alive child, dead parent.</strong></div>
+  </section>
+
+  <section class="topic">
+    <h2>6. IPC Basics</h2>
+    <ul>
+      <li>IPC exists because processes often need to cooperate and exchange data.</li>
+      <li><strong>Shared memory</strong> is very fast but needs synchronization.</li>
+      <li><strong>Message passing</strong> is conceptually cleaner because the OS manages the communication.</li>
+      <li>Common reasons for IPC include information sharing, speedup, modular design, and convenience.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+window.OS_PAGE_CONFIG = {
+  titleAr: "CS2016 - دليل نظم التشغيل - الفصل 3",
+  translations: {
+    "site-nav-label": "أدلة نظم التشغيل",
+    "site-nav-links": '<a href="os-1.html">الفصل 1</a><a href="os-2.html">الفصل 2</a><a class="current" href="os-3.html">الفصل 3</a><a href="os-4.html">الفصل 4</a><a href="os-5.html">الفصل 5</a><a href="os-6-7.html">الفصلان 6-7</a><a href="os-8.html">الفصل 8</a><a href="os-9.html">الفصل 9</a><a href="os-10.html">الفصل 10</a>',
+    "hero-tag": "CS2016 · نظم التشغيل",
+    "hero-title": "الفصل 3: العمليات Processes",
+    "hero-copy": "هذا الفصل يغطي الفرق بين البرنامج والعملية، وتخطيط الذاكرة، وحالات العملية، وPCB، وإنشاء العمليات وإنهاءها، وأول أفكار IPC المهمة.",
+    "card-1": '<h3>البرنامج مقابل العملية</h3><ul><li><strong>البرنامج</strong> ساكن ومخزن على القرص.</li><li><strong>العملية</strong> هي برنامج يجري تنفيذه حاليًا في الذاكرة.</li><li>للعملية PID وحالة وسياق CPU وموارد.</li></ul>',
+    "card-2": '<h3>تخطيط ذاكرة العملية</h3><ul><li><strong>Text</strong>: الشفرة التنفيذية.</li><li><strong>Data</strong>: المتغيرات العامة والثابتة.</li><li><strong>Heap</strong>: الذاكرة الديناميكية، وغالبًا تنمو للأعلى.</li><li><strong>Stack</strong>: استدعاءات الدوال والمتغيرات المحلية، وغالبًا ينمو للأسفل.</li></ul>',
+    "card-3": '<h3>Context Switch</h3><ul><li>يحفظ النظام حالة عملية ويستعيد حالة عملية أخرى.</li><li>هذا حمل إضافي فقط لأن العمل المفيد لا يُنجز أثناء التبديل.</li><li>الأنظمة الأكثر تعقيدًا غالبًا تملك كلفة تبديل أكبر.</li></ul>',
+    "card-4": '<h3>I/O-Bound مقابل CPU-Bound</h3><ul><li><strong>I/O-bound</strong>: يقضي وقتًا أكبر في الانتظار من الحساب.</li><li><strong>CPU-bound</strong>: يقضي وقتًا أكبر في الحساب من الانتظار.</li><li>هذا مهم لاحقًا في قرارات الجدولة.</li></ul>',
+    "topic-1": '<h2>1. مفهوم العملية</h2><ul><li>العملية هي وحدة التنفيذ الأساسية في معظم أنظمة التشغيل.</li><li>وهي تشمل كود البرنامج والنشاط الحالي مثل program counter والسجلات والـ stack والموارد المخصصة.</li><li>يمكن أن توجد عدة عمليات كتنفيذات مختلفة لنفس البرنامج، ولكل واحدة حالتها الخاصة.</li><li>ولهذا يمكن لبرنامج متصفح واحد أن ينشئ عدة عمليات أو تبويبات منفصلة.</li></ul>',
+    "topic-2": '<h2>2. حالات العملية</h2><ul><li>الحالات الرئيسية هي <strong>new</strong> و<strong>ready</strong> و<strong>running</strong> و<strong>waiting</strong> و<strong>terminated</strong>.</li><li><strong>Ready</strong> تعني أن العملية في الذاكرة وتنتظر دورها على المعالج.</li><li><strong>Waiting</strong> تعني أن العملية محجوبة بسبب I/O أو حدث آخر.</li><li>المقاطعات واكتمال I/O وقرارات المجدول تنقل العملية من حالة إلى أخرى.</li></ul>',
+    "topic-3": '<h2>3. PCB وطوابير الجدولة</h2><ul><li><strong>PCB</strong> يخزن حالة العملية وPID وprogram counter وسجلات المعالج ومعلومات الجدولة والذاكرة والمحاسبة وحالة I/O.</li><li><strong>ready queue</strong> تحتوي العمليات التي تنتظر المعالج.</li><li><strong>wait queue</strong> تحتوي العمليات التي تنتظر I/O أو حدثًا آخر.</li><li>يعمل Context Switching بحفظ حالة العملية القديمة في PCB الخاص بها واستعادة حالة العملية الجديدة من PCB الخاص بها.</li></ul>',
+    "topic-4": '<h2>4. إنشاء العمليات</h2><ul><li>يمكن للعملية الأب إنشاء عمليات أبناء، مكوّنة شجرة عمليات.</li><li>في UNIX تقوم <code>fork()</code> بإنشاء الابن، وتقوم <code>exec()</code> باستبدال صورة البرنامج، وتسمح <code>wait()</code> للأب بالانتظار.</li><li>قد يعمل الأب والابن معًا، أو قد ينتظر الأب حتى ينتهي الابن أولًا.</li><li><strong>Copy-on-write</strong> تعني أن الذاكرة لا تُنسخ فعليًا حتى يكتب أحد الطرفين فيها.</li></ul>',
+    "topic-5": '<h2>5. إنهاء العمليات</h2><ul><li>تُنهي <code>exit()</code> العملية بشكل طبيعي وتحرر مواردها.</li><li>يصبح الابن <strong>zombie</strong> عندما ينتهي لكن الأب لم يجمع حالة الخروج بعد.</li><li>يصبح الابن <strong>orphan</strong> عندما ينتهي الأب أولًا، فتتبناه عملية نظام أخرى.</li><li>كثرة الـ zombies سيئة لأنها تشغل مدخلات في جدول العمليات.</li></ul><div class="note">طريقة حفظ سريعة: <strong>Zombie = ابن ميت وأب حي.</strong> <strong>Orphan = ابن حي وأب ميت.</strong></div>',
+    "topic-6": '<h2>6. أساسيات IPC</h2><ul><li>توجد IPC لأن العمليات تحتاج غالبًا إلى التعاون وتبادل البيانات.</li><li><strong>Shared memory</strong> سريعة جدًا لكنها تحتاج إلى مزامنة.</li><li><strong>Message passing</strong> أوضح مفهوميًا لأن نظام التشغيل يدير الاتصال.</li><li>من أسباب IPC: مشاركة المعلومات، وتسريع التنفيذ، والتصميم المعياري، والراحة في بناء الأنظمة.</li></ul>'
+  }
+};
+</script>
+<script src="assets/lang-toggle.js"></script>
+<script src="assets/os-guide.js"></script>
+</body>
+</html>
