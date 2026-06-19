@@ -188,6 +188,119 @@
     </ul>
     <div class="note">One safe order for calculations: <strong>Gantt chart → Completion Time → TAT → WT → average values</strong>.</div>
   </section>
+
+  <section class="topic">
+    <h2>10. Worked Examples for the Main Algorithms</h2>
+    <p>Use one shared dataset, then solve it under each algorithm exactly like exam questions do.</p>
+
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>Priority</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>3</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>2</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>1</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>1</td></tr>
+    </table>
+    <div class="note">Assume <strong>smaller priority number = higher priority</strong> and use <strong>q = 2</strong> for Round Robin and for the same-priority RR part in the priority example.</div>
+
+    <h3>FCFS Solution</h3>
+    <table>
+      <tr><th>Run Order</th><td>P1</td><td>P2</td><td>P3</td><td>P4</td></tr>
+      <tr><th>Time</th><td>0-10</td><td>10-15</td><td>15-18</td><td>18-21</td></tr>
+    </table>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>10</td><td>10</td><td>0</td><td>0</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>10</td><td>15</td><td>15</td><td>10</td><td>10</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>15</td><td>18</td><td>17</td><td>14</td><td>14</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>18</td><td>21</td><td>19</td><td>16</td><td>16</td></tr>
+    </table>
+
+    <h3>SJF Solution</h3>
+    <table>
+      <tr><th>Run Order</th><td>P2</td><td>P3</td><td>P4</td><td>P1</td></tr>
+      <tr><th>Time</th><td>0-5</td><td>5-8</td><td>8-11</td><td>11-21</td></tr>
+    </table>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>5</td><td>8</td><td>7</td><td>4</td><td>4</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>8</td><td>11</td><td>9</td><td>6</td><td>6</td></tr>
+    </table>
+
+    <h3>SRTF Solution</h3>
+    <table>
+      <tr><th>Run Order</th><td>P2</td><td>P3</td><td>P4</td><td>P2</td><td>P1</td></tr>
+      <tr><th>Time</th><td>0-1</td><td>1-4</td><td>4-7</td><td>7-11</td><td>11-21</td></tr>
+    </table>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>11</td><td>11</td><td>6</td><td>0</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>1</td><td>4</td><td>3</td><td>0</td><td>0</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>4</td><td>7</td><td>5</td><td>2</td><td>2</td></tr>
+    </table>
+
+    <h3>Round Robin Solution</h3>
+    <table>
+      <tr><th>Run Order</th><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P1</td><td>P2</td><td>P1</td><td>P1</td></tr>
+      <tr><th>Time</th><td>0-2</td><td>2-4</td><td>4-6</td><td>6-8</td><td>8-10</td><td>10-12</td><td>12-13</td><td>13-14</td><td>14-16</td><td>16-17</td><td>17-19</td><td>19-21</td></tr>
+    </table>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>21</td><td>21</td><td>11</td><td>0</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>2</td><td>17</td><td>17</td><td>12</td><td>2</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>4</td><td>13</td><td>12</td><td>9</td><td>3</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>6</td><td>14</td><td>12</td><td>9</td><td>4</td></tr>
+    </table>
+
+    <h3>Priority Solution (Non-Preemptive with RR for Same Priority)</h3>
+    <table>
+      <tr><th>Run Order</th><td>P2</td><td>P3</td><td>P4</td><td>P3</td><td>P4</td><td>P1</td></tr>
+      <tr><th>Time</th><td>0-5</td><td>5-7</td><td>7-9</td><td>9-10</td><td>10-11</td><td>11-21</td></tr>
+    </table>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>5</td><td>10</td><td>9</td><td>6</td><td>4</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>7</td><td>11</td><td>9</td><td>6</td><td>5</td></tr>
+    </table>
+  </section>
+
+  <section class="topic">
+    <h2>11. Queue-Based Algorithm Examples</h2>
+
+    <h3>Multilevel Queue Example</h3>
+    <table>
+      <tr><th>Queue</th><th>Rule</th><th>Processes</th><th>What Happens</th></tr>
+      <tr><td>Foreground</td><td>RR, q = 2</td><td>P1 = 3, P2 = 2</td><td>Foreground jobs run first because this queue has higher priority.</td></tr>
+      <tr><td>Background</td><td>FCFS</td><td>P3 = 5</td><td>P3 waits until the foreground queue becomes empty.</td></tr>
+    </table>
+    <div class="note">One possible order: <strong>P1 0-2 | P2 2-4 | P1 4-5 | P3 5-10</strong>. In a fixed multilevel queue, processes do not move between queues.</div>
+
+    <h3>Multilevel Feedback Queue Example</h3>
+    <table>
+      <tr><th>Queue</th><th>Rule</th><th>Example Behavior</th></tr>
+      <tr><td>Q0</td><td>RR, q = 2</td><td>P1 = 9 and P2 = 2 start here. P2 finishes quickly, but P1 uses its full quantum.</td></tr>
+      <tr><td>Q1</td><td>RR, q = 4</td><td>P1 is demoted here because it behaved like a CPU-bound job.</td></tr>
+      <tr><td>Q2</td><td>FCFS</td><td>If P1 still does not finish, it can be demoted again and wait longer.</td></tr>
+    </table>
+    <div class="note">MLFQ reacts to behavior: <strong>short or interactive jobs stay high</strong>, while <strong>long CPU-bound jobs move lower</strong>. That is the main idea exam questions usually want.</div>
+  </section>
+
+  <section class="topic">
+    <h2>12. Applying the Core Formulas on an Example</h2>
+    <p>Use the shared Round Robin example above with <strong>q = 2</strong> and this Gantt order: <strong>P1 0-2 | P2 2-4 | P3 4-6 | P4 6-8 | P1 8-10 | P2 10-12 | P3 12-13 | P4 13-14 | P1 14-16 | P2 16-17 | P1 17-19 | P1 19-21</strong>.</p>
+    <table>
+      <tr><th>Process</th><th>AT</th><th>BT</th><th>First CPU</th><th>CT</th><th>TAT = CT - AT</th><th>WT = TAT - BT</th><th>RT = First CPU - AT</th></tr>
+      <tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>21</td><td>21 - 0 = 21</td><td>21 - 10 = 11</td><td>0 - 0 = 0</td></tr>
+      <tr><td>P2</td><td>0</td><td>5</td><td>2</td><td>17</td><td>17 - 0 = 17</td><td>17 - 5 = 12</td><td>2 - 0 = 2</td></tr>
+      <tr><td>P3</td><td>1</td><td>3</td><td>4</td><td>13</td><td>13 - 1 = 12</td><td>12 - 3 = 9</td><td>4 - 1 = 3</td></tr>
+      <tr><td>P4</td><td>2</td><td>3</td><td>6</td><td>14</td><td>14 - 2 = 12</td><td>12 - 3 = 9</td><td>6 - 2 = 4</td></tr>
+    </table>
+    <div class="note">Important idea: <strong>response time</strong> uses the <strong>first</strong> time the process gets CPU, not the completion time. In preemptive algorithms and RR, response time and waiting time are often different.</div>
+  </section>
 </main>
 
 <script>
@@ -208,12 +321,15 @@ window.OS_PAGE_CONFIG = {
     "topic-3": '<h2>3. Round Robin و Priority Scheduling</h2><ul><li><strong>Round Robin</strong> تعطي كل عملية quantum زمنيًا، ثم تعيد غير المكتمل إلى آخر الصف.</li><li>إذا كان quantum كبيرًا جدًا تصبح RR قريبة من FCFS.</li><li>إذا كان quantum صغيرًا جدًا يصبح حمل context switching مرتفعًا.</li><li><strong>Priority scheduling</strong> تشغّل أعلى أولوية أولًا.</li><li>المشكلة الرئيسية في priority scheduling هي <strong>starvation</strong>، والحل المعتاد هو <strong>aging</strong>.</li></ul>',
     "topic-4": '<h2>4. Multilevel Queue و Multilevel Feedback Queue</h2><ul><li><strong>Multilevel queue</strong> تضع العمليات بشكل دائم في طوابير مختلفة حسب النوع.</li><li><strong>Multilevel feedback queue</strong> تسمح للعمليات بالانتقال بين الطوابير حسب سلوكها.</li><li>Feedback queues أكثر مرونة ويمكنها التفاعل مع كون العملية I/O-bound أو CPU-bound.</li><li>كما أنها تساعد في تقليل starvation بشكل أفضل من multilevel queues الثابتة.</li></ul>',
     "topic-5": '<h2>5. حل أسئلة الجدولة</h2><ul><li>ارسم Gantt chart أولًا أو تخيله.</li><li>تحقق من arrival times قبل اتخاذ قرار من المؤهل للتنفيذ.</li><li>في RR يكون الأسهل غالبًا حساب completion time أولًا ثم TAT ثم WT.</li><li>إذا تساوت عمليتان فإن كثيرًا من التمارين تستخدم FCFS كقاعدة كسر التعادل.</li><li>إذا كانت الخوارزمية preemptive فتذكر أن العملية قد تظهر في عدة مقاطع زمنية منفصلة.</li></ul><div class="note">ملخص سريع للحفظ: <strong>FCFS = حسب الوصول</strong>، <strong>SJF = أقصر burst</strong>، <strong>SRTF = أقصر burst متبقٍ</strong>، <strong>RR = time quantum</strong>، <strong>Priority = الأعلى أولوية أولًا</strong>.</div>',
-    "card-3": '<h3>دورة CPU-Burst و I/O-Burst</h3><ul><li>تتناوب العمليات غالبًا بين الحساب والانتظار لعمليات الإدخال والإخراج.</li><li>العمليات I/O-bound تملك كثيرًا من CPU bursts القصيرة.</li><li>أما العمليات CPU-bound فتملك bursts أقل لكنها أطول.</li><li>وهذا يساعد على تفسير لماذا تفضّل بعض الخوارزميات الأعمال التفاعلية أكثر من الأعمال الحسابية الطويلة.</li></ul>',
-    "card-4": '<h3>متى تحدث قرارات الجدولة</h3><ul><li>عندما تُحجب العملية الجارية بسبب I/O.</li><li>عندما تُسحب العملية الجارية ويعاد وضعها في ready queue.</li><li>عندما تنتقل عملية من waiting إلى ready مرة أخرى.</li><li>عندما تنتهي العملية.</li></ul>',
+    "card-5": '<h3>دورة CPU-Burst و I/O-Burst</h3><ul><li>تتناوب العمليات غالبًا بين الحساب والانتظار لعمليات الإدخال والإخراج.</li><li>العمليات I/O-bound تملك كثيرًا من CPU bursts القصيرة.</li><li>أما العمليات CPU-bound فتملك bursts أقل لكنها أطول.</li><li>وهذا يساعد على تفسير لماذا تفضّل بعض الخوارزميات الأعمال التفاعلية أكثر من الأعمال الحسابية الطويلة.</li></ul>',
+    "card-6": '<h3>متى تحدث قرارات الجدولة</h3><ul><li>عندما تُحجب العملية الجارية بسبب I/O.</li><li>عندما تُسحب العملية الجارية ويعاد وضعها في ready queue.</li><li>عندما تنتقل عملية من waiting إلى ready مرة أخرى.</li><li>عندما تنتهي العملية.</li></ul>',
     "topic-6": '<h2>6. ملاحظات إضافية عن الخوارزميات الرئيسية</h2><ul><li><strong>FCFS</strong> سهلة لكنها تعاني من <strong>convoy effect</strong> حيث تنتظر الأعمال القصيرة خلف عمل طويل واحد.</li><li><strong>SJF</strong> هي الأفضل في متوسط waiting time، لكن النظام غالبًا يقدّر burst التالي بدل أن يعرفه بدقة.</li><li><strong>SRTF</strong> قد تحسن المتوسط أكثر لأن العملية القصيرة الجديدة قد تسحب المعالج من العملية الحالية.</li><li><strong>Round Robin</strong> مصممة لتقاسم الزمن، لذلك تكون غالبًا أفضل في response time من كونها الأفضل في متوسط turnaround.</li></ul>',
     "topic-7": '<h2>7. الأولوية و Aging وتصميم الطوابير</h2><ul><li>قد تكون Priority scheduling استباقية أو غير استباقية حسب القاعدة المستخدمة.</li><li><strong>Starvation</strong> تحدث عندما تستمر عملية منخفضة الأولوية في الانتظار لأن أعمالًا أعلى أولوية تستمر بالوصول.</li><li><strong>Aging</strong> يحل هذه المشكلة عبر رفع أولوية العمليات التي انتظرت طويلًا تدريجيًا.</li><li>في multilevel queue الثابتة تبقى العملية في نفس الصف دائمًا، بينما في multilevel feedback queue يمكنها الانتقال بين الصفوف حسب سلوكها.</li></ul>',
     "topic-8": '<h2>8. نظرة مقارنة على الخوارزميات</h2><table><tr><th>الخوارزمية</th><th>استباقية؟</th><th>القوة الرئيسية</th><th>الضعف الرئيسي</th></tr><tr><td>FCFS</td><td>لا</td><td>بسيطة جدًا</td><td>Convoy effect</td></tr><tr><td>SJF</td><td>لا</td><td>أفضل متوسط waiting time</td><td>تحتاج توقع burst</td></tr><tr><td>SRTF</td><td>نعم</td><td>Waiting time منخفض جدًا</td><td>قد تُجوّع الأعمال الطويلة</td></tr><tr><td>Round Robin</td><td>نعم</td><td>Response time جيد</td><td>حمل context switching</td></tr><tr><td>Priority</td><td>كلاهما</td><td>تشغّل المهم أولًا</td><td>Starvation بدون aging</td></tr><tr><td>MLFQ</td><td>كلاهما</td><td>تتكيف مع سلوك العملية</td><td>أعقد في الضبط</td></tr></table>',
-    "topic-9": '<h2>9. طريقة التفكير في الأمثلة المحلولة</h2><ul><li>اكتب arrival times وburst times بوضوح قبل اختيار أي عملية.</li><li>في الخوارزميات الاستباقية أعد فحص ready queue كلما وصلت عملية جديدة.</li><li>وفي RR اتبع دوران الصف بعناية وأوقف كل شريحة عند quantum أو عند انتهاء العملية.</li><li>بعد رسم Gantt chart احسب completion time أولًا، ثم turnaround time، ثم waiting time.</li><li>وهذا هو النمط المستخدم في أغلب أسئلة الجدولة في الشرائح والاختبارات.</li></ul><div class="note">ترتيب آمن للحساب: <strong>Gantt chart → Completion Time → TAT → WT → المتوسطات</strong>.</div>'
+    "topic-9": '<h2>9. طريقة التفكير في الأمثلة المحلولة</h2><ul><li>اكتب arrival times وburst times بوضوح قبل اختيار أي عملية.</li><li>في الخوارزميات الاستباقية أعد فحص ready queue كلما وصلت عملية جديدة.</li><li>وفي RR اتبع دوران الصف بعناية وأوقف كل شريحة عند quantum أو عند انتهاء العملية.</li><li>بعد رسم Gantt chart احسب completion time أولًا، ثم turnaround time، ثم waiting time.</li><li>وهذا هو النمط المستخدم في أغلب أسئلة الجدولة في الشرائح والاختبارات.</li></ul><div class="note">ترتيب آمن للحساب: <strong>Gantt chart → Completion Time → TAT → WT → المتوسطات</strong>.</div>',
+    "topic-10": '<h2>10. أمثلة محلولة للخوارزميات الرئيسية</h2><p>استخدم مجموعة بيانات واحدة مشتركة، ثم حلها تحت كل خوارزمية تمامًا كما يحدث في أسئلة الاختبار.</p><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>Priority</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>3</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>2</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>1</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>1</td></tr></table><div class="note">افترض أن <strong>الرقم الأصغر في الأولوية يعني أولوية أعلى</strong>، واستعمل <strong>q = 2</strong> في Round Robin وفي جزء RR بين العمليات ذات نفس الأولوية في مثال الأولوية.</div><h3>حل FCFS</h3><table><tr><th>ترتيب التنفيذ</th><td>P1</td><td>P2</td><td>P3</td><td>P4</td></tr><tr><th>الزمن</th><td>0-10</td><td>10-15</td><td>15-18</td><td>18-21</td></tr></table><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>10</td><td>10</td><td>0</td><td>0</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>10</td><td>15</td><td>15</td><td>10</td><td>10</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>15</td><td>18</td><td>17</td><td>14</td><td>14</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>18</td><td>21</td><td>19</td><td>16</td><td>16</td></tr></table><h3>حل SJF</h3><table><tr><th>ترتيب التنفيذ</th><td>P2</td><td>P3</td><td>P4</td><td>P1</td></tr><tr><th>الزمن</th><td>0-5</td><td>5-8</td><td>8-11</td><td>11-21</td></tr></table><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>5</td><td>5</td><td>0</td><td>0</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>5</td><td>8</td><td>7</td><td>4</td><td>4</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>8</td><td>11</td><td>9</td><td>6</td><td>6</td></tr></table><h3>حل SRTF</h3><table><tr><th>ترتيب التنفيذ</th><td>P2</td><td>P3</td><td>P4</td><td>P2</td><td>P1</td></tr><tr><th>الزمن</th><td>0-1</td><td>1-4</td><td>4-7</td><td>7-11</td><td>11-21</td></tr></table><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>11</td><td>11</td><td>6</td><td>0</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>1</td><td>4</td><td>3</td><td>0</td><td>0</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>4</td><td>7</td><td>5</td><td>2</td><td>2</td></tr></table><h3>حل Round Robin</h3><table><tr><th>ترتيب التنفيذ</th><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P1</td><td>P2</td><td>P1</td><td>P1</td></tr><tr><th>الزمن</th><td>0-2</td><td>2-4</td><td>4-6</td><td>6-8</td><td>8-10</td><td>10-12</td><td>12-13</td><td>13-14</td><td>14-16</td><td>16-17</td><td>17-19</td><td>19-21</td></tr></table><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>21</td><td>21</td><td>11</td><td>0</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>2</td><td>17</td><td>17</td><td>12</td><td>2</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>4</td><td>13</td><td>12</td><td>9</td><td>3</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>6</td><td>14</td><td>12</td><td>9</td><td>4</td></tr></table><h3>حل Priority (Non-Preemptive with RR for Same Priority)</h3><table><tr><th>ترتيب التنفيذ</th><td>P2</td><td>P3</td><td>P4</td><td>P3</td><td>P4</td><td>P1</td></tr><tr><th>الزمن</th><td>0-5</td><td>5-7</td><td>7-9</td><td>9-10</td><td>10-11</td><td>11-21</td></tr></table><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT</th><th>WT</th><th>RT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>11</td><td>21</td><td>21</td><td>11</td><td>11</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>0</td><td>5</td><td>5</td><td>0</td><td>0</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>5</td><td>10</td><td>9</td><td>6</td><td>4</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>7</td><td>11</td><td>9</td><td>6</td><td>5</td></tr></table>',
+    "topic-11": '<h2>11. أمثلة خوارزميات الطوابير</h2><h3>مثال Multilevel Queue</h3><table><tr><th>الطابور</th><th>القاعدة</th><th>العمليات</th><th>ما الذي يحدث</th></tr><tr><td>Foreground</td><td>RR, q = 2</td><td>P1 = 3, P2 = 2</td><td>تعمل أعمال الـ foreground أولًا لأن هذا الطابور أعلى أولوية.</td></tr><tr><td>Background</td><td>FCFS</td><td>P3 = 5</td><td>ينتظر P3 حتى يفرغ طابور الـ foreground.</td></tr></table><div class="note">ترتيب محتمل: <strong>P1 0-2 | P2 2-4 | P1 4-5 | P3 5-10</strong>. في multilevel queue الثابتة لا تنتقل العمليات بين الطوابير.</div><h3>مثال Multilevel Feedback Queue</h3><table><tr><th>الطابور</th><th>القاعدة</th><th>السلوك في المثال</th></tr><tr><td>Q0</td><td>RR, q = 2</td><td>يبدأ P1 = 9 وP2 = 2 هنا. ينتهي P2 بسرعة، بينما يستهلك P1 الـ quantum كاملًا.</td></tr><tr><td>Q1</td><td>RR, q = 4</td><td>يهبط P1 إلى هذا الطابور لأنه تصرف كعمل CPU-bound.</td></tr><tr><td>Q2</td><td>FCFS</td><td>إذا لم ينته P1 بعد ذلك فقد يهبط مرة أخرى وينتظر أطول.</td></tr></table><div class="note">تتفاعل MLFQ مع السلوك: <strong>الأعمال القصيرة أو التفاعلية تبقى في الأعلى</strong>، بينما <strong>الأعمال الطويلة CPU-bound تهبط إلى أسفل</strong>. هذه هي الفكرة الأساسية التي تريدها الأسئلة غالبًا.</div>',
+    "topic-12": '<h2>12. تطبيق المعادلات الأساسية على مثال</h2><p>استعمل مثال Round Robin المشترك أعلاه مع <strong>q = 2</strong> وهذا ترتيب Gantt: <strong>P1 0-2 | P2 2-4 | P3 4-6 | P4 6-8 | P1 8-10 | P2 10-12 | P3 12-13 | P4 13-14 | P1 14-16 | P2 16-17 | P1 17-19 | P1 19-21</strong>.</p><table><tr><th>العملية</th><th>AT</th><th>BT</th><th>أول CPU</th><th>CT</th><th>TAT = CT - AT</th><th>WT = TAT - BT</th><th>RT = أول CPU - AT</th></tr><tr><td>P1</td><td>0</td><td>10</td><td>0</td><td>21</td><td>21 - 0 = 21</td><td>21 - 10 = 11</td><td>0 - 0 = 0</td></tr><tr><td>P2</td><td>0</td><td>5</td><td>2</td><td>17</td><td>17 - 0 = 17</td><td>17 - 5 = 12</td><td>2 - 0 = 2</td></tr><tr><td>P3</td><td>1</td><td>3</td><td>4</td><td>13</td><td>13 - 1 = 12</td><td>12 - 3 = 9</td><td>4 - 1 = 3</td></tr><tr><td>P4</td><td>2</td><td>3</td><td>6</td><td>14</td><td>14 - 2 = 12</td><td>12 - 3 = 9</td><td>6 - 2 = 4</td></tr></table><div class="note">الفكرة المهمة: <strong>response time</strong> تستخدم <strong>أول</strong> مرة تحصل فيها العملية على CPU، وليس وقت الإنهاء. وفي الخوارزميات الاستباقية وRR يختلف response time غالبًا عن waiting time.</div>'
   }
 };
 </script>
