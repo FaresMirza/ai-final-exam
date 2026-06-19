@@ -112,6 +112,68 @@
     </ul>
     <div class="note">Clean final-exam story: <strong>race condition → critical section problem → mutex / semaphore → synchronization examples → deadlock risk when tools are misused</strong>.</div>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Atomic Variables</h3>
+      <ul>
+        <li>Atomic variables are special data types that allow updates without interruption.</li>
+        <li>They are useful for simple shared values such as counters and flags.</li>
+        <li>They are often built using hardware primitives like compare-and-swap.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Busy Waiting vs Blocking</h3>
+      <ul>
+        <li><strong>Busy waiting</strong> wastes CPU time because the process keeps checking in a loop.</li>
+        <li><strong>Blocking</strong> suspends the process and moves it to a wait queue until wakeup.</li>
+        <li>Blocking semaphores are better when the wait may be long.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>7. Bounded Buffer Details</h2>
+    <ul>
+      <li>The bounded-buffer problem uses <code>mutex</code> for mutual exclusion, <code>empty</code> to count free slots, and <code>full</code> to count occupied slots.</li>
+      <li>The producer must usually do <code>wait(empty)</code> then <code>wait(mutex)</code> before inserting an item.</li>
+      <li>The consumer must usually do <code>wait(full)</code> then <code>wait(mutex)</code> before removing an item.</li>
+      <li>After the critical section, the producer signals <code>mutex</code> then <code>full</code>, while the consumer signals <code>mutex</code> then <code>empty</code>.</li>
+      <li>The order matters because it preserves both correctness and proper counting of available slots.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. Readers-Writers Details</h2>
+    <ul>
+      <li>Readers may read together as long as no writer is writing.</li>
+      <li>Writers need exclusive access because writing while another thread reads or writes can corrupt the shared data.</li>
+      <li>In the readers-preference solution, the first reader locks writers out and the last reader lets writers in again.</li>
+      <li>The variable <code>read_count</code> tracks how many readers are currently inside.</li>
+      <li>Readers-preference can starve writers, while writers-preference can starve readers.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>9. Semaphore Usage Patterns</h2>
+    <ul>
+      <li>A binary semaphore initialized to 1 can be used like a mutex for mutual exclusion.</li>
+      <li>A counting semaphore initialized to <code>n</code> can track <code>n</code> identical resources.</li>
+      <li>Semaphores can also enforce execution order, such as making sure statement 1 happens before statement 2.</li>
+      <li>This is why semaphores are not only for locking, but also for general synchronization.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>10. Semaphore Implementation Without Busy Waiting</h2>
+    <ul>
+      <li>To avoid busy waiting, each semaphore can keep a waiting queue of blocked processes.</li>
+      <li>If <code>wait()</code> cannot continue, the process is blocked and moved to that queue.</li>
+      <li>When another process executes <code>signal()</code>, one blocked process can be woken up and returned to the ready queue.</li>
+      <li>This approach wastes less CPU time than spin-based waiting.</li>
+    </ul>
+    <div class="note">Slide-level difference to remember: <strong>busy wait = loop on CPU</strong>, <strong>blocking wait = sleep in queue</strong>.</div>
+  </section>
 </main>
 
 <script>
@@ -127,10 +189,16 @@ window.OS_PAGE_CONFIG = {
     "topic-2": '<h2>2. مشكلة الـ Critical Section</h2><ul><li>الـ critical section هو الجزء من البرنامج الذي يصل إلى موارد مشتركة مثل المتغيرات أو الملفات أو الجداول أو الـ buffers.</li><li>إذا كانت عملية داخل critical section، فلا ينبغي لعملية أخرى أن تدخل critical section متعارضة في الوقت نفسه.</li><li>أي حل صحيح يجب أن يحقق <strong>mutual exclusion</strong> و<strong>progress</strong> و<strong>bounded waiting</strong>.</li><li>هذه الشروط الثلاثة تتكرر كثيرًا في الاختبار، لذلك احفظ معنى كل واحد فعليًا.</li></ul>',
     "card-1": '<h3>حل Peterson</h3><ul><li>حل برمجي كلاسيكي لعمليتين فقط.</li><li>يستخدم متغير <code>turn</code> ومصفوفة <code>flag[]</code>.</li><li>هو مهم مفهوميًا لأنه يوضح كيف يمكن تحقيق mutual exclusion برمجيًا.</li><li>لكن العتاد الحديث قد يعيد ترتيب التعليمات، لذلك لا يعد موثوقًا تمامًا هناك.</li></ul>',
     "card-2": '<h3>الدعم العتادي</h3><ul><li>توفر الأنظمة الحديثة تعليمات عتادية ذرية atomic.</li><li>من الأمثلة المهمة <strong>test-and-set</strong> و<strong>compare-and-swap</strong>.</li><li>هذه التعليمات غير قابلة للمقاطعة، لذلك تُستخدم كأساس لبناء أدوات المزامنة.</li></ul>',
+    "card-3": '<h3>Atomic Variables</h3><ul><li>الـ atomic variables هي أنواع بيانات خاصة تسمح بالتحديث دون مقاطعة.</li><li>وهي مفيدة للقيم المشتركة البسيطة مثل العدادات والأعلام flags.</li><li>وغالبًا تُبنى باستخدام primitives عتادية مثل compare-and-swap.</li></ul>',
+    "card-4": '<h3>Busy Waiting مقابل Blocking</h3><ul><li><strong>Busy waiting</strong> تهدر وقت المعالج لأن العملية تستمر في الفحص داخل حلقة.</li><li><strong>Blocking</strong> يعلّق العملية وينقلها إلى wait queue حتى يحدث wakeup.</li><li>وتكون semaphores التي تعتمد blocking أفضل عندما يكون الانتظار طويلًا نسبيًا.</li></ul>',
     "topic-3": '<h2>3. Mutex Locks</h2><ul><li>الـ mutex lock أداة برمجية توفر mutual exclusion.</li><li>يجب على العملية أو الـ thread أن تستدعي <code>acquire()</code> قبل الدخول إلى critical section ثم <code>release()</code> بعد الخروج.</li><li>إذا استمرت العملية في فحص القفل داخل حلقة فهذا يسمى <strong>busy waiting</strong>.</li><li>الـ mutex الذي يعتمد على busy waiting يسمى غالبًا <strong>spinlock</strong>.</li><li>تضيع spinlocks وقت المعالج، لكنها قد تكون مفيدة إذا كان زمن الانتظار المتوقع قصيرًا جدًا.</li></ul>',
     "topic-4": '<h2>4. Semaphores</h2><ul><li>الـ semaphore متغير مزامنة عددي لا يُستخدم إلا عبر العمليتين الذريتين <code>wait()</code> و<code>signal()</code>.</li><li><strong>Binary semaphore</strong>: قيمته 0 أو 1 فقط، لذلك يشبه mutex في السلوك.</li><li><strong>Counting semaphore</strong>: يمكن أن تكون قيمته أكبر من 1، لذلك يمكنه تمثيل عدة نسخ من المورد نفسه.</li><li>يمكن تنفيذ semaphores عبر busy waiting، أو عبر طوابير block/wakeup لتجنب إهدار وقت المعالج.</li></ul>',
     "topic-5": '<h2>5. أمثلة الـ Semaphores</h2><ul><li><strong>Bounded buffer</strong> يستخدم غالبًا ثلاثة semaphores: <code>mutex</code> و<code>full</code> و<code>empty</code>.</li><li><strong>Readers-writers</strong> يميز بين القراء الذين قد يشاركون الوصول، والكتاب الذين يحتاجون وصولًا حصريًا.</li><li>في مشكلة readers-writers الأولى تكون الأولوية للقراء، وفي الثانية تكون الأولوية للكتاب.</li><li>وكلا الخيارين قد يسبب starvation إذا لم يكن التصميم حذرًا.</li></ul>',
-    "topic-6": '<h2>6. الأخطاء الشائعة وخطر الـ Deadlock</h2><ul><li>استدعاء <code>signal</code> قبل <code>wait</code> المطابق قد يفسد منطق المزامنة.</li><li>استدعاء <code>wait</code> مرتين على نفس الـ mutex قد يحجب العملية نفسها.</li><li>نسيان <code>wait</code> يسبب race conditions، ونسـيان <code>signal</code> قد يجعل الآخرين ينتظرون إلى الأبد.</li><li>إذا أخذت عمليتان الموارد بترتيب عكسي فقد يحدث deadlock.</li><li>ولهذا فالمزامنة ليست عن السرعة أو الترتيب فقط، بل عن الصحة والسلامة أيضًا.</li></ul><div class="note">القصة النظيفة في الاختبار: <strong>race condition → critical section problem → mutex / semaphore → synchronization examples → deadlock risk عند إساءة الاستخدام</strong>.</div>'
+    "topic-6": '<h2>6. الأخطاء الشائعة وخطر الـ Deadlock</h2><ul><li>استدعاء <code>signal</code> قبل <code>wait</code> المطابق قد يفسد منطق المزامنة.</li><li>استدعاء <code>wait</code> مرتين على نفس الـ mutex قد يحجب العملية نفسها.</li><li>نسيان <code>wait</code> يسبب race conditions، ونسـيان <code>signal</code> قد يجعل الآخرين ينتظرون إلى الأبد.</li><li>إذا أخذت عمليتان الموارد بترتيب عكسي فقد يحدث deadlock.</li><li>ولهذا فالمزامنة ليست عن السرعة أو الترتيب فقط، بل عن الصحة والسلامة أيضًا.</li></ul><div class="note">القصة النظيفة في الاختبار: <strong>race condition → critical section problem → mutex / semaphore → synchronization examples → deadlock risk عند إساءة الاستخدام</strong>.</div>',
+    "topic-7": '<h2>7. تفاصيل Bounded Buffer</h2><ul><li>تستخدم مشكلة bounded buffer عادة <code>mutex</code> من أجل mutual exclusion، و<code>empty</code> لعد الخانات الفارغة، و<code>full</code> لعد الخانات الممتلئة.</li><li>يجب على المنتج غالبًا تنفيذ <code>wait(empty)</code> ثم <code>wait(mutex)</code> قبل إدخال العنصر.</li><li>ويجب على المستهلك غالبًا تنفيذ <code>wait(full)</code> ثم <code>wait(mutex)</code> قبل إزالة العنصر.</li><li>بعد الـ critical section يرسل المنتج <code>signal(mutex)</code> ثم <code>signal(full)</code>، بينما يرسل المستهلك <code>signal(mutex)</code> ثم <code>signal(empty)</code>.</li><li>هذا الترتيب مهم لأنه يحافظ على الصحة وعلى العد الصحيح للخانات المتاحة.</li></ul>',
+    "topic-8": '<h2>8. تفاصيل Readers-Writers</h2><ul><li>يمكن للقراء القراءة معًا ما دام لا يوجد كاتب يكتب.</li><li>أما الكاتب فيحتاج وصولًا حصريًا لأن الكتابة مع وجود قارئ أو كاتب آخر قد تفسد البيانات المشتركة.</li><li>في حل readers-preference يقوم أول قارئ بمنع الكتاب، ويقوم آخر قارئ بالسماح لهم من جديد.</li><li>يتتبع المتغير <code>read_count</code> عدد القراء الموجودين حاليًا داخل القسم المشترك.</li><li>وقد يسبب readers-preference starvation للكتّاب، بينما قد يسبب writers-preference starvation للقراء.</li></ul>',
+    "topic-9": '<h2>9. أنماط استخدام الـ Semaphores</h2><ul><li>يمكن استخدام binary semaphore مهيأ بالقيمة 1 مثل mutex من أجل mutual exclusion.</li><li>ويمكن استخدام counting semaphore مهيأ بالقيمة <code>n</code> لتتبع <code>n</code> موارد متماثلة.</li><li>كما يمكن للـ semaphores فرض ترتيب التنفيذ، مثل ضمان أن statement 1 تحدث قبل statement 2.</li><li>ولهذا فالـ semaphores ليست فقط للقفل، بل أيضًا للمزامنة العامة بين الأحداث.</li></ul>',
+    "topic-10": '<h2>10. تنفيذ الـ Semaphore من دون Busy Waiting</h2><ul><li>لتجنب busy waiting يمكن لكل semaphore أن يحتفظ بطابور انتظار للعمليات المحجوبة.</li><li>إذا لم تستطع <code>wait()</code> المتابعة، تُحجب العملية وتُنقل إلى ذلك الطابور.</li><li>وعندما تنفذ عملية أخرى <code>signal()</code> يمكن إيقاظ إحدى العمليات المحجوبة وإعادتها إلى ready queue.</li><li>هذا الأسلوب يبدد وقتًا أقل من المعالج مقارنة بالانتظار القائم على الدوران.</li></ul><div class="note">الفرق المهم في الشرائح: <strong>busy wait</strong> يعني حلقة على المعالج، بينما <strong>blocking wait</strong> يعني نومًا في طابور انتظار.</div>'
   }
 };
 </script>

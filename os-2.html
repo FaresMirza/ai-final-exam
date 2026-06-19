@@ -129,6 +129,68 @@
       <li><strong>Hybrid systems</strong> exist because real operating systems usually want both speed and flexibility.</li>
     </ul>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>API vs System Call</h3>
+      <ul>
+        <li>An <strong>API</strong> is the programmer-friendly interface used in code.</li>
+        <li>A <strong>system call</strong> is the lower-level kernel request that actually crosses into kernel mode.</li>
+        <li>Programs often call a library function first, and that library function performs the system call.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Passing Parameters</h3>
+      <ul>
+        <li>Parameters can be passed in registers for speed.</li>
+        <li>They can also be placed in a memory block and its address is passed to the kernel.</li>
+        <li>Some systems use the stack to pass arguments too.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>7. System Programs and User View</h2>
+    <ul>
+      <li>System programs are not the kernel itself, but they provide a convenient environment for users and developers.</li>
+      <li>Examples include file tools, status tools, compilers, shells, text editors, communication utilities, and background services.</li>
+      <li>The user usually experiences the OS through these tools more than through the kernel directly.</li>
+      <li>This is why books often separate <strong>OS services</strong> from <strong>system programs</strong>.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. What to Remember About System Calls</h2>
+    <ul>
+      <li>Process control calls handle creating, executing, waiting for, and ending processes.</li>
+      <li>File-management calls handle create, delete, open, close, read, write, and reposition.</li>
+      <li>Device-management calls request devices, release them, read from them, and write to them.</li>
+      <li>Communication calls let processes exchange information either through shared memory or message passing.</li>
+      <li>Protection calls check permissions and help control who may access which resource.</li>
+    </ul>
+    <div class="note">Fast exam view: <strong>API is what the programmer writes</strong>, <strong>system call is what the kernel receives</strong>.</div>
+  </section>
+
+  <section class="topic">
+    <h2>9. Communication Models in System Services</h2>
+    <ul>
+      <li><strong>Message passing</strong> lets the OS transfer packets or messages between processes.</li>
+      <li><strong>Shared memory</strong> lets processes communicate through a common memory region after setup.</li>
+      <li>Message passing is cleaner conceptually, while shared memory is usually faster after it is established.</li>
+      <li>These models appear here because communication is one of the major operating-system services.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>10. Quick Structure Recall</h2>
+    <ul>
+      <li><strong>Simple structure</strong>: very little separation, fast but unsafe.</li>
+      <li><strong>Monolithic</strong>: one large kernel, high performance, weak fault isolation.</li>
+      <li><strong>Microkernel</strong>: minimal kernel plus user-space services, safer but slower.</li>
+      <li><strong>Modular</strong>: kernel can load features dynamically without rebuilding or rebooting.</li>
+      <li><strong>Hybrid</strong>: practical mix of multiple structure ideas used by real systems.</li>
+    </ul>
+  </section>
 </main>
 
 <script>
@@ -142,12 +204,18 @@ window.OS_PAGE_CONFIG = {
     "hero-copy": "هذا الفصل يشرح كيف يُبنى نظام التشغيل داخليًا، وما الخدمات التي يقدمها، وكيف تطلب البرامج من النواة تنفيذ الأعمال ذات الصلاحيات العالية بطريقة آمنة.",
     "card-1": '<h3>مكونات نظام التشغيل</h3><ul><li>إدارة العمليات</li><li>إدارة الذاكرة</li><li>إدارة نظام الملفات</li><li>إدارة الإدخال والإخراج والأجهزة</li><li>الشبكات والأمن وواجهة المستخدم</li></ul>',
     "card-2": '<h3>خدمات نظام التشغيل</h3><ul><li>واجهة المستخدم</li><li>تنفيذ البرامج</li><li>عمليات الإدخال والإخراج والوصول للملفات</li><li>الاتصال واكتشاف الأخطاء</li><li>الحماية والأمان</li></ul>',
+    "card-3": '<h3>API مقابل System Call</h3><ul><li><strong>API</strong> هي الواجهة الأسهل التي يكتبها المبرمج في الكود.</li><li><strong>System call</strong> هو طلب النواة الأقل مستوى الذي يعبر فعليًا إلى kernel mode.</li><li>غالبًا يستدعي البرنامج دالة مكتبية أولًا، وهذه الدالة تنفذ system call.</li></ul>',
+    "card-4": '<h3>تمرير المعاملات</h3><ul><li>يمكن تمرير المعاملات داخل السجلات من أجل السرعة.</li><li>ويمكن أيضًا وضعها في block داخل الذاكرة وتمرير عنوانه إلى النواة.</li><li>وبعض الأنظمة تستخدم الـ stack لتمرير الوسائط كذلك.</li></ul>',
     "topic-1": '<h2>1. المكونات مقابل الخدمات</h2><ul><li><strong>المكونات</strong> هي الأنظمة الفرعية الداخلية داخل نظام التشغيل.</li><li><strong>الخدمات</strong> هي الوظائف التي يستطيع المستخدم أو البرنامج الاستفادة منها فعليًا.</li><li>التمييز السريع هو: المكونات توجد <strong>داخل النواة</strong>، بينما الخدمات هي <strong>ما تقدمه النواة</strong>.</li><li>هذا مهم لأن أسئلة الاختبار قد تسأل هل الشيء مسؤولية داخلية للنظام أم خدمة مكشوفة للمستخدم والبرامج.</li></ul>',
     "topic-2": '<h2>2. واجهات المستخدم</h2><ul><li><strong>CLI</strong> تعني أن المستخدم يكتب الأوامر في Shell مثل Bash أو Zsh.</li><li><strong>GUI</strong> تستخدم النوافذ والأيقونات والأزرار والمؤشر.</li><li><strong>واجهة اللمس</strong> شائعة في الهواتف والأجهزة اللوحية حيث تحل الإيماءات محل الفأرة.</li><li><strong>أنظمة Batch</strong> تشغل الأعمال دون تفاعل مباشر أثناء التنفيذ.</li><li>غالبًا تُفضّل CLI في الأتمتة والسكربتات والإدارة عن بعد.</li></ul>',
     "topic-3": '<h2>3. استدعاءات النظام System Calls</h2><ul><li>استدعاء النظام هو الآلية التي يستخدمها برنامج المستخدم لطلب خدمة مميزة من النواة.</li><li>المسار المعتاد هو: البرنامج يستدعي API، ثم API يستدعي system call، ثم يتحول المعالج إلى kernel mode، ثم ينفذ النظام العمل، ثم يعود.</li><li>أمثلة شائعة: <code>open</code> و<code>read</code> و<code>write</code> و<code>fork</code> و<code>exec</code> و<code>wait</code> و<code>exit</code>.</li><li>نحتاج إلى system calls لأن برامج المستخدم لا تملك صلاحية مباشرة للوصول إلى العتاد أو حالة النواة المحمية.</li></ul><div class="note">إجابة سهلة: system call هي <strong>الباب المنظم من user mode إلى kernel mode</strong>.</div>',
     "topic-4": '<h2>4. الفئات الرئيسية لاستدعاءات النظام</h2><div class="grid two"><article class="card"><h3>فئات التحكم الأساسية</h3><ul><li>التحكم في العمليات</li><li>إدارة الملفات</li><li>إدارة الأجهزة</li></ul></article><article class="card"><h3>الفئات المساندة</h3><ul><li>صيانة المعلومات</li><li>الاتصال</li><li>الحماية</li></ul></article></div>',
     "topic-5": '<h2>5. تصاميم هيكل نظام التشغيل</h2><table><tr><th>الهيكل</th><th>الفكرة الرئيسية</th><th>أهم مفاضلة</th></tr><tr><td>Simple</td><td>فصل قليل جدًا</td><td>سريع لكن الحماية والتنظيم ضعيفان</td></tr><tr><td>Monolithic</td><td>نواة كبيرة واحدة في مساحة عنوان واحدة</td><td>سريع لكن الصيانة وعزل الأعطال أصعب</td></tr><tr><td>Layered</td><td>تقسيم النظام إلى طبقات</td><td>تصميم أنظف لكن مع حمل إضافي</td></tr><tr><td>Microkernel</td><td>نواة صغيرة وخدمات أكثر في user space</td><td>أكثر أمانًا ووحدات لكن أبطأ بسبب الرسائل</td></tr><tr><td>Modular</td><td>نواة أساسية مع وحدات قابلة للتحميل</td><td>مرن وفعّال لكن أخطاء الوحدات لا تزال مهمة</td></tr><tr><td>Hybrid</td><td>مزيج من عدة أفكار تصميمية</td><td>عملي لكن أعقد داخليًا</td></tr></table>',
-    "topic-6": '<h2>6. مقارنات مهمة</h2><ul><li><strong>النواة الأحادية Monolithic</strong>: أداء عالٍ لأن الخدمات تعمل معًا في kernel space، لكن الخطأ الكبير قد يؤثر في النظام كله.</li><li><strong>Microkernel</strong>: عزل أفضل وقابلية توسعة أعلى لأن خدمات أكثر تعمل في user space، لكن كلفة الاتصال أعلى.</li><li><strong>الأنظمة modular</strong>: تحافظ على الأداء الجيد مع السماح بتحميل مكونات مثل المشغلات ديناميكيًا.</li><li><strong>الأنظمة hybrid</strong> موجودة لأن الأنظمة الواقعية تريد السرعة والمرونة معًا.</li></ul>'
+    "topic-6": '<h2>6. مقارنات مهمة</h2><ul><li><strong>النواة الأحادية Monolithic</strong>: أداء عالٍ لأن الخدمات تعمل معًا في kernel space، لكن الخطأ الكبير قد يؤثر في النظام كله.</li><li><strong>Microkernel</strong>: عزل أفضل وقابلية توسعة أعلى لأن خدمات أكثر تعمل في user space، لكن كلفة الاتصال أعلى.</li><li><strong>الأنظمة modular</strong>: تحافظ على الأداء الجيد مع السماح بتحميل مكونات مثل المشغلات ديناميكيًا.</li><li><strong>الأنظمة hybrid</strong> موجودة لأن الأنظمة الواقعية تريد السرعة والمرونة معًا.</li></ul>',
+    "topic-7": '<h2>7. برامج النظام ومنظور المستخدم</h2><ul><li>برامج النظام ليست هي النواة نفسها، لكنها توفر بيئة مريحة للمستخدمين والمطورين.</li><li>من أمثلتها أدوات الملفات وأدوات الحالة والمترجمات والـ shell والمحررات وأدوات الاتصال والخدمات الخلفية.</li><li>المستخدم يرى نظام التشغيل غالبًا عبر هذه الأدوات أكثر من رؤيته للنواة مباشرة.</li><li>ولهذا تفصل الكتب غالبًا بين <strong>خدمات النظام</strong> و<strong>برامج النظام</strong>.</li></ul>',
+    "topic-8": '<h2>8. ما الذي يجب حفظه عن System Calls</h2><ul><li>استدعاءات التحكم في العمليات تتعامل مع إنشاء العمليات وتنفيذها والانتظار لها وإنهائها.</li><li>استدعاءات إدارة الملفات تتعامل مع create وdelete وopen وclose وread وwrite وreposition.</li><li>استدعاءات إدارة الأجهزة تطلب الأجهزة وتحررها وتقرأ منها وتكتب إليها.</li><li>استدعاءات الاتصال تسمح للعمليات بتبادل المعلومات عبر shared memory أو message passing.</li><li>استدعاءات الحماية تفحص الصلاحيات وتتحكم في من يملك الوصول إلى أي مورد.</li></ul><div class="note">ملخص اختباري سريع: <strong>API</strong> هي ما يكتبه المبرمج، و<strong>system call</strong> هي ما تستقبله النواة.</div>',
+    "topic-9": '<h2>9. نماذج الاتصال ضمن خدمات النظام</h2><ul><li><strong>Message passing</strong> تسمح للنظام بنقل الحزم أو الرسائل بين العمليات.</li><li><strong>Shared memory</strong> تسمح للعمليات بالاتصال عبر منطقة ذاكرة مشتركة بعد الإعداد.</li><li>تكون message passing أوضح مفهوميًا، بينما تكون shared memory أسرع غالبًا بعد إنشائها.</li><li>وتظهر هذه النماذج هنا لأن الاتصال يعد من الخدمات الرئيسية لنظام التشغيل.</li></ul>',
+    "topic-10": '<h2>10. مراجعة سريعة لهياكل النظام</h2><ul><li><strong>Simple structure</strong>: فصل قليل جدًا، سريع لكنه غير آمن.</li><li><strong>Monolithic</strong>: نواة كبيرة واحدة، أداء عالٍ لكن عزل الأعطال ضعيف.</li><li><strong>Microkernel</strong>: نواة صغيرة مع خدمات في user space، أكثر أمانًا لكنه أبطأ.</li><li><strong>Modular</strong>: يستطيع النظام تحميل الميزات ديناميكيًا دون إعادة بناء أو إعادة تشغيل.</li><li><strong>Hybrid</strong>: مزيج عملي من عدة أفكار هيكلية تستخدمه الأنظمة الواقعية.</li></ul>'
   }
 };
 </script>

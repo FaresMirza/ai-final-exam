@@ -129,6 +129,112 @@
       <li>Common reasons for IPC include information sharing, speedup, modular design, and convenience.</li>
     </ul>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Stack vs Heap</h3>
+      <ul>
+        <li>The <strong>stack</strong> stores function calls, parameters, local variables, and return addresses.</li>
+        <li>The <strong>heap</strong> stores dynamically allocated objects that may live longer than one function call.</li>
+        <li>Stack allocation is usually automatic and fast, while heap use is more flexible but needs explicit management or garbage collection.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Direct vs Indirect Communication</h3>
+      <ul>
+        <li><strong>Direct communication</strong> names the sender or receiver explicitly.</li>
+        <li><strong>Indirect communication</strong> sends messages through a mailbox or port.</li>
+        <li>Mailboxes make communication more flexible because processes do not have to know each other directly.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>7. More About Process Creation</h2>
+    <ul>
+      <li>Parent and child may share all resources, share only some resources, or share none, depending on the OS design.</li>
+      <li>In UNIX, <code>fork()</code> returns twice: once in the parent with the child PID, and once in the child with return value 0.</li>
+      <li>After <code>fork()</code>, the child often runs <code>exec()</code> to replace its memory image with a different program.</li>
+      <li>If the parent uses <code>wait()</code>, it can pause until the child finishes and then collect the exit status.</li>
+      <li>Without <code>exec()</code>, parent and child start from the same code location but continue as separate processes.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. More About Process Termination</h2>
+    <ul>
+      <li>A process may terminate normally, terminate because of an error, or be aborted by another process or the OS.</li>
+      <li><strong>Cascading termination</strong> means some systems terminate child processes automatically when the parent terminates.</li>
+      <li>A <strong>zombie</strong> has finished execution but still keeps a process-table entry until the parent reads its status.</li>
+      <li>An <strong>orphan</strong> keeps running after its parent has ended, so another system process adopts it.</li>
+      <li>These terms are common exam vocabulary because they test whether you understand parent-child cleanup behavior.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>9. IPC Design Details</h2>
+    <ul>
+      <li>Shared memory is usually faster because after setup, processes read and write the same region directly.</li>
+      <li>Message passing is often easier to reason about because the kernel controls send and receive operations.</li>
+      <li>Communication may be <strong>blocking</strong> or <strong>non-blocking</strong>, depending on whether send/receive wait.</li>
+      <li>Buffers may be zero-capacity, bounded-capacity, or unbounded-capacity, and this changes whether processes must wait.</li>
+      <li>The bounded-buffer problem is a classic example showing why IPC often needs synchronization too.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>PCB Main Fields</h3>
+      <ul>
+        <li>Process state and process ID.</li>
+        <li>Program counter and CPU registers.</li>
+        <li>CPU-scheduling information and memory-management information.</li>
+        <li>Accounting information and I/O status information.</li>
+        <li>The PCB lives in kernel memory because the OS must protect and update it safely.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Threads Inside a Process</h3>
+      <ul>
+        <li>A process may contain one thread or multiple threads of execution.</li>
+        <li>Threads of the same process share code, data, and open resources.</li>
+        <li>Each thread still needs its own program counter, register set, and stack.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>10. UNIX Process Flow</h2>
+    <ul>
+      <li><code>fork()</code> creates a new child process by duplicating the parent process structure.</li>
+      <li>After <code>fork()</code>, the parent receives the child PID, while the child receives return value 0.</li>
+      <li><code>exec()</code> then replaces the child memory image with a new program.</li>
+      <li><code>wait()</code> lets the parent stop until the child finishes and returns its status.</li>
+      <li>This sequence is one of the most common process-operation questions in OS exams.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>11. Shared Memory vs Message Passing</h2>
+    <ul>
+      <li><strong>Shared memory</strong> is faster after setup because the OS is no longer in the middle of every data transfer.</li>
+      <li><strong>Message passing</strong> is easier to manage conceptually because the OS controls the send and receive operations.</li>
+      <li>Shared memory usually needs explicit synchronization, while message passing already includes a communication structure.</li>
+      <li>Shared memory is often preferred for high-speed local exchange, while message passing is common in distributed systems.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>12. Key Process System Calls</h2>
+    <ul>
+      <li><code>fork()</code>: create child process.</li>
+      <li><code>exec()</code>: replace current program image.</li>
+      <li><code>wait()</code>: wait for child and collect termination status.</li>
+      <li><code>exit()</code>: terminate process and release resources.</li>
+      <li>Together, these calls describe most of the process lifecycle in UNIX-style systems.</li>
+    </ul>
+    <div class="note">Fast flow to remember: <strong>create with fork</strong>, <strong>replace with exec</strong>, <strong>synchronize with wait</strong>, <strong>finish with exit</strong>.</div>
+  </section>
 </main>
 
 <script>
@@ -144,12 +250,22 @@ window.OS_PAGE_CONFIG = {
     "card-2": '<h3>تخطيط ذاكرة العملية</h3><ul><li><strong>Text</strong>: الشفرة التنفيذية.</li><li><strong>Data</strong>: المتغيرات العامة والثابتة.</li><li><strong>Heap</strong>: الذاكرة الديناميكية، وغالبًا تنمو للأعلى.</li><li><strong>Stack</strong>: استدعاءات الدوال والمتغيرات المحلية، وغالبًا ينمو للأسفل.</li></ul>',
     "card-3": '<h3>Context Switch</h3><ul><li>يحفظ النظام حالة عملية ويستعيد حالة عملية أخرى.</li><li>هذا حمل إضافي فقط لأن العمل المفيد لا يُنجز أثناء التبديل.</li><li>الأنظمة الأكثر تعقيدًا غالبًا تملك كلفة تبديل أكبر.</li></ul>',
     "card-4": '<h3>I/O-Bound مقابل CPU-Bound</h3><ul><li><strong>I/O-bound</strong>: يقضي وقتًا أكبر في الانتظار من الحساب.</li><li><strong>CPU-bound</strong>: يقضي وقتًا أكبر في الحساب من الانتظار.</li><li>هذا مهم لاحقًا في قرارات الجدولة.</li></ul>',
+    "card-5": '<h3>Stack مقابل Heap</h3><ul><li><strong>Stack</strong> يخزن استدعاءات الدوال والوسائط والمتغيرات المحلية وعناوين العودة.</li><li><strong>Heap</strong> يخزن الكائنات أو الذاكرة الديناميكية التي قد تعيش أطول من استدعاء دالة واحد.</li><li>تخصيص الـ stack غالبًا تلقائي وسريع، بينما الـ heap أكثر مرونة لكنه يحتاج إدارة صريحة أو garbage collection.</li></ul>',
+    "card-6": '<h3>الاتصال المباشر مقابل غير المباشر</h3><ul><li><strong>Direct communication</strong> يحدد المرسل أو المستقبل مباشرة.</li><li><strong>Indirect communication</strong> يرسل الرسائل عبر mailbox أو port.</li><li>الـ mailboxes تجعل الاتصال أكثر مرونة لأن العمليات لا تحتاج أن تعرف بعضها مباشرة.</li></ul>',
+    "card-7": '<h3>الحقول الرئيسية في PCB</h3><ul><li>حالة العملية ومعرف العملية.</li><li>Program counter وسجلات المعالج.</li><li>معلومات جدولة المعالج ومعلومات إدارة الذاكرة.</li><li>معلومات المحاسبة وحالة الإدخال والإخراج.</li><li>ويعيش PCB داخل kernel memory لأن النظام يجب أن يحميه ويحدّثه بأمان.</li></ul>',
+    "card-8": '<h3>Threads داخل العملية</h3><ul><li>قد تحتوي العملية على thread واحد أو عدة threads للتنفيذ.</li><li>تشترك Threads التابعة لنفس العملية في الكود والبيانات والموارد المفتوحة.</li><li>لكن كل thread يحتاج program counter وسجلات وstack خاصًا به.</li></ul>',
     "topic-1": '<h2>1. مفهوم العملية</h2><ul><li>العملية هي وحدة التنفيذ الأساسية في معظم أنظمة التشغيل.</li><li>وهي تشمل كود البرنامج والنشاط الحالي مثل program counter والسجلات والـ stack والموارد المخصصة.</li><li>يمكن أن توجد عدة عمليات كتنفيذات مختلفة لنفس البرنامج، ولكل واحدة حالتها الخاصة.</li><li>ولهذا يمكن لبرنامج متصفح واحد أن ينشئ عدة عمليات أو تبويبات منفصلة.</li></ul>',
     "topic-2": '<h2>2. حالات العملية</h2><ul><li>الحالات الرئيسية هي <strong>new</strong> و<strong>ready</strong> و<strong>running</strong> و<strong>waiting</strong> و<strong>terminated</strong>.</li><li><strong>Ready</strong> تعني أن العملية في الذاكرة وتنتظر دورها على المعالج.</li><li><strong>Waiting</strong> تعني أن العملية محجوبة بسبب I/O أو حدث آخر.</li><li>المقاطعات واكتمال I/O وقرارات المجدول تنقل العملية من حالة إلى أخرى.</li></ul>',
     "topic-3": '<h2>3. PCB وطوابير الجدولة</h2><ul><li><strong>PCB</strong> يخزن حالة العملية وPID وprogram counter وسجلات المعالج ومعلومات الجدولة والذاكرة والمحاسبة وحالة I/O.</li><li><strong>ready queue</strong> تحتوي العمليات التي تنتظر المعالج.</li><li><strong>wait queue</strong> تحتوي العمليات التي تنتظر I/O أو حدثًا آخر.</li><li>يعمل Context Switching بحفظ حالة العملية القديمة في PCB الخاص بها واستعادة حالة العملية الجديدة من PCB الخاص بها.</li></ul>',
     "topic-4": '<h2>4. إنشاء العمليات</h2><ul><li>يمكن للعملية الأب إنشاء عمليات أبناء، مكوّنة شجرة عمليات.</li><li>في UNIX تقوم <code>fork()</code> بإنشاء الابن، وتقوم <code>exec()</code> باستبدال صورة البرنامج، وتسمح <code>wait()</code> للأب بالانتظار.</li><li>قد يعمل الأب والابن معًا، أو قد ينتظر الأب حتى ينتهي الابن أولًا.</li><li><strong>Copy-on-write</strong> تعني أن الذاكرة لا تُنسخ فعليًا حتى يكتب أحد الطرفين فيها.</li></ul>',
     "topic-5": '<h2>5. إنهاء العمليات</h2><ul><li>تُنهي <code>exit()</code> العملية بشكل طبيعي وتحرر مواردها.</li><li>يصبح الابن <strong>zombie</strong> عندما ينتهي لكن الأب لم يجمع حالة الخروج بعد.</li><li>يصبح الابن <strong>orphan</strong> عندما ينتهي الأب أولًا، فتتبناه عملية نظام أخرى.</li><li>كثرة الـ zombies سيئة لأنها تشغل مدخلات في جدول العمليات.</li></ul><div class="note">طريقة حفظ سريعة: <strong>Zombie = ابن ميت وأب حي.</strong> <strong>Orphan = ابن حي وأب ميت.</strong></div>',
-    "topic-6": '<h2>6. أساسيات IPC</h2><ul><li>توجد IPC لأن العمليات تحتاج غالبًا إلى التعاون وتبادل البيانات.</li><li><strong>Shared memory</strong> سريعة جدًا لكنها تحتاج إلى مزامنة.</li><li><strong>Message passing</strong> أوضح مفهوميًا لأن نظام التشغيل يدير الاتصال.</li><li>من أسباب IPC: مشاركة المعلومات، وتسريع التنفيذ، والتصميم المعياري، والراحة في بناء الأنظمة.</li></ul>'
+    "topic-6": '<h2>6. أساسيات IPC</h2><ul><li>توجد IPC لأن العمليات تحتاج غالبًا إلى التعاون وتبادل البيانات.</li><li><strong>Shared memory</strong> سريعة جدًا لكنها تحتاج إلى مزامنة.</li><li><strong>Message passing</strong> أوضح مفهوميًا لأن نظام التشغيل يدير الاتصال.</li><li>من أسباب IPC: مشاركة المعلومات، وتسريع التنفيذ، والتصميم المعياري، والراحة في بناء الأنظمة.</li></ul>',
+    "topic-7": '<h2>7. تفاصيل إضافية عن إنشاء العمليات</h2><ul><li>قد يشترك الأب والابن في كل الموارد أو بعضها أو لا شيء، حسب تصميم نظام التشغيل.</li><li>في UNIX تعود <code>fork()</code> مرتين: مرة في الأب مع PID الابن، ومرة في الابن بالقيمة 0.</li><li>بعد <code>fork()</code> يقوم الابن غالبًا بتشغيل <code>exec()</code> لاستبدال صورة الذاكرة ببرنامج مختلف.</li><li>إذا استخدم الأب <code>wait()</code> فإنه يستطيع التوقف حتى ينتهي الابن ثم يجمع حالة الخروج.</li><li>ومن دون <code>exec()</code> يبدأ الأب والابن من نفس مكان الكود لكنهما يكملان كعمليتين منفصلتين.</li></ul>',
+    "topic-8": '<h2>8. تفاصيل إضافية عن إنهاء العمليات</h2><ul><li>قد تنتهي العملية بشكل طبيعي، أو بسبب خطأ، أو قد تُجهض من عملية أخرى أو من النظام.</li><li><strong>Cascading termination</strong> تعني أن بعض الأنظمة تنهي أبناء العملية تلقائيًا عند انتهاء الأب.</li><li><strong>Zombie</strong> أنهى التنفيذ لكنه ما زال يحتفظ بمدخل في process table حتى يقرأ الأب حالته.</li><li><strong>Orphan</strong> يواصل العمل بعد انتهاء الأب، فتتبناه عملية نظام أخرى.</li><li>هذه المصطلحات شائعة في الاختبار لأنها تختبر فهمك لتنظيف علاقة الأبناء والآباء.</li></ul>',
+    "topic-9": '<h2>9. تفاصيل تصميم IPC</h2><ul><li>تكون <strong>shared memory</strong> أسرع غالبًا لأنه بعد الإعداد تقرأ العمليات وتكتب في نفس المنطقة مباشرة.</li><li>وتكون <strong>message passing</strong> أسهل في الفهم لأن النواة تتحكم في send وreceive.</li><li>قد يكون الاتصال <strong>blocking</strong> أو <strong>non-blocking</strong> حسب ما إذا كانت send/receive تنتظر أم لا.</li><li>وقد تكون الـ buffers صفرية السعة أو محدودة السعة أو غير محدودة، وهذا يغير متى تنتظر العمليات.</li><li>ومشكلة bounded buffer مثال كلاسيكي يوضح لماذا تحتاج IPC غالبًا إلى مزامنة أيضًا.</li></ul>',
+    "topic-10": '<h2>10. تدفق العملية في UNIX</h2><ul><li>تنشئ <code>fork()</code> عملية ابن جديدة عبر تكرار بنية العملية الأب.</li><li>بعد <code>fork()</code> يستقبل الأب PID الابن، بينما يستقبل الابن القيمة 0.</li><li>ثم تستبدل <code>exec()</code> صورة ذاكرة الابن ببرنامج جديد.</li><li>وتسمح <code>wait()</code> للأب بالتوقف حتى ينتهي الابن ويعيد حالته.</li><li>وهذا التسلسل من أكثر أسئلة العمليات شيوعًا في اختبارات نظم التشغيل.</li></ul>',
+    "topic-11": '<h2>11. Shared Memory مقابل Message Passing</h2><ul><li><strong>Shared memory</strong> أسرع بعد الإعداد لأن النظام لا يبقى في منتصف كل عملية نقل بيانات.</li><li><strong>Message passing</strong> أسهل في الإدارة مفهوميًا لأن النظام يتحكم في send وreceive.</li><li>وتحتاج shared memory غالبًا إلى مزامنة صريحة، بينما تحتوي message passing أصلًا على بنية اتصال واضحة.</li><li>تُفضّل shared memory غالبًا للتبادل المحلي السريع، بينما تنتشر message passing أكثر في الأنظمة الموزعة.</li></ul>',
+    "topic-12": '<h2>12. أهم System Calls الخاصة بالعمليات</h2><ul><li><code>fork()</code>: إنشاء عملية ابن.</li><li><code>exec()</code>: استبدال صورة البرنامج الحالية.</li><li><code>wait()</code>: انتظار الابن وجمع حالة الإنهاء.</li><li><code>exit()</code>: إنهاء العملية وتحرير مواردها.</li><li>هذه المجموعة تصف معظم دورة حياة العملية في أنظمة UNIX.</li></ul><div class="note">تسلسل الحفظ السريع: <strong>fork</strong> للإنشاء، <strong>exec</strong> للاستبدال، <strong>wait</strong> للمزامنة، <strong>exit</strong> للإنهاء.</div>'
   }
 };
 </script>

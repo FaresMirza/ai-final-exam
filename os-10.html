@@ -102,6 +102,57 @@
     </ul>
     <div class="note">Best quick summary: <strong>virtual memory lets the system run larger or more programs, but too many page faults can collapse performance into thrashing</strong>.</div>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Reference String Idea</h3>
+      <ul>
+        <li>Replacement algorithms are compared using a sequence of page references called a <strong>reference string</strong>.</li>
+        <li>The result depends on both the string itself and the number of available frames.</li>
+        <li>Repeated access to a page already in memory does not create a page fault.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Typical Fault Counts</h3>
+      <ul>
+        <li>In the common lecture example with 3 frames, <strong>FIFO</strong> gives 15 faults.</li>
+        <li><strong>OPT</strong> gives 9 faults, and <strong>LRU</strong> gives 12 faults.</li>
+        <li><strong>LFU</strong> and <strong>MFU</strong> are counting algorithms and are usually discussed more for understanding than for real use.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>8. Step-by-Step Page-Fault Handling</h2>
+    <ul>
+      <li>The CPU generates a virtual address, and the MMU checks the page table entry.</li>
+      <li>If the valid-invalid bit says the page is not in RAM, the hardware traps to the OS.</li>
+      <li>The OS verifies that the access is legal, finds a free frame or chooses a victim frame, then loads the needed page from disk.</li>
+      <li>If the victim page is dirty, it must be written back first.</li>
+      <li>Finally, the page table is updated and the interrupted instruction is restarted.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>9. Algorithm Notes and Thrashing Control</h2>
+    <ul>
+      <li><strong>Belady's anomaly</strong> is the surprising fact that FIFO can have more faults even after adding more frames.</li>
+      <li><strong>OPT</strong> is the theoretical best because it replaces the page used farthest in the future.</li>
+      <li><strong>LRU</strong> uses recent past behavior as a practical guess about the near future.</li>
+      <li>Thrashing can be controlled by giving a process more frames or reducing the degree of multiprogramming.</li>
+      <li>A common idea is <strong>page-fault frequency</strong>: if faults become too frequent, the process probably needs more frames.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>10. Frame Allocation and Evaluation</h2>
+    <ul>
+      <li>A frame-allocation policy decides how many frames each process should receive.</li>
+      <li>A page-replacement policy decides which page leaves memory when a fault happens and no free frame exists.</li>
+      <li>Algorithms are evaluated by running them on a reference string and counting the page faults.</li>
+      <li>The same algorithm can behave differently when the number of available frames changes.</li>
+    </ul>
+  </section>
 </main>
 
 <script>
@@ -113,13 +164,18 @@ window.OS_PAGE_CONFIG = {
     "hero-tag": "CS2016 · نظم التشغيل",
     "hero-title": "الفصل 10: الذاكرة الافتراضية Virtual Memory",
     "hero-copy": "الذاكرة الافتراضية تجعل العملية تتصرف كما لو أنها تملك ذاكرة أكثر من RAM المثبتة. الأفكار الكبيرة هنا هي demand paging وpage faults وخوارزميات الاستبدال وthrashing.",
+    "card-1": '<h3>فكرة Reference String</h3><ul><li>تُقارن خوارزميات الاستبدال باستخدام تسلسل من مراجع الصفحات يسمى <strong>reference string</strong>.</li><li>وتعتمد النتيجة على هذا التسلسل نفسه وعلى عدد الإطارات المتاحة.</li><li>والوصول المتكرر إلى صفحة موجودة أصلًا في الذاكرة لا يسبب page fault.</li></ul>',
+    "card-2": '<h3>أعداد أخطاء شائعة</h3><ul><li>في المثال الشائع في المحاضرة مع 3 frames تعطي <strong>FIFO</strong> عدد 15 fault.</li><li>وتعطي <strong>OPT</strong> عدد 9 faults، بينما تعطي <strong>LRU</strong> عدد 12 faults.</li><li>أما <strong>LFU</strong> و<strong>MFU</strong> فهما counting algorithms وتُذكران غالبًا للفهم أكثر من الاستعمال العملي.</li></ul>',
     "topic-1": '<h2>1. ما معنى Virtual Memory</h2><ul><li>تفصل virtual memory بين الذاكرة المنطقية والذاكرة الفيزيائية.</li><li>لا يجب أن يكون كل البرنامج في RAM حتى يبدأ التنفيذ.</li><li>يسمح هذا بأن يكون logical address space أكبر من الذاكرة الفيزيائية.</li><li>كما يسمح بإنشاء العمليات بكفاءة أعلى، وبأن تعمل برامج أكثر في الوقت نفسه.</li></ul>',
     "topic-2": '<h2>2. Demand Paging و Page Faults</h2><ul><li><strong>Demand paging</strong> تعني أن الصفحة تُحمَّل فقط عندما تصبح مطلوبة فعلًا.</li><li>عندما يولّد المعالج virtual address تقوم MMU بفحص page table.</li><li>إذا كانت الصفحة معلمة كـ invalid لأنها ليست في RAM يحدث <strong>page fault</strong>.</li><li>ثم يحمّل نظام التشغيل الصفحة المطلوبة من القرص إلى RAM ويعيد تشغيل التعليمة التي توقفت.</li></ul>',
     "topic-3": '<h2>3. Dirty Bit وإعداد الاستبدال</h2><ul><li>يوضح <strong>dirty bit</strong> هل عُدّلت الصفحة بعد تحميلها أم لا.</li><li>إذا كانت الصفحة الضحية dirty فيجب كتابتها إلى القرص قبل إزالتها.</li><li>أما إذا كانت clean فيمكن التخلص منها دون كتابة إضافية.</li><li>وهذا يحسن الأداء لأنه يقلل عمليات الكتابة غير الضرورية على القرص.</li></ul>',
     "topic-4": '<h2>4. Basic Page Replacement</h2><ul><li>إذا وجد free frame فسيتم تحميل الصفحة المطلوبة فيه مباشرة.</li><li>إذا كانت RAM ممتلئة فيجب على النظام اختيار <strong>victim page</strong> لاستبدالها.</li><li>بعد الاستبدال يتم تحديث page table ومعلومات الإطارات.</li><li>ثم تتابع العملية التنفيذ من التعليمة التي سببت الخطأ.</li></ul>',
     "topic-5": '<h2>5. خوارزميات استبدال الصفحات</h2><table><tr><th>الخوارزمية</th><th>القاعدة الرئيسية</th><th>النقطة المهمة</th></tr><tr><td>FIFO</td><td>استبدال أقدم صفحة</td><td>بسيطة لكن قد تظهر Belady\'s anomaly</td></tr><tr><td>OPT</td><td>استبدال الصفحة التي سيأتي استخدامها أبعد شيء في المستقبل</td><td>الأفضل نظريًا لكنه غير عملي مباشرة</td></tr><tr><td>LRU</td><td>استبدال أقل صفحة استُخدمت مؤخرًا</td><td>يعتمد على السلوك السابق ويؤدي جيدًا غالبًا</td></tr><tr><td>LFU</td><td>استبدال أقل صفحة من حيث عدد مرات الاستخدام</td><td>يعتمد على العد</td></tr><tr><td>MFU</td><td>استبدال أكثر صفحة استخدامًا</td><td>أقل شيوعًا</td></tr></table>',
     "topic-6": '<h2>6. ماذا تعني هذه الخوارزميات فعليًا</h2><ul><li><strong>FIFO</strong> سهلة في التنفيذ لكنها ليست ذكية دائمًا.</li><li><strong>OPT</strong> هي معيار المقارنة لأن أي خوارزمية واقعية لا يمكنها التفوق عليها على نفس reference string.</li><li><strong>LRU</strong> تفترض أن الصفحة المستخدمة مؤخرًا ستستخدم غالبًا قريبًا مرة أخرى، لذلك أداؤها جيد غالبًا.</li><li><strong>Belady\'s anomaly</strong> تعني أن FIFO قد تنتج page faults أكثر حتى عند زيادة عدد الإطارات.</li></ul>',
-    "topic-7": '<h2>7. Thrashing</h2><ul><li><strong>Thrashing</strong> تعني أن العملية تقضي وقتًا في التبديل بين الصفحات أكثر من تنفيذ التعليمات نفسها.</li><li>تنخفض CPU utilization لأن النظام ينشغل بنقل الصفحات بين RAM والقرص.</li><li>وقد يزيد النظام المشكلة سوءًا إذا ظن خطأً أنه يحتاج إلى زيادة degree of multiprogramming.</li><li>ومن الحلول الشائعة التأكد من أن لكل عملية عددًا كافيًا من الإطارات، مثل مراقبة page-fault frequency.</li></ul><div class="note">الخلاصة السريعة الأفضل: <strong>virtual memory</strong> تسمح للنظام بتشغيل برامج أكبر أو أكثر، لكن كثرة page faults قد تجعل الأداء ينهار إلى <strong>thrashing</strong>.</div>'
+    "topic-7": '<h2>7. Thrashing</h2><ul><li><strong>Thrashing</strong> تعني أن العملية تقضي وقتًا في التبديل بين الصفحات أكثر من تنفيذ التعليمات نفسها.</li><li>تنخفض CPU utilization لأن النظام ينشغل بنقل الصفحات بين RAM والقرص.</li><li>وقد يزيد النظام المشكلة سوءًا إذا ظن خطأً أنه يحتاج إلى زيادة degree of multiprogramming.</li><li>ومن الحلول الشائعة التأكد من أن لكل عملية عددًا كافيًا من الإطارات، مثل مراقبة page-fault frequency.</li></ul><div class="note">الخلاصة السريعة الأفضل: <strong>virtual memory</strong> تسمح للنظام بتشغيل برامج أكبر أو أكثر، لكن كثرة page faults قد تجعل الأداء ينهار إلى <strong>thrashing</strong>.</div>',
+    "topic-8": '<h2>8. معالجة Page Fault خطوة بخطوة</h2><ul><li>يولد المعالج virtual address، ثم تفحص MMU مدخل page table الخاص بها.</li><li>إذا أوضح valid-invalid bit أن الصفحة ليست في RAM يحدث trap إلى نظام التشغيل.</li><li>يتحقق النظام من أن الوصول قانوني، ثم يجد free frame أو يختار victim frame، وبعدها يحمّل الصفحة المطلوبة من القرص.</li><li>إذا كانت الصفحة الضحية dirty فيجب كتابتها أولًا إلى القرص.</li><li>وفي النهاية تُحدَّث page table وتُعاد التعليمة المتوقفة من جديد.</li></ul>',
+    "topic-9": '<h2>9. ملاحظات الخوارزميات والتحكم في Thrashing</h2><ul><li><strong>Belady\'s anomaly</strong> هي الحقيقة الغريبة أن FIFO قد تعطي faults أكثر حتى بعد زيادة عدد الإطارات.</li><li><strong>OPT</strong> هي الأفضل نظريًا لأنها تستبدل الصفحة التي سيأتي استخدامها أبعد شيء في المستقبل.</li><li><strong>LRU</strong> تستخدم السلوك القريب السابق كتخمين عملي عن المستقبل القريب.</li><li>ويمكن التحكم في thrashing بإعطاء العملية إطارات أكثر أو بتقليل degree of multiprogramming.</li><li>ومن الأفكار الشائعة <strong>page-fault frequency</strong>: إذا كثرت الأخطاء كثيرًا فالغالب أن العملية تحتاج إطارات أكثر.</li></ul>',
+    "topic-10": '<h2>10. تخصيص الإطارات والتقييم</h2><ul><li>تقرر سياسة تخصيص الإطارات كم إطارًا تحصل عليه كل عملية.</li><li>وتقرر سياسة استبدال الصفحات أي صفحة ستغادر الذاكرة عند حدوث fault وعدم وجود free frame.</li><li>تُقيَّم الخوارزميات عبر تشغيلها على reference string وحساب عدد page faults.</li><li>وقد تتصرف الخوارزمية نفسها بشكل مختلف عند تغير عدد الإطارات المتاحة.</li></ul>'
   }
 };
 </script>

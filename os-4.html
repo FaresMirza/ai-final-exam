@@ -110,6 +110,74 @@
     </ul>
     <div class="note">Big takeaway: threads are efficient because they share resources, but that same sharing is exactly what creates concurrency bugs.</div>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Shared vs Private Data</h3>
+      <ul>
+        <li>Each thread keeps its own registers, stack, and program counter.</li>
+        <li>Threads in one process share the code section, data section, heap, and open files.</li>
+        <li>This sharing is what makes threads lightweight, but it is also why one bad write can affect the whole process.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Blocking Behavior</h3>
+      <ul>
+        <li>In a many-to-one model, one blocking system call can block all user threads mapped to that kernel thread.</li>
+        <li>In one-to-one and many-to-many models, blocking is handled more flexibly because the kernel sees more than one schedulable thread.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>7. Multicore Programming Challenges</h2>
+    <ul>
+      <li>Using more cores is not automatic. The work must be split into parts that can really run independently.</li>
+      <li>Tasks often need balancing so one core is not overloaded while others stay idle.</li>
+      <li>Threads may also need synchronization, which can reduce the speedup gained from parallel execution.</li>
+      <li>In short, more cores can improve performance, but coordination cost still matters.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. Thread Lifecycle Ideas</h2>
+    <ul>
+      <li>Creating a thread is cheaper than creating a full process because the address space is already shared.</li>
+      <li><code>pthread_join()</code> is important when one thread must wait for another to finish before continuing.</li>
+      <li>If threads are not joined or cleaned up correctly, resource leaks or unfinished work can remain.</li>
+      <li>Practical exam questions often ask what happens if the main thread ends before worker threads are done.</li>
+    </ul>
+  </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>pthread_create Parameters</h3>
+      <ul>
+        <li>The first parameter stores the new thread ID.</li>
+        <li>The second parameter sets attributes, and <code>NULL</code> means default attributes.</li>
+        <li>The third parameter is the function the thread will execute.</li>
+        <li>The fourth parameter is the argument passed to that function.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>pthread_exit vs pthread_join</h3>
+      <ul>
+        <li><code>pthread_exit()</code> is called by the thread itself to finish cleanly.</li>
+        <li><code>pthread_join()</code> is called by another thread to wait for it and collect its completion.</li>
+        <li>If the main thread ends too early without coordination, worker threads may be terminated before finishing.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>9. Thread Libraries and Real Systems</h2>
+    <ul>
+      <li>Common thread libraries include POSIX Pthreads, Windows threads, and Java thread support.</li>
+      <li>These libraries give programmers a usable interface, while the OS or runtime maps the work to actual kernel execution.</li>
+      <li>Java threads are often discussed separately, but the main OS idea is still the same: multiple execution paths inside one process.</li>
+      <li>In modern systems, threads are the standard way to exploit multicore processors.</li>
+    </ul>
+  </section>
 </main>
 
 <script>
@@ -124,11 +192,18 @@ window.OS_PAGE_CONFIG = {
     "topic-1": '<h2>1. ما هو الـ Thread</h2><ul><li>الـ thread هو الوحدة الأساسية لتنفيذ المعالج داخل العملية.</li><li>لكل thread معرف خاص به وprogram counter وسجلات وstack خاص به.</li><li>تشترك الـ threads داخل نفس العملية في الكود والبيانات والـ heap والملفات المفتوحة.</li><li>العملية ذات thread واحد تسمى single-threaded، بينما العملية التي تحتوي عدة threads تسمى multithreaded.</li></ul>',
     "card-1": '<h3>لماذا نستخدم Threads؟</h3><ul><li>استجابة أفضل للتطبيقات التفاعلية.</li><li>مشاركة الموارد داخل عملية واحدة.</li><li>كلفة إنشاء وتبديل أقل من العمليات.</li><li>قابلية توسع على الأنظمة متعددة الأنوية.</li></ul>',
     "card-2": '<h3>العملية مقابل الـ Thread</h3><ul><li>العملية: أثقل وأكثر عزلة.</li><li>الـ thread: أخف ويشارك موارد العملية.</li><li>فشل الـ thread قد يضر العملية كلها بسهولة أكبر.</li></ul>',
+    "card-3": '<h3>البيانات المشتركة مقابل الخاصة</h3><ul><li>يحتفظ كل thread بسجلاته وstack وprogram counter الخاص به.</li><li>وتشترك threads داخل العملية في code section وdata section وheap والملفات المفتوحة.</li><li>هذه المشاركة هي سبب خفة الـ threads، لكنها أيضًا سبب قدرة كتابة خاطئة واحدة على إفساد العملية كلها.</li></ul>',
+    "card-4": '<h3>سلوك الحجب Blocking</h3><ul><li>في نموذج many-to-one قد يحجب system call واحد كل user threads المرتبطة بذلك kernel thread.</li><li>أما في one-to-one وmany-to-many فيكون التعامل مع الحجب أكثر مرونة لأن النواة ترى أكثر من thread قابل للجدولة.</li></ul>',
+    "card-5": '<h3>معاملات pthread_create</h3><ul><li>المعامل الأول يخزن معرف الـ thread الجديد.</li><li>المعامل الثاني يحدد الخصائص، و<code>NULL</code> تعني الخصائص الافتراضية.</li><li>المعامل الثالث هو الدالة التي سينفذها الـ thread.</li><li>المعامل الرابع هو الوسيط الذي يُمرر إلى تلك الدالة.</li></ul>',
+    "card-6": '<h3>pthread_exit مقابل pthread_join</h3><ul><li><code>pthread_exit()</code> يستدعيه الـ thread نفسه لينتهي بشكل نظيف.</li><li><code>pthread_join()</code> يستدعيه Thread آخر لينتظره ويجمع نتيجة انتهائه.</li><li>إذا انتهى الـ main thread مبكرًا دون تنسيق فقد تتوقف worker threads قبل إكمال العمل.</li></ul>',
     "topic-2": '<h2>2. Concurrency مقابل Parallelism</h2><ul><li><strong>Concurrency</strong> تعني أن عدة مهام تحقق تقدمًا عبر الزمن حتى على نواة واحدة.</li><li><strong>Parallelism</strong> تعني أن المهام تعمل فعلًا في نفس الوقت على عدة أنوية.</li><li><strong>Data parallelism</strong> تعني تنفيذ نفس العملية على أجزاء مختلفة من البيانات.</li><li><strong>Task parallelism</strong> تعني تشغيل مهام مختلفة بالتوازي، على نفس البيانات أو على بيانات مختلفة.</li></ul>',
     "topic-3": '<h2>3. User Threads مقابل Kernel Threads</h2><table><tr><th>النوع</th><th>الفكرة الأساسية</th></tr><tr><td>User threads</td><td>تدار في user space، وهي أرخص، لكن التحكم المباشر في تعدد الأنوية أضعف</td></tr><tr><td>Kernel threads</td><td>يديرها النظام، وتدعم التوازي الحقيقي على عدة أنوية، لكن بكلفة أعلى</td></tr></table><div class="note">الفكرة الاختبارية المهمة: kernel threads هي التي تمكّن النظام من جدولة العمل مباشرة على عدة معالجات.</div>',
     "topic-4": '<h2>4. نماذج ربط الـ Threads</h2><ul><li><strong>Many-to-one</strong>: عدة user threads ترتبط بـ kernel thread واحد، لذلك لا يوجد توازٍ حقيقي.</li><li><strong>One-to-one</strong>: كل user thread يرتبط بـ kernel thread واحد، لذلك يمكن وجود توازٍ حقيقي.</li><li><strong>Many-to-many</strong>: عدة user threads ترتبط بمجموعة أصغر أو مرنة من kernel threads.</li><li>السؤال الاختباري المعتاد هو: أي نموذج يسمح بالتنفيذ المتوازي، وأي نموذج يجعل المجموعة كلها تتوقف إذا توقف thread واحد.</li></ul>',
     "topic-5": '<h2>5. مكتبات الـ Threads و Pthreads</h2><ul><li><code>pthread_create()</code> تنشئ thread جديدًا.</li><li><code>pthread_join()</code> تنتظر انتهاء thread وتساعد على تحرير موارده بشكل صحيح.</li><li><code>pthread_exit()</code> تنهي الـ thread الحالي بشكل نظيف.</li><li>إذا خرج الـ main thread مبكرًا فقد تتوقف threads الأخرى قبل إكمال عملها.</li></ul>',
-    "topic-6": '<h2>6. الخطر الرئيسي في Threads</h2><ul><li>تشترك الـ threads في الذاكرة، لذلك قد تخلق التحديثات غير المتزامنة <strong>race conditions</strong>.</li><li>إذا عدّل threadان نفس المتغير تقريبًا في الوقت نفسه فقد تختلف النتيجة من تشغيل لآخر.</li><li>ولهذا تصبح أدوات المزامنة مثل mutexes وsemaphores ضرورية.</li><li>قوة الـ threads هي السرعة والاستجابة، لكن ثمنها هو أن صحة التنفيذ تصبح أصعب.</li></ul><div class="note">الخلاصة الكبيرة: الـ threads فعالة لأنها تشارك الموارد، لكن هذه المشاركة نفسها هي سبب أخطاء التزامن.</div>'
+    "topic-6": '<h2>6. الخطر الرئيسي في Threads</h2><ul><li>تشترك الـ threads في الذاكرة، لذلك قد تخلق التحديثات غير المتزامنة <strong>race conditions</strong>.</li><li>إذا عدّل threadان نفس المتغير تقريبًا في الوقت نفسه فقد تختلف النتيجة من تشغيل لآخر.</li><li>ولهذا تصبح أدوات المزامنة مثل mutexes وsemaphores ضرورية.</li><li>قوة الـ threads هي السرعة والاستجابة، لكن ثمنها هو أن صحة التنفيذ تصبح أصعب.</li></ul><div class="note">الخلاصة الكبيرة: الـ threads فعالة لأنها تشارك الموارد، لكن هذه المشاركة نفسها هي سبب أخطاء التزامن.</div>',
+    "topic-7": '<h2>7. تحديات البرمجة متعددة الأنوية</h2><ul><li>استخدام أنوية أكثر لا يحدث تلقائيًا؛ يجب تقسيم العمل إلى أجزاء تستطيع أن تعمل باستقلال حقيقي.</li><li>وغالبًا نحتاج إلى موازنة العمل حتى لا ينشغل core واحد بينما تبقى الأنوية الأخرى شبه عاطلة.</li><li>كما أن الـ threads قد تحتاج إلى مزامنة، وهذا قد يقلل من التسارع الناتج عن التنفيذ المتوازي.</li><li>باختصار، زيادة الأنوية قد ترفع الأداء، لكن كلفة التنسيق تبقى مهمة.</li></ul>',
+    "topic-8": '<h2>8. أفكار دورة حياة الـ Thread</h2><ul><li>إنشاء thread أرخص من إنشاء process كاملة لأن فضاء العناوين مشترك أصلًا.</li><li><code>pthread_join()</code> مهمة عندما يحتاج thread إلى انتظار Thread آخر حتى ينتهي قبل المتابعة.</li><li>إذا لم تُضمّ threads أو تُنظف بشكل صحيح فقد تبقى تسريبات موارد أو أعمال غير مكتملة.</li><li>أسئلة الاختبار العملية تسأل كثيرًا: ماذا يحدث إذا انتهى الـ main thread قبل انتهاء worker threads؟</li></ul>',
+    "topic-9": '<h2>9. مكتبات الـ Threads والأنظمة الواقعية</h2><ul><li>من أشهر مكتبات الـ threads: POSIX Pthreads وWindows threads ودعم Java للـ threads.</li><li>تعطي هذه المكتبات المبرمج واجهة قابلة للاستخدام، بينما يقوم النظام أو الـ runtime بربط العمل بالتنفيذ الفعلي على النواة.</li><li>تُذكر Java threads أحيانًا بشكل منفصل، لكن الفكرة الأساسية في نظم التشغيل تبقى نفسها: عدة مسارات تنفيذ داخل عملية واحدة.</li><li>وفي الأنظمة الحديثة تعدّ الـ threads الطريقة القياسية لاستغلال المعالجات متعددة الأنوية.</li></ul>'
   }
 };
 </script>

@@ -122,6 +122,67 @@
     </ul>
     <div class="note">Big picture: chapter 1 explains <strong>how the OS controls the hardware safely</strong> and <strong>why normal programs cannot do everything directly</strong>.</div>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>I/O Structure</h3>
+      <ul>
+        <li>Each device usually has a controller plus its own local buffer.</li>
+        <li>The CPU communicates with the controller through device registers.</li>
+        <li>When an I/O command finishes, the controller raises an interrupt.</li>
+        <li>This is why the CPU does not constantly watch the device itself.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Multiprocessor Idea</h3>
+      <ul>
+        <li>Modern systems may have multiple CPUs or multiple cores.</li>
+        <li>This improves throughput and can improve reliability too.</li>
+        <li>More processors mean the OS has to coordinate scheduling and shared resources more carefully.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>6. Interrupt-Driven I/O and DMA</h2>
+    <ul>
+      <li>Small I/O operations can be handled with normal interrupts, where the CPU is notified when the device needs service.</li>
+      <li>For large transfers, <strong>DMA</strong> is better because the device controller copies a whole block directly between the device and memory.</li>
+      <li>With DMA, the CPU usually gives the start address, direction, and length, then continues other work.</li>
+      <li>Only one interrupt is usually needed at the end of the block transfer, so overhead is much lower than interrupting for every byte.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>7. Storage, Caching, and Protection</h2>
+    <ul>
+      <li>The storage hierarchy is based on a tradeoff: faster storage is smaller and more expensive, while larger storage is slower and cheaper.</li>
+      <li><strong>Cache</strong> keeps copies of frequently used data so the CPU does not wait for slower memory as often.</li>
+      <li>Protection rules are enforced by hardware support such as the mode bit, privileged instructions, and timer interrupts.</li>
+      <li>The timer is especially important because it lets the OS take control back and stops a program from keeping the CPU forever.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. System Operation Flow</h2>
+    <ul>
+      <li>A user program runs in user mode and eventually needs I/O or another privileged service.</li>
+      <li>That request reaches the OS through an interrupt, trap, or system call.</li>
+      <li>The CPU switches to kernel mode, the OS handles the request, and then control returns to the program.</li>
+      <li>This repeated handoff is the normal operating pattern of a protected computer system.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>9. Quick Recall Terms</h2>
+    <ul>
+      <li><strong>Kernel</strong>: the core of the operating system that stays active and controls hardware.</li>
+      <li><strong>Daemon</strong>: a background service started by the system, often without a visible interface.</li>
+      <li><strong>Firmware</strong>: low-level code stored in nonvolatile memory, such as the bootstrap code.</li>
+      <li><strong>Trap</strong>: a software-generated interrupt, often caused by an error or a system call.</li>
+      <li><strong>Cache</strong>: a faster copy of frequently used data from a slower storage level.</li>
+    </ul>
+  </section>
 </main>
 
 <script>
@@ -135,11 +196,17 @@ window.OS_PAGE_CONFIG = {
     "hero-copy": "ابدأ من هنا إذا كنت تريد الأفكار الأساسية: ما الذي يفعله نظام التشغيل، وكيف يدير العتاد، وكيف يبقى الحاسوب محميًا أثناء تشغيل عدة برامج.",
     "card-1": '<h3>مكونات نظام الحاسوب</h3><ul><li><strong>العتاد</strong>: المعالج والذاكرة والتخزين وأجهزة الإدخال والإخراج.</li><li><strong>نظام التشغيل</strong>: ينسق استخدام العتاد.</li><li><strong>برامج التطبيقات</strong>: المتصفحات والمحررات والمترجمات والألعاب.</li><li><strong>المستخدمون</strong>: الأشخاص أو الأنظمة الأخرى التي تستخدم الجهاز.</li></ul>',
     "card-2": '<h3>متحكم الجهاز مقابل المشغل</h3><ul><li><strong>متحكم الجهاز</strong>: جزء عتادي يدير جهازًا معينًا.</li><li><strong>المشغل Driver</strong>: برنامج في نظام التشغيل يتحدث مع المتحكم.</li><li>المشغل يجعل نظام التشغيل يتعامل مع أجهزة مختلفة بطريقة أكثر توحيدًا.</li></ul>',
+    "card-3": '<h3>بنية الإدخال والإخراج</h3><ul><li>لكل جهاز غالبًا متحكم خاص به مع buffer محلي.</li><li>يتواصل المعالج مع المتحكم عبر سجلات الجهاز.</li><li>عند انتهاء أمر I/O يرسل المتحكم interrupt.</li><li>ولهذا لا يبقى المعالج يراقب الجهاز نفسه طوال الوقت.</li></ul>',
+    "card-4": '<h3>فكرة تعدد المعالجات</h3><ul><li>قد تحتوي الأنظمة الحديثة على عدة CPUs أو عدة أنوية.</li><li>هذا يحسن throughput وقد يحسن الاعتمادية أيضًا.</li><li>لكن زيادة المعالجات تعني أن نظام التشغيل يجب أن ينسق الجدولة والموارد المشتركة بحذر أكبر.</li></ul>',
     "topic-1": '<h2>1. ما هو نظام التشغيل</h2><ul><li>نظام التشغيل هو برنامج نظام يدير العتاد ويوفر خدمات للبرامج والمستخدمين.</li><li>وهو الطبقة التي تقع بين التطبيقات والجهاز الفعلي.</li><li>وهو <strong>مخصص موارد</strong> لأنه يقرر كيف يتم توزيع وقت المعالج والذاكرة والتخزين وأجهزة الإدخال والإخراج.</li><li>وهو <strong>برنامج تحكم</strong> لأنه يراقب التنفيذ ويمنع الاستخدام غير الصحيح أو غير الآمن للعتاد.</li></ul><div class="note">اختصار اختبار: الدوران الأساسيان لنظام التشغيل هما <strong>إدارة الموارد</strong> و<strong>التحكم في التنفيذ</strong>.</div>',
     "topic-2": '<h2>2. المقاطعات و Traps</h2><ul><li><strong>المقاطعة Interrupt</strong> تجعل المعالج يوقف العمل الحالي وينقل التحكم إلى نظام التشغيل.</li><li>الخطوات المعتادة هي: حفظ الحالة الحالية، تحديد المصدر، تشغيل روتين خدمة المقاطعة، استعادة الحالة، ثم المتابعة.</li><li><strong>المقاطعات العتادية</strong> تأتي من أجهزة مثل القرص ولوحة المفاتيح وبطاقة الشبكة.</li><li><strong>Traps / Exceptions</strong> تأتي من المعالج أو البرنامج الجاري، مثل القسمة على صفر أو الوصول غير الصحيح للذاكرة أو استدعاء نظام.</li></ul>',
     "topic-3": '<h2>3. الإقلاع وتسلسل التخزين</h2><ul><li>يبدأ برنامج الإقلاع أولًا من ROM أو Firmware.</li><li>ثم يهيئ الجهاز ويحمّل النواة Kernel إلى RAM.</li><li>بعد بدء النواة تبدأ الخدمات الخلفية وخدمات النظام الأخرى.</li><li>فكرة تسلسل التخزين: السجلات هي الأسرع، ثم Cache، ثم RAM، بينما SSD/HDD أبطأ لكنها تحتفظ بالبيانات بعد انقطاع الطاقة.</li><li>قاعدة مهمة في الاختبار: المعالج يعمل مباشرة مع السجلات والذاكرة الرئيسية، وليس مع عناوين القرص مباشرة.</li></ul>',
     "topic-4": '<h2>4. Multiprogramming و Multitasking</h2><ul><li><strong>Multiprogramming</strong> تبقي عدة أعمال في الذاكرة حتى يبقى المعالج مشغولًا عندما ينتظر أحدها الإدخال/الإخراج.</li><li><strong>Multitasking / Timesharing</strong> تبدل بسرعة بين الأعمال لتعطي المستخدم استجابة سريعة.</li><li>تركز Multiprogramming أكثر على استغلال المعالج، بينما تضيف Multitasking جانب الاستجابة السريعة.</li><li>هذا التبديل السريع يعطي إيحاء أن عدة أعمال تعمل معًا.</li></ul>',
-    "topic-5": '<h2>5. نمط المستخدم مقابل نمط النواة</h2><ul><li><strong>User mode</strong> محدود، وهنا تعمل التطبيقات العادية.</li><li><strong>Kernel mode</strong> مميز ويمنح وصولًا كاملًا للعتاد والتعليمات المحمية.</li><li><strong>الـ mode bit</strong> يحدد في أي نمط يعمل المعالج.</li><li>نمط المستخدم يحمي النظام لأنه يمنع التطبيقات من تغيير حالة العتاد أو ذاكرة البرامج الأخرى مباشرة.</li><li>الانتقال من User mode إلى Kernel mode يحدث غالبًا عبر المقاطعات أو Traps أو system calls.</li></ul><div class="note">الفكرة الكبرى: الفصل الأول يشرح <strong>كيف يتحكم نظام التشغيل في العتاد بأمان</strong> و<strong>لماذا لا تستطيع البرامج العادية فعل كل شيء مباشرة</strong>.</div>'
+    "topic-5": '<h2>5. نمط المستخدم مقابل نمط النواة</h2><ul><li><strong>User mode</strong> محدود، وهنا تعمل التطبيقات العادية.</li><li><strong>Kernel mode</strong> مميز ويمنح وصولًا كاملًا للعتاد والتعليمات المحمية.</li><li><strong>الـ mode bit</strong> يحدد في أي نمط يعمل المعالج.</li><li>نمط المستخدم يحمي النظام لأنه يمنع التطبيقات من تغيير حالة العتاد أو ذاكرة البرامج الأخرى مباشرة.</li><li>الانتقال من User mode إلى Kernel mode يحدث غالبًا عبر المقاطعات أو Traps أو system calls.</li></ul><div class="note">الفكرة الكبرى: الفصل الأول يشرح <strong>كيف يتحكم نظام التشغيل في العتاد بأمان</strong> و<strong>لماذا لا تستطيع البرامج العادية فعل كل شيء مباشرة</strong>.</div>',
+    "topic-6": '<h2>6. I/O المعتمد على المقاطعات و DMA</h2><ul><li>عمليات I/O الصغيرة يمكن التعامل معها عبر interrupts عادية، حيث يُخطر الجهاز المعالج عندما يحتاج خدمة أو ينتهي من العمل.</li><li>أما في النقل الكبير للبيانات فإن <strong>DMA</strong> أفضل، لأن متحكم الجهاز ينسخ كتلة كاملة مباشرة بين الجهاز والذاكرة.</li><li>في DMA يعطي المعالج عادة عنوان البداية والاتجاه والطول، ثم يكمل أعمالًا أخرى.</li><li>وغالبًا تكفي مقاطعة واحدة في نهاية النقل بدل مقاطعات كثيرة لكل بايت، لذلك يكون الحمل أقل بكثير.</li></ul>',
+    "topic-7": '<h2>7. التخزين و Caching والحماية</h2><ul><li>يعتمد تسلسل التخزين على مفاضلة: التخزين الأسرع أصغر وأغلى، بينما التخزين الأكبر أبطأ وأرخص.</li><li><strong>Cache</strong> تحتفظ بنسخ من البيانات كثيرة الاستخدام حتى لا ينتظر المعالج الذاكرة الأبطأ كثيرًا.</li><li>تُفرض الحماية عبر دعم عتادي مثل mode bit والتعليمات المميزة والمؤقت timer interrupts.</li><li>والمؤقت مهم جدًا لأنه يسمح للنظام باستعادة التحكم ويمنع أي برنامج من احتكار المعالج إلى الأبد.</li></ul>',
+    "topic-8": '<h2>8. تدفق عمل النظام</h2><ul><li>يعمل برنامج المستخدم في user mode، ثم يحتاج في لحظة ما إلى I/O أو خدمة مميزة أخرى.</li><li>ويصل هذا الطلب إلى نظام التشغيل عبر interrupt أو trap أو system call.</li><li>ثم يتحول المعالج إلى kernel mode، وينفذ النظام الطلب، وبعدها يعيد التحكم إلى البرنامج.</li><li>وهذا التسليم المتكرر هو النمط الطبيعي لعمل نظام حاسوبي محمي.</li></ul>',
+    "topic-9": '<h2>9. مصطلحات سريعة للحفظ</h2><ul><li><strong>Kernel</strong>: نواة نظام التشغيل التي تبقى فعالة وتتحكم في العتاد.</li><li><strong>Daemon</strong>: خدمة خلفية يبدأها النظام، وغالبًا بلا واجهة ظاهرة.</li><li><strong>Firmware</strong>: كود منخفض المستوى مخزن في ذاكرة غير متطايرة، مثل bootstrap code.</li><li><strong>Trap</strong>: interrupt مولدة برمجيًا، وغالبًا تنتج عن خطأ أو system call.</li><li><strong>Cache</strong>: نسخة أسرع من بيانات كثيرة الاستخدام مأخوذة من مستوى تخزين أبطأ.</li></ul>'
   }
 };
 </script>

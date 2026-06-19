@@ -94,6 +94,56 @@
     </ul>
     <div class="note">Quick distinction: <strong>prevention stops the conditions</strong>, <strong>avoidance checks safe state</strong>, and <strong>recovery fixes the problem after deadlock happens</strong>.</div>
   </section>
+
+  <section class="grid two">
+    <article class="card">
+      <h3>Semaphore Deadlock Example</h3>
+      <ul>
+        <li>If process P0 does <code>wait(S)</code> then <code>wait(Q)</code>, while P1 does <code>wait(Q)</code> then <code>wait(S)</code>, both can block forever.</li>
+        <li>Each process holds one semaphore and waits for the other one.</li>
+        <li>This is a direct practical example of circular wait.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h3>Cycle Facts</h3>
+      <ul>
+        <li>No cycle in the resource-allocation graph means no deadlock.</li>
+        <li>With one instance per resource type, a cycle means deadlock.</li>
+        <li>With multiple instances, a cycle means deadlock is possible, not guaranteed.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="topic">
+    <h2>7. Prevention by Breaking Conditions</h2>
+    <ul>
+      <li>Breaking <strong>mutual exclusion</strong> is possible only for sharable resources, so it is not a general solution.</li>
+      <li>Breaking <strong>hold and wait</strong> can be done by forcing a process to request all resources at once or only request when holding none.</li>
+      <li>Breaking <strong>no preemption</strong> means resources may be taken back if the next needed resource cannot be granted.</li>
+      <li>Breaking <strong>circular wait</strong> is often the most practical method: impose a fixed order on all resource types and force requests to follow that order.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>8. Safe State and Avoidance Notes</h2>
+    <ul>
+      <li>A <strong>safe state</strong> means there exists some safe sequence in which all processes can still finish.</li>
+      <li>An <strong>unsafe state</strong> does not mean the system is already deadlocked, but it means deadlock may occur later.</li>
+      <li>Avoidance needs more prior knowledge than prevention, such as the maximum resources each process may request.</li>
+      <li>For one instance per resource type, a modified resource-allocation graph can be used.</li>
+      <li>For several instances, the classic reading topic is the <strong>Banker's algorithm</strong>.</li>
+    </ul>
+  </section>
+
+  <section class="topic">
+    <h2>9. Recovery Decision Factors</h2>
+    <ul>
+      <li>If the system aborts processes one by one, it must decide the victim carefully.</li>
+      <li>Important factors include process priority, how long the process has run, how many resources it holds, how many more it still needs, and whether it is interactive or batch.</li>
+      <li>If the system uses resource preemption, it must also consider rollback cost and repeated victim selection.</li>
+      <li>This is where starvation can appear again, because the same process might be chosen as victim too often.</li>
+    </ul>
+  </section>
 </main>
 
 <script>
@@ -105,12 +155,17 @@ window.OS_PAGE_CONFIG = {
     "hero-tag": "CS2016 · نظم التشغيل",
     "hero-title": "الفصل 8: الاختناقات Deadlocks",
     "hero-copy": "أسئلة الاختناق تختبر غالبًا التعريف والشروط الأربعة وقراءة الرسم البياني والفرق بين prevention وavoidance وrecovery.",
+    "card-1": '<h3>مثال Deadlock بالـ Semaphores</h3><ul><li>إذا نفذت العملية P0 الأمرين <code>wait(S)</code> ثم <code>wait(Q)</code>، بينما نفذت P1 الأمرين <code>wait(Q)</code> ثم <code>wait(S)</code>، فقد تُحجب العمليتان إلى الأبد.</li><li>كل عملية تمسك semaphore واحدًا وتنتظر الآخر.</li><li>وهذا مثال عملي مباشر على circular wait.</li></ul>',
+    "card-2": '<h3>حقائق الدورات Cycles</h3><ul><li>عدم وجود دورة في resource-allocation graph يعني عدم وجود deadlock.</li><li>ومع نسخة واحدة لكل نوع مورد فإن وجود دورة يعني وجود deadlock.</li><li>أما مع عدة نسخ فإن الدورة تعني أن deadlock ممكنة لكن غير مضمونة.</li></ul>',
     "topic-1": '<h2>1. ما معنى الـ Deadlock</h2><ul><li>الـ deadlock هو حالة تكون فيها كل عملية داخل مجموعة ما منتظرة حدثًا لا يمكن أن تسببه إلا عملية أخرى من نفس المجموعة.</li><li>الصورة المعتادة هي: كل عملية تمسك موردًا وتنتظر موردًا آخر.</li><li>الـ mutex locks والـ semaphores من أشهر المصادر العملية للـ deadlock.</li><li>إذا لم تنكسر سلسلة الانتظار فستبقى العمليات محجوبة إلى الأبد.</li></ul>',
     "topic-2": '<h2>2. نموذج النظام</h2><ul><li>يحتوي النظام أنواع موارد مثل دورات المعالج والذاكرة وأجهزة الإدخال والإخراج والملفات وأدوات المزامنة.</li><li>تستخدم العملية الموارد بهذا الترتيب: <strong>request</strong> ثم <strong>use</strong> ثم <strong>release</strong>.</li><li>إذا كان المورد المطلوب غير متاح فإن العملية تنتظر.</li><li>يصبح الـ deadlock ممكنًا عندما تحتفظ العمليات المنتظرة بموارد يحتاجها غيرها.</li></ul>',
     "topic-3": '<h2>3. الشروط الأربعة اللازمة</h2><ol><li><strong>Mutual exclusion</strong>: مورد واحد يستخدمه Process واحد في اللحظة نفسها.</li><li><strong>Hold and wait</strong>: العملية تمسك موردًا واحدًا على الأقل بينما تطلب موارد إضافية.</li><li><strong>No preemption</strong>: لا يمكن أخذ الموارد منها ببساطة.</li><li><strong>Circular wait</strong>: توجد حلقة من العمليات التي تنتظر بعضها.</li></ol><div class="note">يجب أن تتحقق الشروط الأربعة معًا حتى يحدث deadlock.</div>',
     "topic-4": '<h2>4. Resource-Allocation Graph</h2><ul><li>تُعرض العمليات/الخيوط وأنواع الموارد كعقد في الرسم البياني.</li><li><strong>Request edge</strong>: من العملية إلى المورد.</li><li><strong>Assignment edge</strong>: من المورد إلى العملية.</li><li>إذا <strong>لا توجد دورة</strong> فلا يوجد deadlock.</li><li>إذا كان لكل نوع مورد نسخة واحدة فقط فإن وجود دورة يعني deadlock.</li><li>أما إذا كان للموارد عدة نسخ فإن الدورة تعني أن deadlock ممكن، وليس مضمونًا دائمًا.</li></ul>',
     "topic-5": '<h2>5. Deadlock Prevention و Avoidance</h2><ul><li><strong>Prevention</strong> تعني كسر واحد على الأقل من الشروط الأربعة اللازمة.</li><li>من الأمثلة: فرض طلب كل الموارد مسبقًا، أو السماح بالـ preemption في بعض الحالات، أو فرض ترتيب ثابت لطلبات الموارد.</li><li><strong>Avoidance</strong> تعني فحص كل طلب والسماح به فقط إذا بقي النظام في safe state.</li><li><strong>Safe state</strong> تعني وجود ترتيب ما يمكن فيه لكل العمليات أن تنتهي.</li><li><strong>Unsafe state</strong> لا تعني أن deadlock حدث فعلًا، لكنها تعني أنه قد يحدث.</li></ul>',
-    "topic-6": '<h2>6. Recovery from Deadlock</h2><ul><li>أحد الحلول هو إنهاء كل العمليات الموجودة في deadlock.</li><li>وحل آخر هو إنهاؤها واحدة واحدة حتى تنكسر الحلقة.</li><li>وحل ثالث هو سحب بعض الموارد من عملية وإعطاؤها لغيرها.</li><li>من القضايا المهمة في recovery: اختيار الضحية، وكلفة rollback، وstarvation.</li></ul><div class="note">التمييز السريع: <strong>prevention</strong> يمنع الشروط، و<strong>avoidance</strong> يفحص safe state، و<strong>recovery</strong> يصلح المشكلة بعد وقوعها.</div>'
+    "topic-6": '<h2>6. Recovery from Deadlock</h2><ul><li>أحد الحلول هو إنهاء كل العمليات الموجودة في deadlock.</li><li>وحل آخر هو إنهاؤها واحدة واحدة حتى تنكسر الحلقة.</li><li>وحل ثالث هو سحب بعض الموارد من عملية وإعطاؤها لغيرها.</li><li>من القضايا المهمة في recovery: اختيار الضحية، وكلفة rollback، وstarvation.</li></ul><div class="note">التمييز السريع: <strong>prevention</strong> يمنع الشروط، و<strong>avoidance</strong> يفحص safe state، و<strong>recovery</strong> يصلح المشكلة بعد وقوعها.</div>',
+    "topic-7": '<h2>7. Prevention عبر كسر الشروط</h2><ul><li>كسر <strong>mutual exclusion</strong> ممكن فقط مع الموارد القابلة للمشاركة، لذلك ليس حلًا عامًا.</li><li>يمكن كسر <strong>hold and wait</strong> بفرض أن تطلب العملية كل الموارد دفعة واحدة، أو ألا تطلب موردًا جديدًا وهي تمسك موارد أخرى.</li><li>أما كسر <strong>no preemption</strong> فيعني إمكان سحب الموارد إذا تعذر منح المورد التالي.</li><li>وغالبًا يكون كسر <strong>circular wait</strong> هو الحل الأكثر عملية، وذلك بفرض ترتيب ثابت على أنواع الموارد وإجبار الطلبات على اتباعه.</li></ul>',
+    "topic-8": '<h2>8. ملاحظات Safe State و Avoidance</h2><ul><li><strong>Safe state</strong> تعني وجود safe sequence يمكن فيه لكل العمليات أن تنتهي.</li><li><strong>Unsafe state</strong> لا تعني أن deadlock حدثت فعلًا، لكنها تعني أنها قد تحدث لاحقًا.</li><li>تحتاج avoidance إلى معلومات مسبقة أكثر من prevention، مثل الحد الأقصى للموارد التي قد تطلبها كل عملية.</li><li>إذا كان لكل نوع مورد نسخة واحدة فيمكن استخدام نسخة معدلة من resource-allocation graph.</li><li>أما مع عدة نسخ فالموضوع الكلاسيكي هو <strong>Banker\'s algorithm</strong>.</li></ul>',
+    "topic-9": '<h2>9. عوامل قرار Recovery</h2><ul><li>إذا كان النظام سينهي العمليات واحدة واحدة، فعليه اختيار الضحية بعناية.</li><li>ومن العوامل المهمة: أولوية العملية، ومدة عملها، وعدد الموارد التي تمسكها، وعدد الموارد التي ما زالت تحتاجها، وهل هي interactive أم batch.</li><li>وإذا استخدم النظام resource preemption فعليه أيضًا مراعاة كلفة rollback وتكرار اختيار نفس الضحية.</li><li>وهنا قد تظهر starvation مرة أخرى، لأن نفس العملية قد تُختار كضحية مرات كثيرة.</li></ul>'
   }
 };
 </script>
